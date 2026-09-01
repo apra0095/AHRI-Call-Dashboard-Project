@@ -1,0 +1,32 @@
+table DimAutoAttendant
+	lineageTag: 02777dc8-97cd-4e82-884b-383757df6cf2
+
+	column ResourceAccount
+		dataType: string
+		lineageTag: 3ba9fea9-0e02-410a-b399-d12e62a29014
+		summarizeBy: none
+		sourceColumn: ResourceAccount
+
+		annotation SummarizationSetBy = Automatic
+
+	column AutoAttendant
+		dataType: string
+		lineageTag: 9b169966-e929-4ff0-9c34-7682c372225c
+		summarizeBy: none
+		sourceColumn: AutoAttendant
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimAutoAttendant = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WSkzUzU3MzMssK9ItM3JIzCjK1EvOz9VLLFXSUfIFSih4hgUpxepAFKbmJqUWFWdkFqTmFZZmFmWmFmPRBFek4ApTBTMgNaU0ObEkMz8Pj35XmBos2stS80ryUkvK84uysWgEySr4QaSVYmMB", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [ResourceAccount = _t, AutoAttendant = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"ResourceAccount", type text}, {"AutoAttendant", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

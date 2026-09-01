@@ -1,0 +1,49 @@
+table FactCallQueueDaily
+	lineageTag: 9591f0e0-94af-4e70-9252-69f571077898
+
+	column Date
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 0e22320d-eabc-43eb-b0de-ec27360646ba
+		summarizeBy: none
+		sourceColumn: Date
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column CallCount
+		dataType: int64
+		formatString: 0
+		lineageTag: ef650a9f-a12f-414d-9bff-f763ac39a72c
+		summarizeBy: sum
+		sourceColumn: CallCount
+
+		annotation SummarizationSetBy = Automatic
+
+	column ResourceAccount
+		dataType: string
+		lineageTag: 90d18575-6afa-4aa2-a2fa-b5a87c5aad02
+		summarizeBy: none
+		sourceColumn: ResourceAccount
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactCallQueueDaily = m
+		mode: import
+		source =
+				let
+				    Source = Csv.Document(File.Contents("C:\Projects\AHRI-Call-Dashboard-Project\data\source\CallQueuesUsage_9-1-2026 1.csv"),[Delimiter=",", Columns=3, Encoding=65001, QuoteStyle=QuoteStyle.None]),
+				    #"Promoted Headers" = Table.PromoteHeaders(Source, [PromoteAllScalars=true]),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"Last Activity Date", type datetime}, {"Total Call Count", Int64.Type}, {"Resource Account", type text}}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Last Activity Date", "Date"}, {"Total Call Count", "CallCount"}, {"Resource Account", "ResourceAccount"}}),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns",{{"Date", type date}, {"CallCount", Int64.Type}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Changed Type1",{{"ResourceAccount", Text.Trim, type text}}),
+				    #"Cleaned Text" = Table.TransformColumns(#"Trimmed Text",{{"ResourceAccount", Text.Clean, type text}})
+				in
+				    #"Cleaned Text"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

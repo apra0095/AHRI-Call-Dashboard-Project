@@ -1,0 +1,40 @@
+table DimCallQueue
+	lineageTag: 50415e98-7db1-4479-af54-f871573ee5d3
+
+	column ResourceAccount
+		dataType: string
+		lineageTag: 0b85a52f-cc24-4fcc-8515-b09a8155538f
+		summarizeBy: none
+		sourceColumn: ResourceAccount
+
+		annotation SummarizationSetBy = Automatic
+
+	column QueueGroup
+		dataType: string
+		lineageTag: 2010f83d-93e3-421d-b9a7-38c6de1f2652
+		summarizeBy: none
+		sourceColumn: QueueGroup
+
+		annotation SummarizationSetBy = Automatic
+
+	column QueueType
+		dataType: string
+		lineageTag: d96d60ea-5add-4388-83b1-1a6397520bc6
+		summarizeBy: none
+		sourceColumn: QueueType
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimCallQueue = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("fZHLDoIwEEV/pWEtLvwCEzWuDEbcERYVRmwCtA4F49/LoxjoUHYkt+fe0xJFXvL2ERJQWsjSb3Z7/kKxTWSx5bW38W5j1H5fURQcv168sSjZAD5z+VnHA3Nq5BOOAFjVSknUFD30MQuHnM7PcbcC6bE9Kl2nUGqnSDjkbhOrwK1Cm8ibpAqarmvhHtcjO/XZwluo1GAr7zDlya7E1ohrqHgOS+NjzsLuwILBvGBFgzTZLgUUj/bHvoSi9OWfUYUJ556fFdjLEjNTQsEAM2ZgOj0B3dPzBns7Q1krjVyUoswofO5idjf51CD+AQ==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [ResourceAccount = _t, QueueGroup = _t, QueueType = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"ResourceAccount", type text}, {"QueueGroup", type text}, {"QueueType", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

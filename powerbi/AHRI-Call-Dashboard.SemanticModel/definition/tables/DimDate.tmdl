@@ -1,0 +1,69 @@
+table DimDate
+	lineageTag: 3e114c78-10b1-45b2-a8ee-da51c31830f2
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: General Date
+		lineageTag: 8e073694-7812-4e52-8506-ba167a05484b
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+		annotation SummarizationSetBy = Automatic
+
+	column Year =
+			
+			YEAR(DimDate[Date])
+		formatString: 0
+		lineageTag: 885395c4-902b-490b-835e-4982ae0acce4
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month =
+			
+			FORMAT(DimDate[Date], "MMMM")
+		lineageTag: 77704861-482c-413f-9e39-1a7ad9bd1958
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column MonthNumber =
+			
+			MONTH(DimDate[Date])
+		formatString: 0
+		lineageTag: 4d350866-1de3-414e-a56f-db3413da2f03
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Weekday =
+			
+			FORMAT(DimDate[Date], "dddd")
+		lineageTag: 717c7fbc-c3a3-4c0f-98bb-b735796e46dd
+		summarizeBy: none
+		sortByColumn: WeekdayNumber
+
+		annotation SummarizationSetBy = Automatic
+
+	column WeekdayNumber =
+			
+			WEEKDAY(DimDate[Date], 2)
+		formatString: 0
+		lineageTag: 6c1c173c-760c-48c5-b2e1-59c020489d64
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimDate = calculated
+		mode: import
+		source =
+				
+				CALENDAR(
+				    MIN(FactAutoAttendantDaily[Date]),
+				    MAX(FactAutoAttendantDaily[Date])
+				)
+
+	annotation PBI_Id = 2d6702e2fb3c43e2851dbdee2992c344
+
