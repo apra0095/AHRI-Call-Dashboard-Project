@@ -1,16 +1,16 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "20957d6279f9ba15a614",
+  "name": "c009c4c9f614ab7476bb",
   "position": {
-    "x": 48.278529980657638,
-    "y": 134.93230174081228,
+    "x": 42.088974854932296,
+    "y": 142.35976789168276,
     "z": 2000,
-    "height": 254.22632794457277,
-    "width": 521.75519630485,
+    "height": 258.72340425531911,
+    "width": 588.00773694390716,
     "tabOrder": 2000
   },
   "visual": {
-    "visualType": "clusteredBarChart",
+    "visualType": "barChart",
     "query": {
       "queryState": {
         "Category": {
@@ -20,14 +20,14 @@
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "DimAutoAttendant"
+                      "Entity": "FactCallQueueDaily"
                     }
                   },
-                  "Property": "AutoAttendant"
+                  "Property": "QueueName"
                 }
               },
-              "queryRef": "DimAutoAttendant.AutoAttendant",
-              "nativeQueryRef": "AutoAttendant",
+              "queryRef": "FactCallQueueDaily.QueueName",
+              "nativeQueryRef": "QueueName",
               "active": true
             }
           ]
@@ -41,7 +41,7 @@
                     "Column": {
                       "Expression": {
                         "SourceRef": {
-                          "Entity": "FactAutoAttendantDaily"
+                          "Entity": "FactCallQueueDaily"
                         }
                       },
                       "Property": "CallCount"
@@ -50,7 +50,7 @@
                   "Function": 0
                 }
               },
-              "queryRef": "Sum(FactAutoAttendantDaily.CallCount)",
+              "queryRef": "Sum(FactCallQueueDaily.CallCount)",
               "nativeQueryRef": "Sum of CallCount"
             }
           ]
@@ -65,7 +65,7 @@
                   "Column": {
                     "Expression": {
                       "SourceRef": {
-                        "Entity": "FactAutoAttendantDaily"
+                        "Entity": "FactCallQueueDaily"
                       }
                     },
                     "Property": "CallCount"
@@ -79,34 +79,6 @@
         ],
         "isDefaultSort": true
       }
-    },
-    "visualContainerObjects": {
-      "title": [
-        {
-          "properties": {
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Total Call by Auto Attendant'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "subTitle": [
-        {
-          "properties": {
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "''"
-                }
-              }
-            }
-          }
-        }
-      ]
     },
     "drillFilterOtherVisuals": true
   }

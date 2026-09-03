@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "2791b575c95a4f0a0e48",
+  "name": "1437e0a13ad344cb1bf4",
   "position": {
-    "x": 48.278529980657638,
-    "y": 399.84526112185654,
+    "x": 42.088974854932296,
+    "y": 415.93810444874271,
     "z": 3000,
-    "height": 156,
-    "width": 522,
+    "height": 155.97678916827851,
+    "width": 588.00773694390716,
     "tabOrder": 3000
   },
   "visual": {
@@ -21,7 +21,8 @@
                   {
                     "value": ""
                   }
-                ]
+                ],
+                "horizontalTextAlignment": "center"
               },
               {
                 "textRuns": [
@@ -29,19 +30,13 @@
                     "value": "\t"
                   },
                   {
-                    "value": "Total Call Count",
+                    "value": "Total Queue Calls",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontFamily": "Arial",
-                      "fontSize": "14pt"
+                      "fontFamily": "Calibri",
+                      "fontSize": "18pt",
+                      "color": "#000000"
                     }
-                  }
-                ]
-              },
-              {
-                "textRuns": [
-                  {
-                    "value": ""
                   }
                 ]
               },
@@ -54,11 +49,11 @@
                         "propertyName": "expr"
                       },
                       "selector": {
-                        "id": "Value"
+                        "id": "Value 2"
                       }
                     },
                     "textStyle": {
-                      "fontFamily": "Arial",
+                      "fontFamily": "Calibri",
                       "fontSize": "40pt"
                     }
                   }
@@ -129,6 +124,67 @@
           },
           "selector": {
             "id": "Value"
+          }
+        },
+        {
+          "properties": {
+            "expr": {
+              "expr": {
+                "Min": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "Subquery": {
+                          "Query": {
+                            "Version": 2,
+                            "From": [
+                              {
+                                "Name": "f",
+                                "Entity": "FactCallQueueDaily",
+                                "Type": 0
+                              }
+                            ],
+                            "Select": [
+                              {
+                                "Aggregation": {
+                                  "Expression": {
+                                    "Column": {
+                                      "Expression": {
+                                        "SourceRef": {
+                                          "Source": "f"
+                                        }
+                                      },
+                                      "Property": "CallCount"
+                                    }
+                                  },
+                                  "Function": 0
+                                },
+                                "Name": "Sum(FactCallQueueDaily.CallCount)"
+                              }
+                            ]
+                          }
+                        }
+                      },
+                      "Property": "Sum(FactCallQueueDaily.CallCount)"
+                    }
+                  },
+                  "IncludeAllTypes": 1
+                },
+                "Annotations": {
+                  "NaturalLanguage": {
+                    "version": 1,
+                    "kind": "NaturalLanguage",
+                    "annotation": {
+                      "name": "Value 2",
+                      "utterance": "sum fact call queue daily call count"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "Value 2"
           }
         }
       ]

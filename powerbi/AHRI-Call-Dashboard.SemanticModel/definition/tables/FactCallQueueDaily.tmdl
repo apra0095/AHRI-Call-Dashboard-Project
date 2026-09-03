@@ -29,6 +29,22 @@ table FactCallQueueDaily
 
 		annotation SummarizationSetBy = Automatic
 
+	column QueueName
+		dataType: string
+		lineageTag: 0385978c-93d1-4b58-a11f-199c46740d31
+		summarizeBy: none
+		sourceColumn: QueueName
+
+		annotation SummarizationSetBy = Automatic
+
+	column CallType
+		dataType: string
+		lineageTag: 8fe6ece0-ad32-434c-ade8-479ca7e3ec3e
+		summarizeBy: none
+		sourceColumn: CallType
+
+		annotation SummarizationSetBy = Automatic
+
 	partition FactCallQueueDaily = m
 		mode: import
 		source =
@@ -39,9 +55,11 @@ table FactCallQueueDaily
 				    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Last Activity Date", "Date"}, {"Total Call Count", "CallCount"}, {"Resource Account", "ResourceAccount"}}),
 				    #"Changed Type1" = Table.TransformColumnTypes(#"Renamed Columns",{{"Date", type date}, {"CallCount", Int64.Type}}),
 				    #"Trimmed Text" = Table.TransformColumns(#"Changed Type1",{{"ResourceAccount", Text.Trim, type text}}),
-				    #"Cleaned Text" = Table.TransformColumns(#"Trimmed Text",{{"ResourceAccount", Text.Clean, type text}})
+				    #"Cleaned Text" = Table.TransformColumns(#"Trimmed Text",{{"ResourceAccount", Text.Clean, type text}}),
+				    #"Added Custom" = Table.AddColumn(#"Cleaned Text", "QueueName", each Text.Replace(Text.Replace(Text.Replace([ResourceAccount], "cq-", ""), "-overflow-v2@ahri.com.au", ""), "-v2@ahri.com.au", "")),
+				    #"Added Custom1" = Table.AddColumn(#"Added Custom", "CallType", each if Text.Contains([ResourceAccount], "overflow") then "Overflow" else "Primary")
 				in
-				    #"Cleaned Text"
+				    #"Added Custom1"
 
 	annotation PBI_NavigationStepName = Navigation
 

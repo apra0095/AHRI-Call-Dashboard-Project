@@ -1,19 +1,38 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "20957d6279f9ba15a614",
+  "name": "76ea0d772c392575fb72",
   "position": {
-    "x": 48.278529980657638,
-    "y": 134.93230174081228,
-    "z": 2000,
-    "height": 254.22632794457277,
-    "width": 521.75519630485,
-    "tabOrder": 2000
+    "x": 583.05609284332684,
+    "y": 134.93230174081236,
+    "z": 4000,
+    "height": 420.889748549323,
+    "width": 658.568665377176,
+    "tabOrder": 4000
   },
   "visual": {
-    "visualType": "clusteredBarChart",
+    "visualType": "lineChart",
     "query": {
       "queryState": {
         "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimDate"
+                    }
+                  },
+                  "Property": "Date"
+                }
+              },
+              "queryRef": "DimDate.Date",
+              "nativeQueryRef": "Date",
+              "active": true
+            }
+          ]
+        },
+        "Series": {
           "projections": [
             {
               "field": {
@@ -27,8 +46,7 @@
                 }
               },
               "queryRef": "DimAutoAttendant.AutoAttendant",
-              "nativeQueryRef": "AutoAttendant",
-              "active": true
+              "nativeQueryRef": "AutoAttendant"
             }
           ]
         },
@@ -60,21 +78,16 @@
         "sort": [
           {
             "field": {
-              "Aggregation": {
+              "Column": {
                 "Expression": {
-                  "Column": {
-                    "Expression": {
-                      "SourceRef": {
-                        "Entity": "FactAutoAttendantDaily"
-                      }
-                    },
-                    "Property": "CallCount"
+                  "SourceRef": {
+                    "Entity": "DimDate"
                   }
                 },
-                "Function": 0
+                "Property": "Date"
               }
             },
-            "direction": "Descending"
+            "direction": "Ascending"
           }
         ],
         "isDefaultSort": true
@@ -87,20 +100,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Total Call by Auto Attendant'"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "subTitle": [
-        {
-          "properties": {
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "''"
+                  "Value": "'Daily Auto Attendant Call Trend'"
                 }
               }
             }
