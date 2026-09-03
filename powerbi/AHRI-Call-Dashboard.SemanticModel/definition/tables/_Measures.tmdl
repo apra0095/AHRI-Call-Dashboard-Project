@@ -28,6 +28,59 @@ table _Measures
 		formatString: 0.0
 		lineageTag: a9835ad2-66ac-4bf8-8adc-e7720aabc0f8
 
+	measure '7 Day Moving Avg' =
+			
+			VAR CurrentDate =
+			    MAX(DimDate[Date])
+			
+			VAR StartDate =
+			    CALCULATE(
+			        MIN(DimDate[Date]),
+			        REMOVEFILTERS(DimDate)
+			    )
+			
+			VAR DaysFromStart =
+			    DATEDIFF(
+			        StartDate,
+			        CurrentDate,
+			        DAY
+			    ) + 1
+			
+			VAR WindowDates =
+			    FILTER(
+			        ALL(DimDate[Date]),
+			        DimDate[Date] >= CurrentDate - 6
+			            && DimDate[Date] <= CurrentDate
+			    )
+			
+			RETURN
+			IF(
+			    DaysFromStart < 7,
+			    BLANK(),
+			    AVERAGEX(
+			        WindowDates,
+			        COALESCE(
+			            CALCULATE([Main IVR Calls]),
+			            0
+			        )
+			    )
+			)
+		lineageTag: 35dbec42-6bf4-4d35-9e5e-971b9ce97ea7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Cumulative Main IVR Calls' =
+			
+			CALCULATE(
+			    [Main IVR Calls],
+			    FILTER(
+			        ALLSELECTED(DimDate[Date]),
+			        DimDate[Date] <= MAX(DimDate[Date])
+			    )
+			)
+		formatString: 0
+		lineageTag: fe7556fa-1614-442d-a4d1-54402df7e7a7
+
 	column Placeholder
 		dataType: int64
 		formatString: 0

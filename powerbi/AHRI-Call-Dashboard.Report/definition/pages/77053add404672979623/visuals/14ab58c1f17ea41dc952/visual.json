@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "14ab58c1f17ea41dc952",
   "position": {
-    "x": 429.25110132158591,
-    "y": 169.16299559471366,
-    "z": 2,
+    "x": 812.47690777319883,
+    "y": 137.49144134251412,
+    "z": 2000,
     "height": 280,
     "width": 280,
-    "tabOrder": 2
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -52,23 +52,5 @@
       }
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "cb5691c6d78fb1effde1",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "_Measures"
-              }
-            },
-            "Property": "Avg Daily Main IVR Calls"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

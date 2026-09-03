@@ -56,6 +56,26 @@ table DimDate
 
 		annotation SummarizationSetBy = Automatic
 
+	column WeekStart =
+			
+			DimDate[Date] - WEEKDAY(DimDate[Date], 2) + 1
+		formatString: Long Date
+		lineageTag: e70f8c5f-38f2-43a7-a159-8cbec3ba5a62
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column WeekLabel =
+			
+			"W/C " & FORMAT(DimDate[WeekStart], "dd MMM")
+		lineageTag: 2f4b792a-2cce-4bee-9f92-e6e919255161
+		summarizeBy: none
+		sortByColumn: WeekStart
+
+		annotation SummarizationSetBy = Automatic
+
 	partition DimDate = calculated
 		mode: import
 		source =

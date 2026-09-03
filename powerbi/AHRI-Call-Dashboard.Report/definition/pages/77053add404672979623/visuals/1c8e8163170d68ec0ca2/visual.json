@@ -4,10 +4,10 @@
   "position": {
     "x": 960,
     "y": 505.37444933920705,
-    "z": 5,
+    "z": 5000,
     "height": 475.77092511013217,
     "width": 820.44052863436127,
-    "tabOrder": 5
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "clusteredColumnChart",
@@ -53,37 +53,5 @@
       }
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "b727ed87f8b3cd8456d6",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "DimDate"
-              }
-            },
-            "Property": "Weekday"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "c2194a5139ba497fc8ea",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "_Measures"
-              }
-            },
-            "Property": "Avg Daily Main IVR Calls"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "028e248666a5d54e9d57",
+  "name": "c1886e160cbf720da55d",
   "position": {
-    "x": 676.65198237885465,
+    "x": 693.568281938326,
     "y": 0,
-    "z": 1000,
-    "height": 281.23348017621146,
-    "width": 564.58149779735686,
-    "tabOrder": 1000
+    "z": 0,
+    "height": 279.11894273127751,
+    "width": 530.74889867841409,
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "textbox",
@@ -19,14 +19,13 @@
               {
                 "textRuns": [
                   {
-                    "value": "AHRI Call Overview",
+                    "value": "Call Demand Trends",
                     "textStyle": {
                       "fontWeight": "bold",
                       "fontSize": "36pt"
                     }
                   }
-                ],
-                "horizontalTextAlignment": "center"
+                ]
               }
             ]
           }

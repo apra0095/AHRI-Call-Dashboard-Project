@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "784287efdfbdff30c966",
+  "name": "90e767d7f80eec0e569d",
   "position": {
-    "x": 90.9251101321586,
-    "y": 505.37444933920705,
-    "z": 4000,
-    "height": 475.77092511013217,
-    "width": 820.44052863436127,
-    "tabOrder": 4000
+    "x": 174.19354838709677,
+    "y": 74.428152492668616,
+    "z": 1000,
+    "height": 376.891495601173,
+    "width": 1548.7390029325511,
+    "tabOrder": 1000
   },
   "visual": {
     "visualType": "lineChart",
@@ -47,6 +47,20 @@
               },
               "queryRef": "_Measures.Main IVR Calls",
               "nativeQueryRef": "Main IVR Calls"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "7 Day Moving Avg"
+                }
+              },
+              "queryRef": "_Measures.7 Day Moving Avg",
+              "nativeQueryRef": "7 Day Moving Avg"
             }
           ]
         }
@@ -77,7 +91,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Daily Main IVR Call Activity'"
+                  "Value": "'Daily Call Activities'"
                 }
               }
             }

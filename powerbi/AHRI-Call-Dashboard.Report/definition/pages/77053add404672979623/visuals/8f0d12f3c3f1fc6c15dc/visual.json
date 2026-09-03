@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "8f0d12f3c3f1fc6c15dc",
   "position": {
-    "x": 771.80616740088112,
-    "y": 169.16299559471366,
-    "z": 3,
+    "x": 1155.0319738524936,
+    "y": 137.49144134251412,
+    "z": 3000,
     "height": 280,
     "width": 280,
-    "tabOrder": 3
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -52,23 +52,5 @@
       }
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "a98884d866521f6abc20",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "_Measures"
-              }
-            },
-            "Property": "Active Days"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }
