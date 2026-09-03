@@ -25,9 +25,8 @@ table _Measures
 			    [Main IVR Calls],
 			    [Active Days]
 			)
+		formatString: 0.0
 		lineageTag: a9835ad2-66ac-4bf8-8adc-e7720aabc0f8
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	column Placeholder
 		dataType: int64

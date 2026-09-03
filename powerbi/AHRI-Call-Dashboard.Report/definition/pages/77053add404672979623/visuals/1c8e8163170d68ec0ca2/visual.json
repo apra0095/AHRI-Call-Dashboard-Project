@@ -1,0 +1,89 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "1c8e8163170d68ec0ca2",
+  "position": {
+    "x": 960,
+    "y": 505.37444933920705,
+    "z": 5,
+    "height": 475.77092511013217,
+    "width": 820.44052863436127,
+    "tabOrder": 5
+  },
+  "visual": {
+    "visualType": "clusteredColumnChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimDate"
+                    }
+                  },
+                  "Property": "Weekday"
+                }
+              },
+              "queryRef": "DimDate.Weekday",
+              "nativeQueryRef": "Weekday",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_Measures"
+                    }
+                  },
+                  "Property": "Avg Daily Main IVR Calls"
+                }
+              },
+              "queryRef": "_Measures.Avg Daily Main IVR Calls",
+              "nativeQueryRef": "Avg Daily Main IVR Calls"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "b727ed87f8b3cd8456d6",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DimDate"
+              }
+            },
+            "Property": "Weekday"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "c2194a5139ba497fc8ea",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "_Measures"
+              }
+            },
+            "Property": "Avg Daily Main IVR Calls"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
+  }
+}
