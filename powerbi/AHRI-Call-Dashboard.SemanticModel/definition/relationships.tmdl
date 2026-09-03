@@ -2,10 +2,6 @@ relationship AutoDetected_67098f8b-d938-462f-b761-547a310c582c
 	fromColumn: FactCallQueueDaily.ResourceAccount
 	toColumn: DimCallQueue.ResourceAccount
 
-relationship b008daa8-69b2-1a47-5283-e5af064ace02
-	fromColumn: FactAutoAttendantDaily.ResourceAccount
-	toColumn: DimAutoAttendant.AutoAttendant
-
 relationship fa53776a-91e2-aa30-d0fb-5cd0520ec2fe
 	fromColumn: FactAutoAttendantDaily.Date
 	toColumn: DimDate.Date
@@ -13,4 +9,8 @@ relationship fa53776a-91e2-aa30-d0fb-5cd0520ec2fe
 relationship 58c13ba2-b7f3-24fb-d0f9-1307c8dfda2f
 	fromColumn: FactCallQueueDaily.Date
 	toColumn: DimDate.Date
+
+relationship 38a75c7e-adcd-a0c6-7784-49d58561c1e2
+	fromColumn: FactAutoAttendantDaily.ResourceAccount
+	toColumn: DimAutoAttendant.ResourceAccount
 

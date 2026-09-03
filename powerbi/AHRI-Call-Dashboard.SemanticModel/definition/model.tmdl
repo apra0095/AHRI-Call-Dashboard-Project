@@ -11,13 +11,14 @@ annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_ProTooling = ["DevMode"]
 
-annotation PBI_QueryOrder = ["FactAutoAttendantDaily","FactCallQueueDaily","DimAutoAttendant","DimCallQueue"]
+annotation PBI_QueryOrder = ["FactAutoAttendantDaily","FactCallQueueDaily","DimAutoAttendant","DimCallQueue","_Measures"]
 
 ref table FactAutoAttendantDaily
 ref table FactCallQueueDaily
 ref table DimAutoAttendant
 ref table DimCallQueue
 ref table DimDate
+ref table _Measures
 
 ref cultureInfo en-US
 

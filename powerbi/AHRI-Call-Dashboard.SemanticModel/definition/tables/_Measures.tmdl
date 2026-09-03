@@ -1,0 +1,51 @@
+table _Measures
+	lineageTag: 43d0bc07-587f-4ace-aa98-1561b11f9e6c
+
+	measure 'Main IVR Calls' =
+			
+			CALCULATE(
+			    SUM(FactAutoAttendantDaily[CallCount]),
+			    DimAutoAttendant[AutoAttendant] = "Main IVR"
+			)
+		formatString: 0
+		lineageTag: 166418b8-92ff-4413-80f6-1664ea0099e2
+
+	measure 'Active Days' =
+			
+			CALCULATE(
+			    DISTINCTCOUNT(FactAutoAttendantDaily[Date]),
+			    DimAutoAttendant[AutoAttendant] = "Main IVR"
+			)
+		formatString: 0
+		lineageTag: cca5ce91-f09e-4a23-a074-105b2056b6d6
+
+	measure 'Avg Daily Main IVR Calls' =
+			
+			DIVIDE(
+			    [Main IVR Calls],
+			    [Active Days]
+			)
+		lineageTag: a9835ad2-66ac-4bf8-8adc-e7720aabc0f8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column Placeholder
+		dataType: int64
+		formatString: 0
+		lineageTag: d5420476-3264-4096-8112-84af893a8887
+		summarizeBy: sum
+		sourceColumn: Placeholder
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _Measures = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i45WMlSKjQUA", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Placeholder = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"Placeholder", Int64.Type}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_ResultType = Table
+
