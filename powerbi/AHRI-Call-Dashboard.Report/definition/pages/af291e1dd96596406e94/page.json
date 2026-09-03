@@ -1,0 +1,13 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
+  "name": "af291e1dd96596406e94",
+  "displayName": "Auto Attendant/Routing",
+  "displayOption": "FitToPage",
+  "height": 720,
+  "width": 1280,
+  "pageBinding": {
+    "name": "36522a05235daf9d675d",
+    "type": "Default",
+    "parameters": []
+  }
+}

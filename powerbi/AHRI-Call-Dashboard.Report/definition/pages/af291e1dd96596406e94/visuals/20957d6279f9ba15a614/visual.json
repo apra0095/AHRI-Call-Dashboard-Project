@@ -1,0 +1,85 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "20957d6279f9ba15a614",
+  "position": {
+    "x": 60.03868471953578,
+    "y": 134.93230174081228,
+    "z": 2000,
+    "height": 254.22632794457277,
+    "width": 521.75519630485,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "DimAutoAttendant"
+                    }
+                  },
+                  "Property": "AutoAttendant"
+                }
+              },
+              "queryRef": "DimAutoAttendant.AutoAttendant",
+              "nativeQueryRef": "AutoAttendant",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactAutoAttendantDaily"
+                        }
+                      },
+                      "Property": "CallCount"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(FactAutoAttendantDaily.CallCount)",
+              "nativeQueryRef": "Sum of CallCount"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "FactAutoAttendantDaily"
+                      }
+                    },
+                    "Property": "CallCount"
+                  }
+                },
+                "Function": 0
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
