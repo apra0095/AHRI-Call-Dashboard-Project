@@ -81,6 +81,15 @@ table _Measures
 		formatString: 0
 		lineageTag: fe7556fa-1614-442d-a4d1-54402df7e7a7
 
+	measure 'Call Activity by Destination' =
+			
+			CALCULATE(
+			    SUM('FactAutoAttendantDaily'[CallCount]),
+			    'DimAutoAttendant'[AutoAttendant] <> "Main IVR"
+			)
+		formatString: 0
+		lineageTag: 64828e27-550d-4478-bd5a-9c89821b76cb
+
 	column Placeholder
 		dataType: int64
 		formatString: 0

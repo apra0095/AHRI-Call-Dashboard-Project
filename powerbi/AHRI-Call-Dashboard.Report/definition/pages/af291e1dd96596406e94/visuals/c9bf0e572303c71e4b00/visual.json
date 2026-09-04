@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "2791b575c95a4f0a0e48",
+  "name": "c9bf0e572303c71e4b00",
   "position": {
-    "x": 114.50676982591895,
-    "y": 133.69439071566728,
-    "z": 2000,
-    "height": 156,
-    "width": 522,
-    "tabOrder": 2000
+    "x": 658.568665377176,
+    "y": 133.69439071566731,
+    "z": 4000,
+    "height": 155.97678916827851,
+    "width": 532.30174081237908,
+    "tabOrder": 4000
   },
   "visual": {
     "visualType": "textbox",
@@ -29,7 +29,7 @@
                     "value": "\t"
                   },
                   {
-                    "value": "Calls Entering Main IVR",
+                    "value": "Total Call Activity by Destination",
                     "textStyle": {
                       "fontWeight": "bold",
                       "fontFamily": "Arial",
@@ -215,15 +215,15 @@
                                       "Source": "_"
                                     }
                                   },
-                                  "Property": "Main IVR Calls"
+                                  "Property": "Call Activity by Destination"
                                 },
-                                "Name": "_Measures.Main IVR Calls"
+                                "Name": "_Measures.Call Activity by Destination"
                               }
                             ]
                           }
                         }
                       },
-                      "Property": "_Measures.Main IVR Calls"
+                      "Property": "_Measures.Call Activity by Destination"
                     }
                   },
                   "IncludeAllTypes": 1
@@ -234,7 +234,7 @@
                     "kind": "NaturalLanguage",
                     "annotation": {
                       "name": "Value 3",
-                      "utterance": "total main IVR calls"
+                      "utterance": "total call activity by destination"
                     }
                   }
                 }

@@ -1,16 +1,16 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "20957d6279f9ba15a614",
+  "name": "835cb699b4f4e9192c62",
   "position": {
-    "x": 48.278529980657638,
-    "y": 134.93230174081228,
-    "z": 2000,
-    "height": 254.22632794457277,
-    "width": 521.75519630485,
-    "tabOrder": 2000
+    "x": 114.50676982591895,
+    "y": 308.23984526112184,
+    "z": 3000,
+    "height": 375.08704061895548,
+    "width": 1075.7446808510638,
+    "tabOrder": 3000
   },
   "visual": {
-    "visualType": "clusteredBarChart",
+    "visualType": "donutChart",
     "query": {
       "queryState": {
         "Category": {
@@ -87,7 +87,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Total Call by Auto Attendant'"
+                  "Value": "'Call Activity by Destination'"
                 }
               }
             }
@@ -97,10 +97,10 @@
       "subTitle": [
         {
           "properties": {
-            "text": {
+            "show": {
               "expr": {
                 "Literal": {
-                  "Value": "''"
+                  "Value": "false"
                 }
               }
             }
@@ -109,5 +109,81 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "f9bfaa5bae625a52c827",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "DimAutoAttendant"
+              }
+            },
+            "Property": "AutoAttendant"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "d",
+              "Entity": "DimAutoAttendant",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "Not": {
+                  "Expression": {
+                    "In": {
+                      "Expressions": [
+                        {
+                          "Column": {
+                            "Expression": {
+                              "SourceRef": {
+                                "Source": "d"
+                              }
+                            },
+                            "Property": "AutoAttendant"
+                          }
+                        }
+                      ],
+                      "Values": [
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'Main IVR'"
+                            }
+                          }
+                        ]
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "objects": {
+          "general": [
+            {
+              "properties": {
+                "isInvertedSelectionMode": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "true"
+                    }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
   }
 }
