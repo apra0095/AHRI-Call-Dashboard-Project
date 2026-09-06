@@ -217,6 +217,15 @@ table _RoutingMeasures
 		displayFolder: Quality
 		lineageTag: fc381890-63c5-5794-80dd-0c0a7f56bf47
 
+	measure 'Context groups' =
+			
+			COALESCE(
+			    [Linked groups],
+			    0
+			)
+		formatString: #,0
+		lineageTag: c5b657d3-d8b8-4277-a6d8-4c74c7a4f959
+
 	column Placeholder
 		dataType: int64
 		isHidden

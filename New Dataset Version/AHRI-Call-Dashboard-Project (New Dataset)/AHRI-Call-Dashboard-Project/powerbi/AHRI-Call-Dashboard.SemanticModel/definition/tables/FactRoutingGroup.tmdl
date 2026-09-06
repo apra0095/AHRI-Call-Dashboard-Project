@@ -60,6 +60,30 @@ table FactRoutingGroup
 		summarizeBy: none
 		sourceColumn: ObservedRoute
 
+	column 'Main IVR status' =
+			
+			IF(
+			    FactRoutingGroup[HasMainIVR],
+			    "With Main IVR",
+			    "Without Main IVR"
+			)
+		lineageTag: 81a95501-59d8-4a05-8a48-97f7183cece5
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Queue status' =
+			
+			IF(
+			    FactRoutingGroup[HasQueue],
+			    "With queue record",
+			    "Without queue record"
+			)
+		lineageTag: bf515eed-52fa-4b76-b38d-650db216c467
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition FactRoutingGroup = m
 		mode: import
 		source =

@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
-  "name": "3c6d525e81eb518283b2",
+  "name": "777b813f9162043a67c3",
   "position": {
-    "x": 50,
-    "y": 1000,
-    "z": 1050,
-    "height": 65,
-    "width": 1820,
-    "tabOrder": 1050
+    "x": 588.84758364312268,
+    "y": 0,
+    "z": 1627,
+    "height": 60,
+    "width": 1240,
+    "tabOrder": 1627
   },
   "visual": {
     "visualType": "textbox",
@@ -19,9 +19,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Melbourne time. Averages exclude first and last observed dates and count zero-entry days. Full-month comparison covers May–August in this export; holidays are retained as weekdays. Export completeness is assumed between boundary dates.",
+                    "value": "Inbound Calls Overview",
                     "textStyle": {
-                      "fontSize": "13pt"
+                      "fontWeight": "bold",
+                      "fontSize": "32pt"
                     }
                   }
                 ]

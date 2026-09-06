@@ -2,8 +2,8 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
   "name": "1398e2573fdd5e55812c",
   "position": {
-    "x": 50,
-    "y": 20,
+    "x": 149.88847583643121,
+    "y": 526.39405204460968,
     "z": 70,
     "height": 60,
     "width": 1240,
@@ -21,8 +21,8 @@
                   {
                     "value": "Demand and timing",
                     "textStyle": {
-                      "fontSize": "32pt",
-                      "fontWeight": "bold"
+                      "fontWeight": "bold",
+                      "fontSize": "32pt"
                     }
                   }
                 ]

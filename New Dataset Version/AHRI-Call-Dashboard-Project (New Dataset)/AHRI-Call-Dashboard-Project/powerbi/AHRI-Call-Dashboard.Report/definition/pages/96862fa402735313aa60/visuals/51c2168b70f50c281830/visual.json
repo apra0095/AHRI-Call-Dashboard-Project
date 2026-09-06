@@ -1,0 +1,126 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "51c2168b70f50c281830",
+  "position": {
+    "x": 48.17843866171004,
+    "y": 0,
+    "z": 1626,
+    "height": 183.79182156133828,
+    "width": 494.275092936803,
+    "tabOrder": 1626
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Columns": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactRoutingGroup"
+                    }
+                  },
+                  "Property": "Queue status"
+                }
+              },
+              "queryRef": "FactRoutingGroup.Queue status",
+              "nativeQueryRef": "Queue status",
+              "active": true
+            }
+          ]
+        },
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactRoutingGroup"
+                    }
+                  },
+                  "Property": "Main IVR status"
+                }
+              },
+              "queryRef": "FactRoutingGroup.Main IVR status",
+              "nativeQueryRef": "Main IVR status",
+              "active": true
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_RoutingMeasures"
+                    }
+                  },
+                  "Property": "Context groups"
+                }
+              },
+              "queryRef": "_RoutingMeasures.Context groups",
+              "nativeQueryRef": "Context groups"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_RoutingMeasures"
+                  }
+                },
+                "Property": "Context groups"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Inbound Call Records Calculation'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "border": [
+        {
+          "properties": {
+            "color": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": 0
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}
