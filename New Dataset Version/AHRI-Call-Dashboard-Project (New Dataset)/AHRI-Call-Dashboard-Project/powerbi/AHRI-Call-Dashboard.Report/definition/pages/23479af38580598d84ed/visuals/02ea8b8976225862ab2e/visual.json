@@ -1,0 +1,53 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "02ea8b8976225862ab2e",
+  "position": {
+    "x": 980,
+    "y": 150,
+    "z": 1130,
+    "height": 145,
+    "width": 430,
+    "tabOrder": 1130
+  },
+  "visual": {
+    "visualType": "cardVisual",
+    "query": {
+      "queryState": {
+        "Data": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_RoutingMeasures"
+                    }
+                  },
+                  "Property": "Overflow groups"
+                }
+              },
+              "queryRef": "_RoutingMeasures.Overflow groups",
+              "nativeQueryRef": "Overflow groups"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Groups with overflow records'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

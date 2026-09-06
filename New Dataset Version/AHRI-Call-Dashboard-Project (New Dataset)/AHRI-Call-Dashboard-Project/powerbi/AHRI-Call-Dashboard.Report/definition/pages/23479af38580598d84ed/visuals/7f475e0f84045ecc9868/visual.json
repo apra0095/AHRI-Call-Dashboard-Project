@@ -1,0 +1,90 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "7f475e0f84045ecc9868",
+  "position": {
+    "x": 950,
+    "y": 325,
+    "z": 1275,
+    "height": 310,
+    "width": 920,
+    "tabOrder": 1275
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactDirectRouting"
+                    }
+                  },
+                  "Property": "QueueService"
+                }
+              },
+              "queryRef": "FactDirectRouting.QueueService",
+              "nativeQueryRef": "QueueService",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_RoutingMeasures"
+                    }
+                  },
+                  "Property": "Queue groups"
+                }
+              },
+              "queryRef": "_RoutingMeasures.Queue groups",
+              "nativeQueryRef": "Queue groups"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_RoutingMeasures"
+                  }
+                },
+                "Property": "Queue groups"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Queue-associated groups by service'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

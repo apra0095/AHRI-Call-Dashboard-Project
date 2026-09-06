@@ -1,0 +1,93 @@
+{
+  "source_sha256": "665e15a9a28117ddf23e51cc620738a30a12f43271671f8e0c29e02a26efaad8",
+  "counts": {
+    "routing_records": 9859,
+    "linked_groups": 6361,
+    "main_ivr_entries": 3986,
+    "queue_groups": 1262,
+    "overflow_groups": 337,
+    "unsuccessful_records": 786
+  },
+  "full_month_weekday_comparison": [
+    {
+      "month": "2026-05",
+      "weekday_entries": 1112,
+      "weekdays": 21,
+      "entries_per_weekday": 52.95238095238095
+    },
+    {
+      "month": "2026-06",
+      "weekday_entries": 869,
+      "weekdays": 22,
+      "entries_per_weekday": 39.5
+    },
+    {
+      "month": "2026-07",
+      "weekday_entries": 861,
+      "weekdays": 23,
+      "entries_per_weekday": 37.43478260869565
+    },
+    {
+      "month": "2026-08",
+      "weekday_entries": 620,
+      "weekdays": 21,
+      "entries_per_weekday": 29.523809523809526
+    }
+  ],
+  "queue_services": [
+    {
+      "service": "CPD Events",
+      "groups": 68,
+      "overflow_groups": 34,
+      "overflow_share": 0.5
+    },
+    {
+      "service": "Career Support",
+      "groups": 348,
+      "overflow_groups": 165,
+      "overflow_share": 0.47413793103448276
+    },
+    {
+      "service": "Corporate Sales",
+      "groups": 1,
+      "overflow_groups": 1,
+      "overflow_share": 1.0
+    },
+    {
+      "service": "Membership",
+      "groups": 432,
+      "overflow_groups": 96,
+      "overflow_share": 0.2222222222222222
+    },
+    {
+      "service": "Organisation Members",
+      "groups": 35,
+      "overflow_groups": 8,
+      "overflow_share": 0.22857142857142856
+    },
+    {
+      "service": "Reception",
+      "groups": 374,
+      "overflow_groups": 33,
+      "overflow_share": 0.08823529411764706
+    },
+    {
+      "service": "Student Support",
+      "groups": 4,
+      "overflow_groups": 0,
+      "overflow_share": 0.0
+    }
+  ],
+  "observed_main_routes": {
+    "no_queue_observed": 2724,
+    "primary_only_observed": 925,
+    "overflow_observed": 337
+  },
+  "json_files_parsed": 56,
+  "visual_containers_checked": 48,
+  "report_pages": 4,
+  "model_tables": 5,
+  "old_csv_dependencies": 0,
+  "power_bi_engine_executed": false,
+  "report_visually_rendered": false
+}

@@ -1,0 +1,8 @@
+relationship 5cdbc477-b220-5a6d-856c-59c6e3001a1c
+	fromColumn: FactDirectRouting.InviteDateMelbourne
+	toColumn: DimRoutingDate.Date
+
+relationship 772de6b3-0525-52c5-8e6e-d04aa1ed88c3
+	fromColumn: FactRoutingGroup.EntryDate
+	toColumn: DimRoutingDate.Date
+

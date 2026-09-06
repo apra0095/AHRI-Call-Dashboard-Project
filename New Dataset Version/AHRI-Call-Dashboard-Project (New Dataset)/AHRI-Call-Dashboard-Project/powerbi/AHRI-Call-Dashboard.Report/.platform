@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "AHRI-Call-Dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "1b45a59e-fca5-45c9-9a43-8219b2d7c79f"
+  }
+}

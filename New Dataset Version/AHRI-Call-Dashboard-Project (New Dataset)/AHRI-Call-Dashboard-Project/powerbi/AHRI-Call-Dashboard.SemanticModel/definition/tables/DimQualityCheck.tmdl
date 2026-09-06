@@ -1,0 +1,21 @@
+table DimQualityCheck
+	lineageTag: 13fc8f3c-a5ef-5ed1-b58a-5f4737d12d77
+
+	column Check
+		dataType: string
+		lineageTag: 4f3f8e78-aa3e-4a10-90a2-07c50ff7f88d
+		summarizeBy: none
+		sourceColumn: Check
+		sortByColumn: SortOrder
+
+	column SortOrder
+		dataType: int64
+		isHidden
+		lineageTag: b08e9426-e44b-4ef2-8c69-03327cf0e1ce
+		summarizeBy: none
+		sourceColumn: SortOrder
+
+	partition DimQualityCheck = m
+		mode: import
+		source = #table(type table [Check = text, SortOrder = Int64.Type], {{"Missing resource identity", 0}, {"Missing callee number", 1}, {"Missing start time", 2}, {"Repeated correlation ID rows", 3}})
+

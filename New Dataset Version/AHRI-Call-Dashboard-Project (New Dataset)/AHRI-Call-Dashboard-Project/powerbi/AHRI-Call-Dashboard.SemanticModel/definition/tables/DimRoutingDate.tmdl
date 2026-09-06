@@ -1,0 +1,51 @@
+table DimRoutingDate
+	lineageTag: 899ef440-7377-59a3-9720-56cc8ab3e75a
+	dataCategory: Time
+
+	column Date
+		isKey
+		formatString: yyyy-MM-dd
+		lineageTag: 5c309f83-f375-5eea-93d4-7c2c1e338c84
+		summarizeBy: none
+		isNameInferred
+		sourceColumn: [Date]
+
+	column Weekday = FORMAT(DimRoutingDate[Date], "dddd")
+		lineageTag: 15a469a5-1b69-5806-9093-45b664fa422f
+		summarizeBy: none
+		sortByColumn: WeekdayNumber
+
+	column WeekdayNumber = WEEKDAY(DimRoutingDate[Date], 2)
+		formatString: 0
+		lineageTag: 32de1e41-51f8-509c-bad8-d5020a48ec12
+		summarizeBy: none
+
+	column YearMonth = FORMAT(DimRoutingDate[Date], "yyyy-MM")
+		lineageTag: 725ed941-2a18-58c1-ba2c-411af826498f
+		summarizeBy: none
+
+	column IsCompleteDay =
+			
+			DimRoutingDate[Date] > MIN(FactDirectRouting[InviteDateMelbourne])
+			    && DimRoutingDate[Date] < MAX(FactDirectRouting[InviteDateMelbourne])
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 3ab212cb-2d4e-5595-ab41-a885b7cd343d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column IsCompleteMonth =
+			
+			EOMONTH(DimRoutingDate[Date], -1) + 1
+			    > MIN(FactDirectRouting[InviteDateMelbourne])
+			    && EOMONTH(DimRoutingDate[Date], 0)
+			    < MAX(FactDirectRouting[InviteDateMelbourne])
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: c268125a-c05a-5856-a129-5e5253829bf9
+		summarizeBy: none
+
+	partition DimRoutingDate = calculated
+		mode: import
+		source = CALENDAR(MIN(FactDirectRouting[InviteDateMelbourne]), MAX(FactDirectRouting[InviteDateMelbourne]))
+

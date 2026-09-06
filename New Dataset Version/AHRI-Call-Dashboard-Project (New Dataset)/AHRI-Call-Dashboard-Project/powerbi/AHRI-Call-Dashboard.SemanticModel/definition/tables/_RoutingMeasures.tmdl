@@ -1,0 +1,230 @@
+table _RoutingMeasures
+	lineageTag: b85260c2-ec77-5e97-b7cf-58576fab8767
+
+	/// Rows, including related routing legs. Not unique enquiries.
+	measure 'Routing records' = COUNTROWS(FactDirectRouting)
+		formatString: #,##0
+		displayFolder: Volume
+		lineageTag: 26196b5a-2186-53a1-b2aa-7c69463d30c8
+
+	/// Distinct shared-ID groups, attributed to their earliest observed Melbourne date.
+	measure 'Linked groups' = COUNTROWS(FactRoutingGroup)
+		formatString: #,##0
+		displayFolder: Volume
+		lineageTag: 40e06a6a-3ec6-5f5a-b780-5991e4ff40ac
+
+	/// Main IVR records with CorrelationId equal to SharedCorrelationId; one per Main IVR group in this export.
+	measure 'Main IVR entries' = CALCULATE([Routing records], KEEPFILTERS(FactDirectRouting[IsMainEntry] = TRUE()))
+		formatString: #,##0
+		displayFolder: Volume
+		lineageTag: c0232716-aeec-5c00-a5e5-cb9deb3f0f7d
+
+	/// Main IVR shared-ID groups; used for mutually exclusive observed-route categories.
+	measure 'Main IVR groups' = CALCULATE([Linked groups], KEEPFILTERS(FactRoutingGroup[HasMainIVR] = TRUE()))
+		formatString: #,##0
+		displayFolder: Volume
+		lineageTag: ad5e2cb3-d36b-505f-903c-7ec7e4f2d243
+
+	/// Main IVR entries per selected complete calendar day; includes zero-entry days. Assumes export coverage is continuous.
+	measure 'Average daily entries' =
+			VAR Days = CALCULATETABLE(VALUES(DimRoutingDate[Date]), KEEPFILTERS(DimRoutingDate[IsCompleteDay] = TRUE()))
+			RETURN DIVIDE(CALCULATE([Main IVR entries], KEEPFILTERS(Days)), COUNTROWS(Days))
+		formatString: 0.0
+		displayFolder: Demand
+		lineageTag: c36a414c-e743-5880-a37a-454a66180cdb
+
+	/// Per Monday-Friday calendar day. Holidays are retained; excludes first and last observed dates.
+	measure 'Average weekday entries' = CALCULATE([Average daily entries], KEEPFILTERS(DimRoutingDate[WeekdayNumber] <= 5))
+		formatString: 0.0
+		displayFolder: Demand
+		lineageTag: f9b134bf-013b-5b24-984a-fff4bb4e5f3c
+
+	/// Average weekday entries for fully covered source months. Partial date selections still restrict the average.
+	measure 'Weekday entries full months' = CALCULATE([Average weekday entries], KEEPFILTERS(DimRoutingDate[IsCompleteMonth] = TRUE()))
+		formatString: 0.0
+		displayFolder: Demand
+		lineageTag: 589063cb-2c54-5f9a-ab94-bd22bb0d7d0f
+
+	/// Trailing seven calendar days, including zero-entry days. Only full windows inside observed boundary dates.
+	measure '7 day average' =
+			
+			VAR __CurrentDay = MAX(DimRoutingDate[Date])
+			VAR __SourceStart =
+			    CALCULATE(
+			        MIN(FactDirectRouting[InviteDateMelbourne]),
+			        REMOVEFILTERS()
+			    )
+			VAR __SourceEnd =
+			    CALCULATE(
+			        MAX(FactDirectRouting[InviteDateMelbourne]),
+			        REMOVEFILTERS()
+			    )
+			VAR __WindowDates =
+			    FILTER(
+			        ALL(DimRoutingDate),
+			        DimRoutingDate[Date] >= __CurrentDay - 6
+			            && DimRoutingDate[Date] <= __CurrentDay
+			    )
+			RETURN
+			    IF(
+			        __CurrentDay < __SourceStart + 7
+			            || __CurrentDay >= __SourceEnd,
+			        BLANK(),
+			        DIVIDE(
+			            COALESCE(
+			                CALCULATE(
+			                    [Main IVR entries],
+			                    REMOVEFILTERS(DimRoutingDate),
+			                    __WindowDates
+			                ),
+			                0
+			            ),
+			            7
+			        )
+			    )
+		formatString: 0.0
+		displayFolder: Demand
+		lineageTag: 497ae886-981e-54c8-b3fa-8f96694c5c9c
+
+	/// Shared groups with queue-associated records, using queue record dates. Non-additive across destinations.
+	measure 'Queue groups' = CALCULATE(DISTINCTCOUNT(FactDirectRouting[SharedCorrelationId]), KEEPFILTERS(FactDirectRouting[IsQueue] = TRUE()))
+		formatString: #,##0
+		displayFolder: Queues
+		lineageTag: d5ecfeba-32ae-5c5e-b673-fd01a1f15952
+
+	/// Groups with an overflow-named queue record. This is not a confirmed escalation event.
+	measure 'Overflow groups' = CALCULATE([Queue groups], KEEPFILTERS(FactDirectRouting[IsOverflow] = TRUE()))
+		formatString: #,##0
+		displayFolder: Queues
+		lineageTag: 01bdebd4-ff36-5148-989f-2a2c6d297ba3
+
+	/// Groups with a primary queue record. Groups may also have overflow records.
+	measure 'Primary groups' = CALCULATE([Queue groups], KEEPFILTERS(FactDirectRouting[QueueDestination] = "Primary"))
+		formatString: #,##0
+		displayFolder: Queues
+		lineageTag: 2d94ac9d-eed2-5ee4-a2d5-4fd4bafa393e
+
+	/// Overflow-associated groups divided by all queue-associated groups in the service and date selection. Not a queue escalation rate.
+	measure 'Overflow destination share' = DIVIDE([Overflow groups], [Queue groups])
+		formatString: 0.0%
+		displayFolder: Queues
+		lineageTag: 09e0fd68-76e8-5058-b116-490ad7f14bd5
+
+	/// Overflow destination share suppressed for services with fewer than 30 observed groups in the selected period. The threshold is a display rule, not a significance test.
+	measure 'Overflow share n30' = IF([Queue groups] >= 30, [Overflow destination share])
+		formatString: 0.0%
+		displayFolder: Queues
+		lineageTag: 71c05f75-7b9b-58b8-8ab1-21a36dafa641
+
+	/// Export-reported successful routing records. Does not establish human answer.
+	measure 'Successful records' = CALCULATE([Routing records], KEEPFILTERS(FactDirectRouting[Success] = "Yes"))
+		formatString: #,##0
+		displayFolder: Technical outcomes
+		lineageTag: 1511dd5a-f680-54f5-bbfc-4f3976c388d0
+
+	/// Export-reported unsuccessful records. Not queue abandonment.
+	measure 'Unsuccessful records' = CALCULATE([Routing records], KEEPFILTERS(FactDirectRouting[Success] = "No"))
+		formatString: #,##0
+		displayFolder: Technical outcomes
+		lineageTag: 48fa728f-6e0e-5414-a6b5-546b75d385f0
+
+	/// Share of records marked No by the export. Technical outcome, not service outcome.
+	measure 'Unsuccessful record rate' = DIVIDE([Unsuccessful records], [Routing records])
+		formatString: 0.0%
+		displayFolder: Technical outcomes
+		lineageTag: 2ca33f2f-11d6-5370-87e6-ad935f178d59
+
+	/// Records explicitly reporting User data not found.
+	measure 'User lookup failures' = CALCULATE([Unsuccessful records], KEEPFILTERS(FactDirectRouting[FailureCategory] = "User lookup failure"))
+		formatString: #,##0
+		displayFolder: Technical outcomes
+		lineageTag: d28f5023-5eed-5c12-8ebf-23bc12a3a977
+
+	/// Records explicitly reporting ORIGINATOR_CANCEL. Does not establish queue abandonment.
+	measure 'Originator cancellations' = CALCULATE([Unsuccessful records], KEEPFILTERS(FactDirectRouting[FailureCategory] = "Originator cancellation"))
+		formatString: #,##0
+		displayFolder: Technical outcomes
+		lineageTag: 8a1211a2-5236-5956-bf04-43f69bfe9aae
+
+	/// Successful entry records used for duration distribution.
+	measure 'Successful Main IVR entries' = CALCULATE([Main IVR entries], KEEPFILTERS(FactDirectRouting[Success] = "Yes"))
+		formatString: #,##0
+		displayFolder: Duration
+		lineageTag: 07e48749-e4c7-5a25-a504-8452a225c6cc
+
+	/// Median recorded duration of successful Main IVR entry records, in seconds. Not agent talk time.
+	measure 'Median entry duration' = CALCULATE(MEDIAN(FactDirectRouting[DurationSeconds]), KEEPFILTERS(FactDirectRouting[IsMainEntry] = TRUE()), KEEPFILTERS(FactDirectRouting[Success] = "Yes"))
+		formatString: 0.0
+		displayFolder: Duration
+		lineageTag: 4b8ccec8-c571-5151-811f-53442be6a69d
+
+	/// 90th percentile of successful Main IVR entry-record duration, in seconds.
+	measure 'P90 entry duration' = CALCULATE(PERCENTILEX.INC(FactDirectRouting, FactDirectRouting[DurationSeconds], 0.9), KEEPFILTERS(FactDirectRouting[IsMainEntry] = TRUE()), KEEPFILTERS(FactDirectRouting[Success] = "Yes"))
+		formatString: 0.0
+		displayFolder: Duration
+		lineageTag: a4c87882-20cd-59b1-841c-995ae5c6f1af
+
+	/// Median duration of successful queue-associated routing records. May include ringing; not a pure wait-time metric.
+	measure 'Median queue record duration' = CALCULATE(MEDIAN(FactDirectRouting[DurationSeconds]), KEEPFILTERS(FactDirectRouting[IsQueue] = TRUE()), KEEPFILTERS(FactDirectRouting[Success] = "Yes"))
+		formatString: 0.0
+		displayFolder: Duration
+		lineageTag: ca655627-7129-526c-aebc-579fec785d0f
+
+	/// Median successful primary-queue routing-record duration, seconds.
+	measure 'Median primary duration' = CALCULATE([Median queue record duration], KEEPFILTERS(FactDirectRouting[QueueDestination] = "Primary"))
+		formatString: 0.0
+		displayFolder: Duration
+		lineageTag: ff822f84-0684-5d1a-b698-c3e0bb5323fa
+
+	/// Median successful overflow-queue routing-record duration, seconds.
+	measure 'Median overflow duration' = CALCULATE([Median queue record duration], KEEPFILTERS(FactDirectRouting[QueueDestination] = "Overflow"))
+		formatString: 0.0
+		displayFolder: Duration
+		lineageTag: fc14fe03-6604-5078-8b44-6aed0a498e3f
+
+	/// Records without a resource identity. Retained, not dropped.
+	measure 'Missing resource records' = CALCULATE([Routing records], KEEPFILTERS(ISBLANK(FactDirectRouting[ResourceAccount])))
+		formatString: #,##0
+		displayFolder: Quality
+		lineageTag: ac884c33-e979-5f98-a920-ffe3c12d3da2
+
+	/// Records without a callee number.
+	measure 'Missing callee records' = CALCULATE([Routing records], KEEPFILTERS(ISBLANK(FactDirectRouting[CalleeNumber])))
+		formatString: #,##0
+		displayFolder: Quality
+		lineageTag: d3fa5328-cec8-5491-a178-4a38b72efc78
+
+	/// Records without start time. This export has such nulls only on unsuccessful records.
+	measure 'Missing start records' = CALCULATE([Routing records], KEEPFILTERS(ISBLANK(FactDirectRouting[StartTimeUTC])))
+		formatString: #,##0
+		displayFolder: Quality
+		lineageTag: 24c10e23-218a-5a7d-af90-e0aef6c1a507
+
+	/// Extra rows sharing a CorrelationId within the current selection; not proof of exact duplicates.
+	measure 'Repeated correlation rows' = [Routing records] - DISTINCTCOUNT(FactDirectRouting[CorrelationId])
+		formatString: #,##0
+		displayFolder: Quality
+		lineageTag: 476d2bba-e7f2-57a9-904f-c26feb797a18
+
+	/// Checks overlap and must not be summed into a total count of bad records.
+	measure 'Quality flagged records' =
+			SWITCH(SELECTEDVALUE(DimQualityCheck[Check]),
+			    "Missing resource identity", [Missing resource records],
+			    "Missing callee number", [Missing callee records],
+			    "Missing start time", [Missing start records],
+			    "Repeated correlation ID rows", [Repeated correlation rows])
+		formatString: #,##0
+		displayFolder: Quality
+		lineageTag: fc381890-63c5-5794-80dd-0c0a7f56bf47
+
+	column Placeholder
+		dataType: int64
+		isHidden
+		lineageTag: fccff5c3-9048-41a4-b42c-eeeda50a80d7
+		summarizeBy: none
+		sourceColumn: Placeholder
+
+	partition _RoutingMeasures = m
+		mode: import
+		source = #table(type table [Placeholder = Int64.Type], {{1}})
+

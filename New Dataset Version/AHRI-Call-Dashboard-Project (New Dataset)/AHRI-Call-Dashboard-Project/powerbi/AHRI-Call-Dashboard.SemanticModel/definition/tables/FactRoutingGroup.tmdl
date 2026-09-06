@@ -1,0 +1,84 @@
+table FactRoutingGroup
+	lineageTag: 68da6c0c-9df5-5b8b-96ac-83eaeb8941a6
+
+	column SharedCorrelationId
+		dataType: string
+		isHidden
+		isKey
+		lineageTag: ae045ba2-b731-584d-a16b-b22ae4639917
+		summarizeBy: none
+		sourceColumn: SharedCorrelationId
+
+	column EntryDate
+		dataType: dateTime
+		formatString: yyyy-MM-dd
+		lineageTag: 633b9ce4-51e1-595d-aa74-e13a0323c7bd
+		summarizeBy: none
+		sourceColumn: EntryDate
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column HasMainIVR
+		dataType: boolean
+		lineageTag: 506c425d-0dac-58c1-b503-0b6c7bf69dab
+		summarizeBy: none
+		sourceColumn: HasMainIVR
+
+	column HasQueue
+		dataType: boolean
+		lineageTag: 194fcd8f-d14b-5a1f-915b-52bc1fb35609
+		summarizeBy: none
+		sourceColumn: HasQueue
+
+	column HasOverflow
+		dataType: boolean
+		lineageTag: 5245d177-ed40-5437-a42a-e7b280df0b06
+		summarizeBy: none
+		sourceColumn: HasOverflow
+
+	column HasUserRecord
+		dataType: boolean
+		lineageTag: ba7c57a0-603e-5523-b2aa-80563f9722d0
+		summarizeBy: none
+		sourceColumn: HasUserRecord
+
+	column HasUnsuccessfulRecord
+		dataType: boolean
+		lineageTag: 9b668989-f2f4-5a94-a490-2361370b59a7
+		summarizeBy: none
+		sourceColumn: HasUnsuccessfulRecord
+
+	column RecordCount
+		dataType: int64
+		lineageTag: 0a590b0a-39cf-5773-842c-6e209a868552
+		summarizeBy: none
+		sourceColumn: RecordCount
+
+	column ObservedRoute
+		dataType: string
+		lineageTag: 84de75ef-6b67-5c3f-a5b4-1bea5fdf6a96
+		summarizeBy: none
+		sourceColumn: ObservedRoute
+
+	partition FactRoutingGroup = m
+		mode: import
+		source =
+				let
+				    Source = FactDirectRouting,
+				    Grouped = Table.Group(Source, {"SharedCorrelationId"}, {
+				        {"EntryDate", each Date.From(List.Min([InviteTimeMelbourne])), type date},
+				        {"HasMainIVR", each List.Contains([ResourceAccount], "aa-mainivr-v2@ahri.com.au"), type logical},
+				        {"HasQueue", each List.Contains([IsQueue], true), type logical},
+				        {"HasOverflow", each List.Contains([IsOverflow], true), type logical},
+				        {"HasUserRecord", each List.Contains([DestinationClass], "User-associated"), type logical},
+				        {"HasUnsuccessfulRecord", each List.Contains([Success], "No"), type logical},
+				        {"RecordCount", each Table.RowCount(_), Int64.Type}
+				    }),
+				    Route = Table.AddColumn(Grouped, "ObservedRoute", each
+				        if [HasMainIVR] and [HasOverflow] then "Overflow queue observed"
+				        else if [HasMainIVR] and [HasQueue] then "Primary queue only observed"
+				        else if [HasMainIVR] then "No queue record observed"
+				        else "Outside Main IVR groups", type text)
+				in
+				    Route
+

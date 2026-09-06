@@ -1,0 +1,36 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "name": "049718050458559fb274",
+  "position": {
+    "x": 50,
+    "y": 1000,
+    "z": 1050,
+    "height": 65,
+    "width": 1820,
+    "tabOrder": 1050
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Observed records do not establish completed customer journeys. No queue record does not mean abandonment. Overflow share is destination mix, not an escalation rate. Primary and overflow groups can overlap. Rate comparison requires at least 30 groups.",
+                    "textStyle": {
+                      "fontSize": "13pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

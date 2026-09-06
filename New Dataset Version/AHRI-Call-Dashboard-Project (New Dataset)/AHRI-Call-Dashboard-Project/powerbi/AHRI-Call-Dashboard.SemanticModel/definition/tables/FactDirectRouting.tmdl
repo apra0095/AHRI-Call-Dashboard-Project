@@ -1,0 +1,335 @@
+table FactDirectRouting
+	lineageTag: d8249466-366d-5b9b-97a6-8e71d1cb829b
+
+	column CorrelationId
+		dataType: string
+		isHidden
+		lineageTag: 31574869-00c2-5102-a475-8aeba81a4a91
+		summarizeBy: none
+		sourceColumn: CorrelationId
+
+	column AADObjectId
+		dataType: string
+		isHidden
+		lineageTag: 26a3d698-ef14-5516-bc0b-f0bdaabd7dcd
+		summarizeBy: none
+		sourceColumn: AADObjectId
+
+	column ResourceAccount
+		dataType: string
+		isHidden
+		lineageTag: ad836795-7dde-5c64-a813-76f4ba99c102
+		summarizeBy: none
+		sourceColumn: ResourceAccount
+
+	column DisplayName
+		dataType: string
+		lineageTag: d5cbded0-e95f-5c39-b8f8-bdbff6547afc
+		summarizeBy: none
+		sourceColumn: DisplayName
+
+	column UserCountry
+		dataType: string
+		lineageTag: 626b910e-dc98-5876-9f27-58d479382dce
+		summarizeBy: none
+		sourceColumn: UserCountry
+
+	column ExternalCountry
+		dataType: string
+		lineageTag: 0accd587-3411-5280-b054-5eff7615749d
+		summarizeBy: none
+		sourceColumn: ExternalCountry
+
+	column InviteTimeUTC
+		dataType: dateTime
+		formatString: yyyy-MM-dd HH:mm:ss
+		lineageTag: 824e89a9-7702-5ce1-88df-71b4d4580aff
+		summarizeBy: none
+		sourceColumn: InviteTimeUTC
+
+	column StartTimeUTC
+		dataType: dateTime
+		formatString: yyyy-MM-dd HH:mm:ss
+		lineageTag: 8faa9eca-c291-56a7-8b69-51442dc9bfc9
+		summarizeBy: none
+		sourceColumn: StartTimeUTC
+
+	column FailureTimeUTC
+		dataType: dateTime
+		formatString: yyyy-MM-dd HH:mm:ss
+		lineageTag: 4927d704-24fb-5e10-a3d1-96820d2b75ec
+		summarizeBy: none
+		sourceColumn: FailureTimeUTC
+
+	column EndTimeUTC
+		dataType: dateTime
+		formatString: yyyy-MM-dd HH:mm:ss
+		lineageTag: 51190bee-4bff-5eab-96fa-b4e96b81a60f
+		summarizeBy: none
+		sourceColumn: EndTimeUTC
+
+	column DurationSeconds
+		dataType: int64
+		lineageTag: e649b598-81d6-57a0-babf-014c4ae6c724
+		summarizeBy: none
+		sourceColumn: DurationSeconds
+
+	column Success
+		dataType: string
+		lineageTag: cb021e73-2d4f-5505-ac0b-c420351cbff0
+		summarizeBy: none
+		sourceColumn: Success
+
+	column CallerNumber
+		dataType: string
+		isHidden
+		lineageTag: ecf23854-82dc-5261-8d6e-907c9c42c358
+		summarizeBy: none
+		sourceColumn: CallerNumber
+
+	column CalleeNumber
+		dataType: string
+		isHidden
+		lineageTag: 8588fd4b-a57a-5c3c-94b6-0afe97dc0a1d
+		summarizeBy: none
+		sourceColumn: CalleeNumber
+
+	column CallType
+		dataType: string
+		lineageTag: 17274014-47c4-5bfa-8ff9-388af83abf4c
+		summarizeBy: none
+		sourceColumn: CallType
+
+	column CallDirection
+		dataType: string
+		lineageTag: a03c6ed7-671b-553e-838d-e43cb3ff6047
+		summarizeBy: none
+		sourceColumn: CallDirection
+
+	column MediaRegion
+		dataType: string
+		lineageTag: 27eebcd5-8fe6-598f-a9f2-256320c181e4
+		summarizeBy: none
+		sourceColumn: MediaRegion
+
+	column SignalingRegion
+		dataType: string
+		lineageTag: 04543492-0785-50c5-8263-59cc6c7e851c
+		summarizeBy: none
+		sourceColumn: SignalingRegion
+
+	column FinalSIPCode
+		dataType: int64
+		lineageTag: 4393d089-d506-52c8-b9fd-8959140ef63b
+		summarizeBy: none
+		sourceColumn: FinalSIPCode
+
+	column FinalMicrosoftSubcode
+		dataType: int64
+		lineageTag: a8cb9a95-c82e-526d-9c7f-2bae5160a2bf
+		summarizeBy: none
+		sourceColumn: FinalMicrosoftSubcode
+
+	column FinalSIPPhrase
+		dataType: string
+		lineageTag: 0ecdfc18-f199-5462-b896-0621f3ff1158
+		summarizeBy: none
+		sourceColumn: FinalSIPPhrase
+
+	column SBCFQDN
+		dataType: string
+		isHidden
+		lineageTag: 1324af09-9e06-57b7-ad9d-e99b256ea8bc
+		summarizeBy: none
+		sourceColumn: SBCFQDN
+
+	column MediaBypass
+		dataType: string
+		lineageTag: feebff28-5e6a-51aa-872d-ad6a3f128152
+		summarizeBy: none
+		sourceColumn: MediaBypass
+
+	column SharedCorrelationId
+		dataType: string
+		isHidden
+		lineageTag: 12344861-f35d-58bc-90e2-0cae4a64e9bf
+		summarizeBy: none
+		sourceColumn: SharedCorrelationId
+
+	column TransferCorrelationId
+		dataType: string
+		isHidden
+		lineageTag: 500c6e1d-057e-5e5d-80a6-80a361e4d827
+		summarizeBy: none
+		sourceColumn: TransferCorrelationId
+
+	column InviteTimeMelbourne
+		dataType: dateTime
+		isHidden
+		formatString: yyyy-MM-dd HH:mm:ss
+		lineageTag: dd0d9517-204f-5582-a64e-a2ab7b8e52f8
+		summarizeBy: none
+		sourceColumn: InviteTimeMelbourne
+
+	column InviteDateMelbourne
+		dataType: dateTime
+		formatString: yyyy-MM-dd
+		lineageTag: 647ac3cc-bb43-5e83-b764-d9786f38e09f
+		summarizeBy: none
+		sourceColumn: InviteDateMelbourne
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column InviteDateUTC
+		dataType: dateTime
+		isHidden
+		formatString: yyyy-MM-dd
+		lineageTag: 76510c0b-ae41-528f-abd2-0fa4dc28a0d3
+		summarizeBy: none
+		sourceColumn: InviteDateUTC
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column InviteHourMelbourne
+		dataType: int64
+		lineageTag: f2d644ad-db01-5aa0-b7c6-29f5c4362b3f
+		summarizeBy: none
+		sourceColumn: InviteHourMelbourne
+
+	column IsEntryRecord
+		dataType: boolean
+		isHidden
+		lineageTag: 9cbee0d4-bf05-5efa-a1ff-946e4be2aea3
+		summarizeBy: none
+		sourceColumn: IsEntryRecord
+
+	column SourceRow
+		dataType: int64
+		isHidden
+		lineageTag: 86e3d577-5a47-5c5c-8a0b-fc3dd8ad9ba3
+		summarizeBy: none
+		sourceColumn: SourceRow
+
+	column IsMainEntry
+		dataType: boolean
+		isHidden
+		lineageTag: 1f8c811e-a8a8-5019-8540-b170bdb2afea
+		summarizeBy: none
+		sourceColumn: IsMainEntry
+
+	column IsQueue
+		dataType: boolean
+		isHidden
+		lineageTag: db9f847f-056c-5329-a4c2-3c7f8548a466
+		summarizeBy: none
+		sourceColumn: IsQueue
+
+	column IsOverflow
+		dataType: boolean
+		isHidden
+		lineageTag: f0728436-8bfb-5f33-b77a-2193348b0141
+		summarizeBy: none
+		sourceColumn: IsOverflow
+
+	column DestinationClass
+		dataType: string
+		lineageTag: c3de3fcc-6bb8-55de-83f1-0518ea870c61
+		summarizeBy: none
+		sourceColumn: DestinationClass
+
+	column QueueService
+		dataType: string
+		lineageTag: 62446129-8034-5241-a6ac-21e04d9df595
+		summarizeBy: none
+		sourceColumn: QueueService
+
+	column QueueDestination
+		dataType: string
+		lineageTag: d85e572d-cccc-5a95-b615-67671e627ec7
+		summarizeBy: none
+		sourceColumn: QueueDestination
+
+	column FailureCategory
+		dataType: string
+		lineageTag: a8bab108-0ef5-5700-a14d-0240b63cc2d2
+		summarizeBy: none
+		sourceColumn: FailureCategory
+
+	column DurationBand
+		dataType: string
+		lineageTag: 204e8007-8696-54f7-9750-116c5b8345f8
+		summarizeBy: none
+		sourceColumn: DurationBand
+		sortByColumn: DurationBandOrder
+
+	column DurationBandOrder
+		dataType: int64
+		isHidden
+		lineageTag: 4a643b3a-28cf-5c6a-898b-fc5ee7135a39
+		summarizeBy: none
+		sourceColumn: DurationBandOrder
+
+	partition FactDirectRouting = m
+		mode: import
+		source =
+				let
+				    Source = Excel.Workbook(File.Contents(ProjectRoot & "\data\source\DirectRouting_Ehsan_2026-09-01.xlsx"), null, true),
+				    Sheet = Source{[Item="Sheet1", Kind="Sheet"]}[Data],
+				    Headers = Table.PromoteHeaders(Sheet, [PromoteAllScalars=true]),
+				    Selected = Table.SelectColumns(Headers, {"CorrelationId", "AAD ObjectId", "UPN", "Display Name", "User country", "External Country", "Invite time", "Start time", "Failure time", "End time", "Duration (seconds)", "Success", "Caller Number", "Callee Number", "Call type", "Call Direction", "Azure region for Media", "Azure region for Signaling", "Final SIP code", "Final Microsoft subcode", "Final SIP Phrase", "SBC FQDN", "Media bypass", "Shared correlation ID", "Transfer or Correlation ID"}),
+				    Renamed = Table.RenameColumns(Selected, {{"AAD ObjectId", "AADObjectId"}, {"UPN", "ResourceAccount"}, {"Display Name", "DisplayName"}, {"User country", "UserCountry"}, {"External Country", "ExternalCountry"}, {"Invite time", "InviteTimeUTC"}, {"Start time", "StartTimeUTC"}, {"Failure time", "FailureTimeUTC"}, {"End time", "EndTimeUTC"}, {"Duration (seconds)", "DurationSeconds"}, {"Caller Number", "CallerNumber"}, {"Callee Number", "CalleeNumber"}, {"Call type", "CallType"}, {"Call Direction", "CallDirection"}, {"Azure region for Media", "MediaRegion"}, {"Azure region for Signaling", "SignalingRegion"}, {"Final SIP code", "FinalSIPCode"}, {"Final Microsoft subcode", "FinalMicrosoftSubcode"}, {"Final SIP Phrase", "FinalSIPPhrase"}, {"SBC FQDN", "SBCFQDN"}, {"Media bypass", "MediaBypass"}, {"Shared correlation ID", "SharedCorrelationId"}, {"Transfer or Correlation ID", "TransferCorrelationId"}}),
+				    Typed = Table.TransformColumnTypes(Renamed, {{"CorrelationId", type text}, {"AADObjectId", type text}, {"ResourceAccount", type text}, {"DisplayName", type text}, {"UserCountry", type text}, {"ExternalCountry", type text}, {"Success", type text}, {"CallerNumber", type text}, {"CalleeNumber", type text}, {"CallType", type text}, {"CallDirection", type text}, {"MediaRegion", type text}, {"SignalingRegion", type text}, {"FinalSIPPhrase", type text}, {"SBCFQDN", type text}, {"MediaBypass", type text}, {"SharedCorrelationId", type text}, {"TransferCorrelationId", type text}, {"DurationSeconds", Int64.Type}, {"FinalSIPCode", Int64.Type}, {"FinalMicrosoftSubcode", Int64.Type}}, "en-AU"),
+				    Accounts = Table.TransformColumns(Typed, {{"ResourceAccount", each if _ = null then null else Text.Lower(Text.Trim(Text.Clean(_))), type nullable text}}),
+				    ParseUTC = (value as nullable text) as nullable datetime =>
+				        if value = null then null
+				        else if Text.Trim(value) = "" then null
+				        else DateTimeZone.RemoveZone(DateTimeZone.SwitchZone(DateTimeZone.FromText(value), 0)),
+				    Times = Table.TransformColumns(Accounts, {{"InviteTimeUTC", ParseUTC, type nullable datetime}, {"StartTimeUTC", ParseUTC, type nullable datetime}, {"FailureTimeUTC", ParseUTC, type nullable datetime}, {"EndTimeUTC", ParseUTC, type nullable datetime}}),
+				    // Melbourne DST rules since 2008: first Sunday April (03:00 daylight time)
+				    // and first Sunday October (02:00 standard time). Compare UTC instants.
+				    Melbourne = (utc as datetime) as datetime =>
+				        let
+				            y = Date.Year(Date.From(utc)),
+				            FirstSunday = (month as number) as date =>
+				                let first = #date(y, month, 1)
+				                in Date.AddDays(first, Number.Mod(7 - Date.DayOfWeek(first, Day.Sunday), 7)),
+				            DstEndUTC = DateTime.From(FirstSunday(4)) + #duration(0, 3, 0, 0) - #duration(0, 11, 0, 0),
+				            DstStartUTC = DateTime.From(FirstSunday(10)) + #duration(0, 2, 0, 0) - #duration(0, 10, 0, 0),
+				            Offset = if y < 2008 then error "Melbourne dates before 2008 require historical timezone rules."
+				                     else if utc < DstEndUTC or utc >= DstStartUTC then 11 else 10
+				        in utc + #duration(0, Offset, 0, 0),
+				    LocalTime = Table.AddColumn(Times, "InviteTimeMelbourne", each Melbourne([InviteTimeUTC]), type datetime),
+				    LocalDate = Table.AddColumn(LocalTime, "InviteDateMelbourne", each Date.From([InviteTimeMelbourne]), type date),
+				    UTCDate = Table.AddColumn(LocalDate, "InviteDateUTC", each Date.From([InviteTimeUTC]), type date),
+				    LocalHour = Table.AddColumn(UTCDate, "InviteHourMelbourne", each Time.Hour(Time.From([InviteTimeMelbourne])), Int64.Type),
+				    Entry = Table.AddColumn(LocalHour, "IsEntryRecord", each [CorrelationId] = [SharedCorrelationId], type logical),
+				    // Source row is a within-file key, not a durable cross-export call identifier.
+				    RowKey = Table.AddIndexColumn(Entry, "SourceRow", 2, 1, Int64.Type),
+				    MainEntry = Table.AddColumn(RowKey, "IsMainEntry", each [ResourceAccount] = "aa-mainivr-v2@ahri.com.au" and [IsEntryRecord], type logical),
+				    IsQueue = Table.AddColumn(MainEntry, "IsQueue", each if [DisplayName] = null then false else Text.Contains([DisplayName], "Queue", Comparer.OrdinalIgnoreCase), type logical),
+				    IsOverflow = Table.AddColumn(IsQueue, "IsOverflow", each if [DisplayName] = null then false else [IsQueue] and Text.Contains([DisplayName], "Overflow", Comparer.OrdinalIgnoreCase), type logical),
+				    Destination = Table.AddColumn(IsOverflow, "DestinationClass", each
+				        if [ResourceAccount] = "aa-mainivr-v2@ahri.com.au" then "Main IVR"
+				        else if [IsQueue] then "Queue"
+				        else if [ResourceAccount] = null then "Unmapped resource"
+				        else if [CallType] = "ByotIn" then "User-associated"
+				        else "Other application", type text),
+				    Service = Table.AddColumn(Destination, "QueueService", each if not [IsQueue] then null else
+				        let n = Text.Replace(Text.Replace([DisplayName], " Overflow", ""), " overflow", "")
+				        in Text.Trim(Text.BeforeDelimiter(n, " Queue")), type nullable text),
+				    QueueType = Table.AddColumn(Service, "QueueDestination", each if not [IsQueue] then "Not a queue" else if [IsOverflow] then "Overflow" else "Primary", type text),
+				    Failure = Table.AddColumn(QueueType, "FailureCategory", each
+				        if [Success] <> "No" then null
+				        else if [FinalSIPPhrase] = "User data not found." then "User lookup failure"
+				        else if [FinalSIPPhrase] = "ORIGINATOR_CANCEL" then "Originator cancellation"
+				        else if Text.Contains([FinalSIPPhrase], "Trouter", Comparer.OrdinalIgnoreCase) then "Endpoint delivery error"
+				        else if [FinalSIPPhrase] = "Server Internal Error" then "Internal server error"
+				        else if [FinalSIPPhrase] = "Canceled" then "Other cancellation"
+				        else "Other unsuccessful outcome", type nullable text),
+				    Band = Table.AddColumn(Failure, "DurationBand", each if [DurationSeconds] = 0 then "0 seconds" else if [DurationSeconds] <= 30 then "1 to 30 seconds" else if [DurationSeconds] <= 60 then "31 to 60 seconds" else if [DurationSeconds] <= 90 then "61 to 90 seconds" else "Over 90 seconds", type text),
+				    BandOrder = Table.AddColumn(Band, "DurationBandOrder", each if [DurationSeconds] = 0 then 0 else if [DurationSeconds] <= 30 then 1 else if [DurationSeconds] <= 60 then 2 else if [DurationSeconds] <= 90 then 3 else 4, Int64.Type)
+				in
+				    BandOrder
+
+	annotation PBI_ResultType = Table
+
