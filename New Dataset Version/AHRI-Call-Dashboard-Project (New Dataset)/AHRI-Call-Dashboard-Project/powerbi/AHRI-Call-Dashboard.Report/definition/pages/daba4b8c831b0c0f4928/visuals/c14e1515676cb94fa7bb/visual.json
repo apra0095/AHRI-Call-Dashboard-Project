@@ -1,71 +1,75 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "51c2168b70f50c281830",
+  "name": "c14e1515676cb94fa7bb",
   "position": {
-    "x": 48.17843866171004,
-    "y": 0,
-    "z": 11000,
-    "height": 183.79182156133828,
-    "width": 494.275092936803,
-    "tabOrder": 11000
+    "x": 102,
+    "y": 468,
+    "z": 5005,
+    "height": 203,
+    "width": 539,
+    "tabOrder": 5005
   },
   "visual": {
-    "visualType": "pivotTable",
+    "visualType": "lineChart",
     "query": {
       "queryState": {
-        "Columns": {
+        "Category": {
           "projections": [
             {
               "field": {
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactRoutingGroup"
+                      "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Queue status"
+                  "Property": "InviteDateMelbourne"
                 }
               },
-              "queryRef": "FactRoutingGroup.Queue status",
-              "nativeQueryRef": "Queue status",
+              "queryRef": "FactDirectRouting.InviteDateMelbourne",
+              "nativeQueryRef": "Count of InviteDateMelbourne",
               "active": true
             }
           ]
         },
-        "Rows": {
+        "Series": {
           "projections": [
             {
               "field": {
                 "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "FactRoutingGroup"
+                      "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Main IVR status"
+                  "Property": "Outcome Category"
                 }
               },
-              "queryRef": "FactRoutingGroup.Main IVR status",
-              "nativeQueryRef": "Main IVR status",
-              "active": true
+              "queryRef": "FactDirectRouting.Outcome Category",
+              "nativeQueryRef": "Outcome Category1"
             }
           ]
         },
-        "Values": {
+        "Y": {
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "_RoutingMeasures"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactDirectRouting"
+                        }
+                      },
+                      "Property": "Outcome Category"
                     }
                   },
-                  "Property": "Context groups"
+                  "Function": 5
                 }
               },
-              "queryRef": "_RoutingMeasures.Context groups",
-              "nativeQueryRef": "Context groups"
+              "queryRef": "CountNonNull(FactDirectRouting.Outcome Category)",
+              "nativeQueryRef": "Outcome Category"
             }
           ]
         }
@@ -74,18 +78,19 @@
         "sort": [
           {
             "field": {
-              "Measure": {
+              "Column": {
                 "Expression": {
                   "SourceRef": {
-                    "Entity": "_RoutingMeasures"
+                    "Entity": "FactDirectRouting"
                   }
                 },
-                "Property": "Context groups"
+                "Property": "InviteDateMelbourne"
               }
             },
-            "direction": "Descending"
+            "direction": "Ascending"
           }
-        ]
+        ],
+        "isDefaultSort": true
       }
     },
     "visualContainerObjects": {
@@ -95,25 +100,20 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Inbound Call Records Calculation'"
+                  "Value": "'Outcome Trend'"
                 }
               }
             }
           }
         }
       ],
-      "border": [
+      "subTitle": [
         {
           "properties": {
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "ThemeDataColor": {
-                      "ColorId": 0,
-                      "Percent": 0
-                    }
-                  }
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

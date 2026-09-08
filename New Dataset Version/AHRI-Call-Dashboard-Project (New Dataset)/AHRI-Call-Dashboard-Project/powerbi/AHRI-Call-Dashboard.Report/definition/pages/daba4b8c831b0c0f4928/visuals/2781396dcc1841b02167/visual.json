@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "777b813f9162043a67c3",
+  "name": "2781396dcc1841b02167",
   "position": {
-    "x": 588.84758364312268,
-    "y": 0,
-    "z": 12000,
+    "x": 40,
+    "y": 20,
+    "z": 0,
     "height": 60,
-    "width": 1240,
-    "tabOrder": 12000
+    "width": 420,
+    "tabOrder": 0
   },
   "visual": {
     "visualType": "textbox",
@@ -19,10 +19,11 @@
               {
                 "textRuns": [
                   {
-                    "value": "Inbound Calls Overview",
+                    "value": "Technical Outcomes",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "32pt"
+                      "fontSize": "32pt",
+                      "color": "#000000"
                     }
                   }
                 ]

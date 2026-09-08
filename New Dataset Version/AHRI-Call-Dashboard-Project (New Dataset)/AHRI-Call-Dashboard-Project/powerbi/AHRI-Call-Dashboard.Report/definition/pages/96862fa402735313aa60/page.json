@@ -4,5 +4,10 @@
   "displayName": "Inbound Call Overview",
   "displayOption": "FitToPage",
   "height": 1080,
-  "width": 1920
+  "width": 1920,
+  "pageBinding": {
+    "name": "de1a66fa3f6dae846040",
+    "type": "Default",
+    "parameters": []
+  }
 }

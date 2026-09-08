@@ -1,0 +1,72 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "name": "3e2f0e0847a1b2c4ff4a",
+  "position": {
+    "x": 101.875,
+    "y": 231.25,
+    "z": 2000,
+    "height": 223.75,
+    "width": 538.75,
+    "tabOrder": 2000
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "FactDirectRouting"
+                    }
+                  },
+                  "Property": "Outcome Category"
+                }
+              },
+              "queryRef": "FactDirectRouting.Outcome Category",
+              "nativeQueryRef": "Outcome Category"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactDirectRouting"
+                        }
+                      },
+                      "Property": "FinalSIPPhrase"
+                    }
+                  },
+                  "Function": 5
+                }
+              },
+              "queryRef": "FactDirectRouting.FinalSIPPhrase",
+              "nativeQueryRef": "Count of FinalSIPPhrase"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Outcome Breakdown'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

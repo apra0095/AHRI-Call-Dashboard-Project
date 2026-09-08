@@ -45,6 +45,20 @@ table DimRoutingDate
 		lineageTag: c268125a-c05a-5856-a129-5e5253829bf9
 		summarizeBy: none
 
+	column Year = YEAR(DimRoutingDate[Date])
+		formatString: 0
+		lineageTag: f8540cb0-94a5-493f-b79a-999dca6ab042
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column Month = FORMAT(DimRoutingDate[Date], "MMMM")
+		dataType: string
+		lineageTag: 6527ee4f-3ab2-4dfc-bcd9-1f5750d694fb
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition DimRoutingDate = calculated
 		mode: import
 		source = CALENDAR(MIN(FactDirectRouting[InviteDateMelbourne]), MAX(FactDirectRouting[InviteDateMelbourne]))

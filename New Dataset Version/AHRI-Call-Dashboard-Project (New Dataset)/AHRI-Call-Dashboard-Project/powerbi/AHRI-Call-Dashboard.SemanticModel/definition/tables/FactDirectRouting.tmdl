@@ -1,6 +1,39 @@
 table FactDirectRouting
 	lineageTag: d8249466-366d-5b9b-97a6-8e71d1cb829b
 
+	measure 'Total Inbound Records' =
+			
+			CALCULATE(
+			    COUNTROWS(FactDirectRouting),
+			    FactDirectRouting[CallDirection] = "Inbound")
+		formatString: 0
+		lineageTag: 00c4546c-8185-4de7-9528-94ff05e56051
+
+	measure 'Success Rate' =
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS(FactDirectRouting),
+			        FactDirectRouting[Success] = "Yes"
+			    ),
+			    COUNTROWS(FactDirectRouting)
+			)
+		formatString: 0.00%;-0.00%;0.00%
+		lineageTag: 924948aa-aefe-4bfd-8366-29892ee148ba
+
+	measure 'Zero-Duration Rate' =
+			
+			DIVIDE(
+			    CALCULATE(
+			        COUNTROWS(FactDirectRouting),
+			        FactDirectRouting[DurationSeconds] = 0
+			    ),
+			    COUNTROWS(FactDirectRouting)
+			)
+		lineageTag: 15466c99-0164-41a9-9966-803823983a81
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column CorrelationId
 		dataType: string
 		isHidden
@@ -268,6 +301,38 @@ table FactDirectRouting
 		lineageTag: 4a643b3a-28cf-5c6a-898b-fc5ee7135a39
 		summarizeBy: none
 		sourceColumn: DurationBandOrder
+
+	column 'Outcome Category' =
+			
+			SWITCH(
+			    TRUE(),
+			    CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "transfer completed")
+			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "Call Transferred"), "Transfer completed",
+			
+			    CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "Normal call clearing")
+			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "NORMAL_CLEARING")
+			        || FactDirectRouting[FinalSIPPhrase] = "BYE"
+			        || FactDirectRouting[FinalSIPPhrase] = "Call is ended."
+			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "modality controller")
+			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "one participant was remaining")
+			        || FactDirectRouting[FinalSIPPhrase] = "Call ended by media agent.", "Normal hangup",
+			
+			    FactDirectRouting[FinalSIPPhrase] = "LocalUserInitiated"
+			        || FactDirectRouting[FinalSIPPhrase] = "ORIGINATOR_CANCEL"
+			        || FactDirectRouting[FinalSIPPhrase] = "Canceled"
+			        || FactDirectRouting[FinalSIPPhrase] = "Call cancelled on timeout.", "Caller-initiated disconnect",
+			
+			    CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "EndReason: recording_accepted"), "IVR: recording accepted",
+			
+			    CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "silence_timeout")
+			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "recording_too_long"), "IVR: no caller response",
+			
+			    "System/infrastructure issue"
+			)
+		lineageTag: e89926ac-a3a3-40d4-8900-db6cbc15cce4
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
 
 	partition FactDirectRouting = m
 		mode: import

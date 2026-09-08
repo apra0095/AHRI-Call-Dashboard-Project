@@ -1,16 +1,16 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "bb669a275dfd5f1d899f",
+  "name": "3ade9436ce588b5dd7a3",
   "position": {
-    "x": 949.35595376851131,
-    "y": 710.03351695949516,
-    "z": 10000,
-    "height": 285,
-    "width": 920,
-    "tabOrder": 10000
+    "x": 654.375,
+    "y": 231.25,
+    "z": 5004,
+    "height": 226.25,
+    "width": 538.75,
+    "tabOrder": 5004
   },
   "visual": {
-    "visualType": "clusteredColumnChart",
+    "visualType": "hundredPercentStackedBarChart",
     "query": {
       "queryState": {
         "Category": {
@@ -23,50 +23,35 @@
                       "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "InviteHourMelbourne"
+                  "Property": "QueueService"
                 }
               },
-              "queryRef": "FactDirectRouting.InviteHourMelbourne",
-              "nativeQueryRef": "InviteHourMelbourne",
+              "queryRef": "FactDirectRouting.QueueService",
+              "nativeQueryRef": "QueueService",
               "active": true
             }
           ]
         },
-        "Y": {
+        "Series": {
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "_RoutingMeasures"
+                      "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Main IVR entries"
+                  "Property": "Outcome Category"
                 }
               },
-              "queryRef": "_RoutingMeasures.Main IVR entries",
-              "nativeQueryRef": "Main IVR entries"
+              "queryRef": "FactDirectRouting.Outcome Category",
+              "nativeQueryRef": "Outcome Category"
             }
           ]
         }
       },
       "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "FactDirectRouting"
-                  }
-                },
-                "Property": "InviteHourMelbourne"
-              }
-            },
-            "direction": "Ascending"
-          }
-        ],
         "isDefaultSort": true
       }
     },
@@ -77,7 +62,20 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Main IVR entry hour (Melbourne)'"
+                  "Value": "'Outcome by Service'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

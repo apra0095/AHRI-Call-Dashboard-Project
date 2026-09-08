@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "777b813f9162043a67c3",
+  "name": "51adfe405d465305ef21",
   "position": {
-    "x": 588.84758364312268,
-    "y": 0,
-    "z": 12000,
-    "height": 60,
-    "width": 1240,
-    "tabOrder": 12000
+    "x": 40,
+    "y": 80,
+    "z": 5000,
+    "height": 30,
+    "width": 510,
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "textbox",
@@ -19,10 +19,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Inbound Calls Overview",
+                    "value": "Did the call complete successfully, and how did it end?",
                     "textStyle": {
-                      "fontWeight": "bold",
-                      "fontSize": "32pt"
+                      "fontSize": "12pt",
+                      "color": "#000000"
                     }
                   }
                 ]
