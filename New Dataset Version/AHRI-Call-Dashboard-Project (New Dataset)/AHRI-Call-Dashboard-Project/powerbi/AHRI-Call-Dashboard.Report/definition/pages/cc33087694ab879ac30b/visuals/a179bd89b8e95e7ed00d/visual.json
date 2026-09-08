@@ -46,7 +46,8 @@
                 }
               },
               "queryRef": "FactDirectRouting.Mean Duration",
-              "nativeQueryRef": "Mean Duration"
+              "nativeQueryRef": "Mean Duration",
+              "format": "#,0\"s\""
             }
           ]
         }

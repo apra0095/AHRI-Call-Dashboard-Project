@@ -51,7 +51,8 @@
                 }
               },
               "queryRef": "CountNonNull(FactDirectRouting.FinalSIPPhrase)",
-              "nativeQueryRef": "Count of FinalSIPPhrase"
+              "nativeQueryRef": "Count of FinalSIPPhrase",
+              "format": "G"
             }
           ]
         }
