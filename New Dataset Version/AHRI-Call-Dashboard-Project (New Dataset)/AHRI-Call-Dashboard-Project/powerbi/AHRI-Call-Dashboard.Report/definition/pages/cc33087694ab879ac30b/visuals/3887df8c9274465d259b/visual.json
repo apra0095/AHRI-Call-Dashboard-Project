@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "3887df8c9274465d259b",
   "position": {
-    "x": 440.46189376443425,
-    "y": 107.89838337182449,
+    "x": 604.04907975460128,
+    "y": 109.32515337423312,
     "z": 3000,
-    "height": 97.551963048498848,
-    "width": 356.21247113163975,
+    "height": 97.177914110429441,
+    "width": 566.50306748466255,
     "tabOrder": 3000
   },
   "visual": {
@@ -90,23 +90,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "d2b959271ae060c8211b",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDirectRouting"
-              }
-            },
-            "Property": "Mean Duration"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "e46eb1f0aa774a001210",
+  "name": "a179bd89b8e95e7ed00d",
   "position": {
     "x": 604.04907975460128,
-    "y": 209.8159509202454,
-    "z": 7000,
-    "height": 227.48466257668713,
+    "y": 437.3006134969325,
+    "z": 9000,
+    "height": 273.86503067484665,
     "width": 566.50306748466255,
-    "tabOrder": 7000
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -23,11 +23,11 @@
                       "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Outcome Category"
+                  "Property": "QueueService"
                 }
               },
-              "queryRef": "FactDirectRouting.Outcome Category",
-              "nativeQueryRef": "Outcome Category",
+              "queryRef": "FactDirectRouting.QueueService",
+              "nativeQueryRef": "QueueService",
               "active": true
             }
           ]
@@ -46,8 +46,7 @@
                 }
               },
               "queryRef": "FactDirectRouting.Mean Duration",
-              "nativeQueryRef": "Mean Duration",
-              "format": "#,0\"s\""
+              "nativeQueryRef": "Mean Duration"
             }
           ]
         }
@@ -78,7 +77,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Avg. Duration by outcome'"
+                  "Value": "'Queue duration by service'"
                 }
               }
             }
@@ -88,13 +87,6 @@
       "subTitle": [
         {
           "properties": {
-            "text": {
-              "expr": {
-                "Literal": {
-                  "Value": "'Why some calls run longer than others'"
-                }
-              }
-            },
             "show": {
               "expr": {
                 "Literal": {
@@ -111,7 +103,7 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "1bb7ecad6d4693613298",
+        "name": "2b154c2711c36520e460",
         "field": {
           "Column": {
             "Expression": {
@@ -119,7 +111,7 @@
                 "Entity": "FactDirectRouting"
               }
             },
-            "Property": "Outcome Category"
+            "Property": "Call Stage"
           }
         },
         "type": "Categorical",
@@ -135,55 +127,51 @@
           "Where": [
             {
               "Condition": {
-                "Not": {
-                  "Expression": {
-                    "In": {
-                      "Expressions": [
-                        {
-                          "Column": {
-                            "Expression": {
-                              "SourceRef": {
-                                "Source": "f"
-                              }
-                            },
-                            "Property": "Outcome Category"
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "f"
                           }
-                        }
-                      ],
-                      "Values": [
-                        [
-                          {
-                            "Literal": {
-                              "Value": "'System/infrastructure issue'"
-                            }
-                          }
-                        ]
-                      ]
+                        },
+                        "Property": "Call Stage"
+                      }
                     }
-                  }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Queue'"
+                        }
+                      }
+                    ]
+                  ]
                 }
               }
             }
           ]
         },
-        "objects": {
-          "general": [
-            {
-              "properties": {
-                "isInvertedSelectionMode": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "true"
-                    }
-                  }
-                }
-              }
-            }
-          ]
-        }
+        "howCreated": "User"
       },
       {
-        "name": "d73437e00e82dd0705c0",
+        "name": "83bba180db02200c0026",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDirectRouting"
+              }
+            },
+            "Property": "QueueService"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "8f7a427c1b52c5940440",
         "field": {
           "Measure": {
             "Expression": {

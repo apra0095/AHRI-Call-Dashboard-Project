@@ -41,7 +41,7 @@ table FactDirectRouting
 	measure 'Longest Typical Call' =
 			
 			CALCULATE(
-			    MEDIAN(FactDirectRouting[DurationSeconds]),
+			    AVERAGE(FactDirectRouting[DurationSeconds]),
 			    FactDirectRouting[Outcome Category] = "Caller-initiated disconnect"
 			)
 		lineageTag: 7d64e0f5-2cc9-429d-b61b-cb32b7d06c05

@@ -183,53 +183,6 @@
           ]
         },
         "howCreated": "User"
-      },
-      {
-        "name": "f6ae2c54126400ba3d20",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDirectRouting"
-              }
-            },
-            "Property": "Call Stage"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "9ab7dad389733d3ad1b0",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDirectRouting"
-              }
-            },
-            "Property": "Outcome Group"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "568922b343793be03a89",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "FactDirectRouting"
-                  }
-                },
-                "Property": "Call Stage"
-              }
-            },
-            "Function": 5
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

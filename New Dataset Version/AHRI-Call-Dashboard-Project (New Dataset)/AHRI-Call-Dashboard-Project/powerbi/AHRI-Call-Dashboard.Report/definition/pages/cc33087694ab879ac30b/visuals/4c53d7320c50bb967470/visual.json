@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "4c53d7320c50bb967470",
   "position": {
-    "x": 69.4688221709007,
-    "y": 455.24249422632795,
+    "x": 39.754601226993863,
+    "y": 437.3006134969325,
     "z": 6000,
-    "height": 233.53348729792148,
-    "width": 1074.5496535796767,
+    "height": 273.86503067484665,
+    "width": 564.29447852760734,
     "tabOrder": 6000
   },
   "visual": {
@@ -78,7 +78,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Duration by call stage'"
+                  "Value": "'Avg. Duration by call stage'"
                 }
               }
             }
@@ -174,20 +174,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "2cc9fe1cc5ea8927e44e",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDirectRouting"
-              }
-            },
-            "Property": "Mean Duration"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

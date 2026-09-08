@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "a310e49c19314ea8622e",
   "position": {
-    "x": 69.4688221709007,
-    "y": 110.85450346420325,
-    "z": 9000,
-    "height": 96.073903002309478,
-    "width": 360.64665127020788,
-    "tabOrder": 9000
+    "x": 39.754601226993863,
+    "y": 110.42944785276073,
+    "z": 8000,
+    "height": 96.073619631901835,
+    "width": 564.29447852760734,
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "card",
@@ -165,23 +165,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "c5fd8535b991ce63dd45",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDirectRouting"
-              }
-            },
-            "Property": "Total Inbound Records"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

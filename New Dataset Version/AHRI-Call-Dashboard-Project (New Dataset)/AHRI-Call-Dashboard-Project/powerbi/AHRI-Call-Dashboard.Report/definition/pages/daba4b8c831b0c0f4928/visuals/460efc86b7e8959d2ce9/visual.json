@@ -127,56 +127,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "89c24fd0a46c08aaeb89",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDirectRouting"
-              }
-            },
-            "Property": "Call Stage"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "e55b57a3ac88911edb2c",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDirectRouting"
-              }
-            },
-            "Property": "Outcome Group"
-          }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "e4bae9967920409d3e29",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "FactDirectRouting"
-                  }
-                },
-                "Property": "Call Stage"
-              }
-            },
-            "Function": 5
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }
