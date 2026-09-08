@@ -1,16 +1,16 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "c14e1515676cb94fa7bb",
+  "name": "0e3996f7a5821149070a",
   "position": {
-    "x": 102,
-    "y": 468,
-    "z": 5005,
-    "height": 203,
-    "width": 539,
-    "tabOrder": 5005
+    "x": 640,
+    "y": 209.20696324951643,
+    "z": 6000,
+    "height": 230,
+    "width": 573.75,
+    "tabOrder": 6000
   },
   "visual": {
-    "visualType": "lineChart",
+    "visualType": "barChart",
     "query": {
       "queryState": {
         "Category": {
@@ -23,30 +23,12 @@
                       "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "InviteDateMelbourne"
+                  "Property": "Failure Detail"
                 }
               },
-              "queryRef": "FactDirectRouting.InviteDateMelbourne",
-              "nativeQueryRef": "Count of InviteDateMelbourne",
+              "queryRef": "FactDirectRouting.Failure Detail",
+              "nativeQueryRef": "Failure Detail",
               "active": true
-            }
-          ]
-        },
-        "Series": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "FactDirectRouting"
-                    }
-                  },
-                  "Property": "Outcome Category"
-                }
-              },
-              "queryRef": "FactDirectRouting.Outcome Category",
-              "nativeQueryRef": "Outcome Category1"
             }
           ]
         },
@@ -62,14 +44,14 @@
                           "Entity": "FactDirectRouting"
                         }
                       },
-                      "Property": "Outcome Category"
+                      "Property": "Failure Detail"
                     }
                   },
                   "Function": 5
                 }
               },
-              "queryRef": "CountNonNull(FactDirectRouting.Outcome Category)",
-              "nativeQueryRef": "Outcome Category"
+              "queryRef": "CountNonNull(FactDirectRouting.Failure Detail)",
+              "nativeQueryRef": "Count of Failure Detail"
             }
           ]
         }
@@ -78,16 +60,21 @@
         "sort": [
           {
             "field": {
-              "Column": {
+              "Aggregation": {
                 "Expression": {
-                  "SourceRef": {
-                    "Entity": "FactDirectRouting"
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "FactDirectRouting"
+                      }
+                    },
+                    "Property": "Failure Detail"
                   }
                 },
-                "Property": "InviteDateMelbourne"
+                "Function": 5
               }
             },
-            "direction": "Ascending"
+            "direction": "Descending"
           }
         ],
         "isDefaultSort": true
@@ -100,7 +87,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Outcome Trend'"
+                  "Value": "'Failure Breakdown'"
                 }
               }
             }
@@ -110,10 +97,10 @@
       "subTitle": [
         {
           "properties": {
-            "show": {
+            "text": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "'Within the 455 system/infrastructure records'"
                 }
               }
             }

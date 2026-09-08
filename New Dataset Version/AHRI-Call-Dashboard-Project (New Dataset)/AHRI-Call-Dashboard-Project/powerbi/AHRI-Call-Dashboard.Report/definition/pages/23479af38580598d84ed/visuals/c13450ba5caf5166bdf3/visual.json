@@ -38,10 +38,10 @@
       "data": [
         {
           "properties": {
-            "mode": {
+            "startDate": {
               "expr": {
                 "Literal": {
-                  "Value": "'Between'"
+                  "Value": "datetime'2026-04-06T00:00:00'"
                 }
               }
             },
@@ -52,10 +52,10 @@
                 }
               }
             },
-            "startDate": {
+            "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "datetime'2026-04-06T00:00:00'"
+                  "Value": "'Between'"
                 }
               }
             }

@@ -4,5 +4,10 @@
   "displayName": "Technical Outcomes",
   "displayOption": "FitToPage",
   "height": 720,
-  "width": 1280
+  "width": 1280,
+  "pageBinding": {
+    "name": "19c84d912691ed476e0a",
+    "type": "Default",
+    "parameters": []
+  }
 }

@@ -4,14 +4,14 @@
     {
       "ordinal": 0,
       "scrollPosition": {
-        "x": 177,
+        "x": 0,
         "y": 0
       },
       "nodes": [
         {
           "location": {
-            "x": 852.36163941535972,
-            "y": 25
+            "x": 906.80608385980406,
+            "y": 16.111111111111114
           },
           "nodeIndex": "_RoutingMeasures",
           "nodeLineageTag": "b85260c2-ec77-5e97-b7cf-58576fab8767",
@@ -23,8 +23,8 @@
         },
         {
           "location": {
-            "x": 1136.3616394153596,
-            "y": 111
+            "x": 1184.1394171931374,
+            "y": 106.55555555555556
           },
           "nodeIndex": "DimQualityCheck",
           "nodeLineageTag": "13fc8f3c-a5ef-5ed1-b58a-5f4737d12d77",
@@ -75,7 +75,7 @@
         }
       ],
       "name": "All tables",
-      "zoomValue": 100,
+      "zoomValue": 80,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,

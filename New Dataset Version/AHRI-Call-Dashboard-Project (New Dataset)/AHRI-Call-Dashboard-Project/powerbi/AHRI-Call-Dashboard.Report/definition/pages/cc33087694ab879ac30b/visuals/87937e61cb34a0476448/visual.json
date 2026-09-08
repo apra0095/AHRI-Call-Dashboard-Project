@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "7ce772434bb7590bde36",
+  "name": "87937e61cb34a0476448",
   "position": {
-    "x": 634.375,
-    "y": 123.75,
-    "z": 5003,
-    "height": 105,
-    "width": 261.25,
-    "tabOrder": 5003
+    "x": 807.02078521939984,
+    "y": 110.85450346420325,
+    "z": 4000,
+    "height": 97.551963048498848,
+    "width": 356.21247113163975,
+    "tabOrder": 4000
   },
   "visual": {
     "visualType": "card",
@@ -23,12 +23,12 @@
                       "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Zero-Duration Rate"
+                  "Property": "Longest Typical Call"
                 }
               },
-              "queryRef": "FactDirectRouting.Zero-Duration Rate",
-              "nativeQueryRef": "Zero-Duration Rate",
-              "format": "0.00%;-0.00%;0.00%"
+              "queryRef": "FactDirectRouting.Longest Typical Call",
+              "nativeQueryRef": "Longest Typical Call",
+              "format": "#,0\"s\""
             }
           ]
         }
@@ -43,7 +43,7 @@
                     "Entity": "FactDirectRouting"
                   }
                 },
-                "Property": "Zero-Duration Rate"
+                "Property": "Longest Typical Call"
               }
             },
             "direction": "Descending"
@@ -53,19 +53,6 @@
       }
     },
     "objects": {
-      "labels": [
-        {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "24D"
-                }
-              }
-            }
-          }
-        }
-      ],
       "categoryLabels": [
         {
           "properties": {
@@ -87,20 +74,14 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Zero-Duration Rate'"
+                  "Value": "'Longest Typical Call'"
                 }
               }
-            }
-          }
-        }
-      ],
-      "background": [
-        {
-          "properties": {
-            "show": {
+            },
+            "alignment": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "'center'"
                 }
               }
             }
@@ -109,5 +90,23 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "e42b99f9345ebea182db",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDirectRouting"
+              }
+            },
+            "Property": "Longest Typical Call"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

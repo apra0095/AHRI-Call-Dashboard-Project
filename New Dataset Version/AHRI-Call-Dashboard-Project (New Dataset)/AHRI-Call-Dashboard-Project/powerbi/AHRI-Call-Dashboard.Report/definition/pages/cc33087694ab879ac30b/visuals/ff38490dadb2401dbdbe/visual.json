@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "0d5e510138767a866c0f",
+  "name": "ff38490dadb2401dbdbe",
   "position": {
-    "x": 63.333333333333336,
-    "y": 686.66666666666674,
-    "z": 4000,
-    "height": 33.333333333333336,
-    "width": 1105,
-    "tabOrder": 4000
+    "x": 40,
+    "y": 80,
+    "z": 2000,
+    "height": 30,
+    "width": 510,
+    "tabOrder": 2000
   },
   "visual": {
     "visualType": "textbox",
@@ -19,10 +19,10 @@
               {
                 "textRuns": [
                   {
-                    "value": "Counts on this page reflect all recorded call legs, including transfers and queue hops - not unique Main IVR entries. See Demand and timing for entry-point volume.",
+                    "value": "How long do calls take, and where does the time go?",
                     "textStyle": {
-                      "fontFamily": "-webkit-standard",
-                      "fontSize": "medium",
+                      "fontFamily": "anthropic-sans, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif",
+                      "fontSize": "14px",
                       "color": "#000000"
                     }
                   }

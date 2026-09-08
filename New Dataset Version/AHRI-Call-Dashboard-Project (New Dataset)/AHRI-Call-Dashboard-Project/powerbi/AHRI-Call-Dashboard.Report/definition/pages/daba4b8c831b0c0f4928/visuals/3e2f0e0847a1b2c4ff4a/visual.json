@@ -2,18 +2,18 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "3e2f0e0847a1b2c4ff4a",
   "position": {
-    "x": 101.875,
-    "y": 231.25,
+    "x": 76.750483558994191,
+    "y": 209.20696324951643,
     "z": 2000,
-    "height": 223.75,
-    "width": 538.75,
+    "height": 230,
+    "width": 551.25,
     "tabOrder": 2000
   },
   "visual": {
-    "visualType": "tableEx",
+    "visualType": "barChart",
     "query": {
       "queryState": {
-        "Values": {
+        "Category": {
           "projections": [
             {
               "field": {
@@ -27,8 +27,13 @@
                 }
               },
               "queryRef": "FactDirectRouting.Outcome Category",
-              "nativeQueryRef": "Outcome Category"
-            },
+              "nativeQueryRef": "Outcome Category",
+              "active": true
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
             {
               "field": {
                 "Aggregation": {
@@ -45,11 +50,33 @@
                   "Function": 5
                 }
               },
-              "queryRef": "FactDirectRouting.FinalSIPPhrase",
+              "queryRef": "CountNonNull(FactDirectRouting.FinalSIPPhrase)",
               "nativeQueryRef": "Count of FinalSIPPhrase"
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Aggregation": {
+                "Expression": {
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "FactDirectRouting"
+                      }
+                    },
+                    "Property": "FinalSIPPhrase"
+                  }
+                },
+                "Function": 5
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "visualContainerObjects": {
@@ -60,6 +87,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'Outcome Breakdown'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

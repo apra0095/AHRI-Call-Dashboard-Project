@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "a777db758ad3278d3f09",
+  "name": "3887df8c9274465d259b",
   "position": {
-    "x": 640,
-    "y": 110.17408123791103,
-    "z": 5000,
-    "height": 90.367504835589941,
-    "width": 574.39071566731138,
-    "tabOrder": 5000
+    "x": 440.46189376443425,
+    "y": 107.89838337182449,
+    "z": 3000,
+    "height": 97.551963048498848,
+    "width": 356.21247113163975,
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "card",
@@ -23,11 +23,12 @@
                       "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Success Rate"
+                  "Property": "Mean Duration"
                 }
               },
-              "queryRef": "FactDirectRouting.Success Rate",
-              "nativeQueryRef": "Success Rate"
+              "queryRef": "FactDirectRouting.Mean Duration",
+              "nativeQueryRef": "Mean Duration",
+              "format": "#,0\"s\""
             }
           ]
         }
@@ -42,7 +43,7 @@
                     "Entity": "FactDirectRouting"
                   }
                 },
-                "Property": "Success Rate"
+                "Property": "Mean Duration"
               }
             },
             "direction": "Descending"
@@ -52,26 +53,6 @@
       }
     },
     "objects": {
-      "labels": [
-        {
-          "properties": {
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "18D"
-                }
-              }
-            },
-            "bold": {
-              "expr": {
-                "Literal": {
-                  "Value": "true"
-                }
-              }
-            }
-          }
-        }
-      ],
       "categoryLabels": [
         {
           "properties": {
@@ -93,7 +74,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Success Rate'"
+                  "Value": "'Mean Duration'"
                 }
               }
             },
@@ -103,31 +84,29 @@
                   "Value": "'center'"
                 }
               }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "12D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "background": [
-        {
-          "properties": {
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
-                }
-              }
             }
           }
         }
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "d2b959271ae060c8211b",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDirectRouting"
+              }
+            },
+            "Property": "Mean Duration"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

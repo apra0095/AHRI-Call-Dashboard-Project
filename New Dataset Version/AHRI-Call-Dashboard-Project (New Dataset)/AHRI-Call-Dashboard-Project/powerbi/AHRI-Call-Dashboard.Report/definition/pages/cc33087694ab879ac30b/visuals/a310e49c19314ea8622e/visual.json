@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "60d145e4311bfa60b3af",
+  "name": "a310e49c19314ea8622e",
   "position": {
-    "x": 76.750483558994191,
-    "y": 110.17408123791103,
-    "z": 1000,
-    "height": 90.367504835589941,
-    "width": 550.87040618955507,
-    "tabOrder": 1000
+    "x": 69.4688221709007,
+    "y": 110.85450346420325,
+    "z": 9000,
+    "height": 96.073903002309478,
+    "width": 360.64665127020788,
+    "tabOrder": 9000
   },
   "visual": {
     "visualType": "card",
@@ -122,6 +122,17 @@
                   "Value": "12D"
                 }
               }
+            },
+            "background": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "null"
+                    }
+                  }
+                }
+              }
             }
           }
         }
@@ -132,7 +143,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
                 }
               }
             }
@@ -154,5 +165,23 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "c5fd8535b991ce63dd45",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDirectRouting"
+              }
+            },
+            "Property": "Total Inbound Records"
+          }
+        },
+        "type": "Advanced"
+      }
+    ]
   }
 }

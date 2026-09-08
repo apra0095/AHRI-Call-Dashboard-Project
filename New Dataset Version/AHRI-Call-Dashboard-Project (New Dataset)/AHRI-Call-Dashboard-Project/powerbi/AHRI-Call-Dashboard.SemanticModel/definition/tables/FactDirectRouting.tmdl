@@ -34,6 +34,20 @@ table FactDirectRouting
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
+	measure 'Mean Duration' = AVERAGE(FactDirectRouting[DurationSeconds])
+		formatString: 0
+		lineageTag: a68953ed-d310-449a-beca-ead3f32f0c6e
+
+	measure 'Longest Typical Call' =
+			
+			CALCULATE(
+			    MEDIAN(FactDirectRouting[DurationSeconds]),
+			    FactDirectRouting[Outcome Category] = "Caller-initiated disconnect"
+			)
+		lineageTag: 7d64e0f5-2cc9-429d-b61b-cb32b7d06c05
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column CorrelationId
 		dataType: string
 		isHidden
@@ -184,10 +198,11 @@ table FactDirectRouting
 
 	column SharedCorrelationId
 		dataType: string
-		isHidden
 		lineageTag: 12344861-f35d-58bc-90e2-0cae4a64e9bf
 		summarizeBy: none
 		sourceColumn: SharedCorrelationId
+
+		changedProperty = IsHidden
 
 	column TransferCorrelationId
 		dataType: string
@@ -315,21 +330,65 @@ table FactDirectRouting
 			        || FactDirectRouting[FinalSIPPhrase] = "Call is ended."
 			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "modality controller")
 			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "one participant was remaining")
-			        || FactDirectRouting[FinalSIPPhrase] = "Call ended by media agent.", "Normal hangup",
+			        || FactDirectRouting[FinalSIPPhrase] = "Call ended by media agent."
+			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "recording_accepted")
+			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "recording_too_long"), "Normal hangup",
 			
 			    FactDirectRouting[FinalSIPPhrase] = "LocalUserInitiated"
 			        || FactDirectRouting[FinalSIPPhrase] = "ORIGINATOR_CANCEL"
 			        || FactDirectRouting[FinalSIPPhrase] = "Canceled"
-			        || FactDirectRouting[FinalSIPPhrase] = "Call cancelled on timeout.", "Caller-initiated disconnect",
-			
-			    CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "EndReason: recording_accepted"), "IVR: recording accepted",
-			
-			    CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "silence_timeout")
-			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "recording_too_long"), "IVR: no caller response",
+			        || FactDirectRouting[FinalSIPPhrase] = "Call cancelled on timeout."
+			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "silence_timeout"), "Caller-initiated disconnect",
 			
 			    "System/infrastructure issue"
 			)
 		lineageTag: e89926ac-a3a3-40d4-8900-db6cbc15cce4
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Failure Detail' =
+			
+			IF(
+			    FactDirectRouting[Outcome Category] = "System/infrastructure issue",
+			    IF(
+			        CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "User data not found"),
+			        "Destination/routing issue",
+			        "Platform/technical issue"
+			    ),
+			    BLANK()
+			)
+		lineageTag: 603745f1-56eb-4000-b570-2e499f5ebab6
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Queue Service Clean' = IF(ISBLANK(FactDirectRouting[QueueService]), "No queue reached", FactDirectRouting[QueueService])
+		lineageTag: f10e1dc4-e28c-4227-bdb1-a67e33b58f94
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Call Stage' = SWITCH( TRUE(), FactDirectRouting[DisplayName] = "", "Unknown", CONTAINSSTRING(FactDirectRouting[DisplayName], "Main IVR"), "IVR", CONTAINSSTRING(FactDirectRouting[DisplayName], "Queue"), "Queue", "Agent" )
+		lineageTag: 00baf45b-05c6-4ab0-bb56-538061fc5ba7
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Outcome Group' = IF( FactDirectRouting[Outcome Category] IN {"Normal hangup", "Transfer completed"}, "Normal hangup / transfer", "Disconnect / issue" )
+		lineageTag: d7611898-375b-4008-b473-ebe8c650fd59
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Is Final Leg' = VAR MaxInvite = CALCULATE( MAX(FactDirectRouting[InviteTimeUTC]), ALLEXCEPT(FactDirectRouting, FactDirectRouting[SharedCorrelationId]) ) RETURN IF(FactDirectRouting[InviteTimeUTC] = MaxInvite, "Final leg", "Earlier leg")
+		lineageTag: 934549e6-585f-42bc-a5e5-bd98f020a623
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Duration Bucket' = SWITCH( TRUE(), FactDirectRouting[DurationSeconds] = 0, "0s (no connection)", FactDirectRouting[DurationSeconds] <= 30, "Under 30s", FactDirectRouting[DurationSeconds] <= 120, "30s-2min", FactDirectRouting[DurationSeconds] <= 300, "2-5min", "5min+" )
+		lineageTag: aa2ef3fd-d195-4fff-8e4c-59b876e4f495
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
