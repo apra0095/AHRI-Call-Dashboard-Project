@@ -3,11 +3,11 @@
   "name": "51adfe405d465305ef21",
   "position": {
     "x": 40,
-    "y": 80,
-    "z": 4000,
-    "height": 30,
-    "width": 510,
-    "tabOrder": 4000
+    "y": 78.333333333333343,
+    "z": 3000,
+    "height": 35,
+    "width": 680,
+    "tabOrder": 3000
   },
   "visual": {
     "visualType": "textbox",
@@ -19,9 +19,9 @@
               {
                 "textRuns": [
                   {
-                    "value": "Did the call complete successfully, and how did it end?",
+                    "value": "How did Main IVR calls end, and how long did they take?",
                     "textStyle": {
-                      "fontSize": "12pt",
+                      "fontSize": "14pt",
                       "color": "#000000"
                     }
                   }

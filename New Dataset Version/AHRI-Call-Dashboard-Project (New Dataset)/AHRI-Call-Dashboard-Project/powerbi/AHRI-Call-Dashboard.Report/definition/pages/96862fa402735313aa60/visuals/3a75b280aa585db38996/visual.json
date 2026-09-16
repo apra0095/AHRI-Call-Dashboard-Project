@@ -10,10 +10,10 @@
     "tabOrder": 6000
   },
   "visual": {
-    "visualType": "cardVisual",
+    "visualType": "card",
     "query": {
       "queryState": {
-        "Data": {
+        "Values": {
           "projections": [
             {
               "field": {
@@ -31,22 +31,37 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_RoutingMeasures"
+                  }
+                },
+                "Property": "Linked groups"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
       }
     },
     "objects": {
-      "value": [
+      "categoryLabels": [
         {
           "properties": {
-            "labelDisplayUnits": {
+            "show": {
               "expr": {
                 "Literal": {
-                  "Value": "1D"
+                  "Value": "false"
                 }
               }
             }
-          },
-          "selector": {
-            "metadata": "_RoutingMeasures.Linked groups"
           }
         }
       ]

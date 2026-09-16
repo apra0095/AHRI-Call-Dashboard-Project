@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "e46eb1f0aa774a001210",
+  "name": "2a0e83290e9644ac6975",
   "position": {
-    "x": 604.04907975460128,
-    "y": 209.8159509202454,
-    "z": 7000,
-    "height": 227.48466257668713,
-    "width": 566.50306748466255,
-    "tabOrder": 7000
+    "x": 962,
+    "y": 592,
+    "z": 9001,
+    "height": 352,
+    "width": 896,
+    "tabOrder": 9001
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -23,14 +23,17 @@
                       "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Outcome Category"
+                  "Property": "Queue Service"
                 }
               },
-              "queryRef": "FactDirectRouting.Outcome Category",
-              "nativeQueryRef": "Outcome Category",
+              "queryRef": "FactDirectRouting.Queue Service Clean",
+              "nativeQueryRef": "Queue Service",
               "active": true
             }
           ]
+        },
+        "Series": {
+          "projections": []
         },
         "Y": {
           "projections": [
@@ -42,11 +45,11 @@
                       "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Mean Duration"
+                  "Property": "Avg Queue Duration by Service"
                 }
               },
-              "queryRef": "FactDirectRouting.Mean Duration",
-              "nativeQueryRef": "Mean Duration",
+              "queryRef": "FactDirectRouting.Avg Queue Duration by Service",
+              "nativeQueryRef": "Avg Queue Duration by Service",
               "format": "#,0\"s\""
             }
           ]
@@ -62,7 +65,7 @@
                     "Entity": "FactDirectRouting"
                   }
                 },
-                "Property": "Mean Duration"
+                "Property": "Avg Queue Duration by Service"
               }
             },
             "direction": "Descending"
@@ -72,33 +75,26 @@
       }
     },
     "visualContainerObjects": {
-      "title": [
+      "subTitle": [
         {
           "properties": {
-            "text": {
+            "show": {
               "expr": {
                 "Literal": {
-                  "Value": "'Avg. Duration by outcome'"
+                  "Value": "false"
                 }
               }
             }
           }
         }
       ],
-      "subTitle": [
+      "title": [
         {
           "properties": {
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Why some calls run longer than others'"
-                }
-              }
-            },
-            "show": {
-              "expr": {
-                "Literal": {
-                  "Value": "false"
+                  "Value": "'Avg Queue Duration by Service'"
                 }
               }
             }
@@ -111,7 +107,21 @@
   "filterConfig": {
     "filters": [
       {
-        "name": "1bb7ecad6d4693613298",
+        "name": "a641c6bb8d1b40497266",
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDirectRouting"
+              }
+            },
+            "Property": "Avg Queue Duration by Service"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "22912d84347d6d370294",
         "field": {
           "Column": {
             "Expression": {
@@ -119,7 +129,7 @@
                 "Entity": "FactDirectRouting"
               }
             },
-            "Property": "Outcome Category"
+            "Property": "Queue Service"
           }
         },
         "type": "Categorical",
@@ -146,7 +156,7 @@
                                 "Source": "f"
                               }
                             },
-                            "Property": "Outcome Category"
+                            "Property": "Queue Service"
                           }
                         }
                       ],
@@ -154,7 +164,7 @@
                         [
                           {
                             "Literal": {
-                              "Value": "'System/infrastructure issue'"
+                              "Value": "'Corporate Sales'"
                             }
                           }
                         ]
@@ -181,20 +191,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "d73437e00e82dd0705c0",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDirectRouting"
-              }
-            },
-            "Property": "Mean Duration"
-          }
-        },
-        "type": "Advanced"
       }
     ]
   }

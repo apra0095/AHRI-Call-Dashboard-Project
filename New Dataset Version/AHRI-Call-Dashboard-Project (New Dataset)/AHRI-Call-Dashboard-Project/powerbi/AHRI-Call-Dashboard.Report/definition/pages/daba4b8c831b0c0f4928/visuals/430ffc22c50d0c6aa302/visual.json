@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "4db07779c7e104145a50",
+  "name": "430ffc22c50d0c6aa302",
   "position": {
-    "x": 1008.3333333333334,
+    "x": 1400,
     "y": 20,
-    "z": 1000,
-    "height": 113.33333333333334,
-    "width": 271.66666666666669,
-    "tabOrder": 1000
+    "z": 6000,
+    "height": 115,
+    "width": 470,
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "slicer",
@@ -150,23 +150,5 @@
       "filterChanges": true
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "12806a64ee0202d8e234",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "DimRoutingDate"
-              }
-            },
-            "Property": "Date"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

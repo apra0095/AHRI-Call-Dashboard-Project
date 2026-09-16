@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "c333940a9cbeccd527c1",
+  "name": "4ff9dee4e475bc4a85b2",
   "position": {
-    "x": 39.754601226993863,
-    "y": 209.8159509202454,
-    "z": 5000,
-    "height": 227.48466257668713,
-    "width": 564.29447852760734,
-    "tabOrder": 5000
+    "x": 61.666666666666671,
+    "y": 591.66666666666674,
+    "z": 8000,
+    "height": 351.66666666666669,
+    "width": 883.33333333333337,
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "clusteredBarChart",
@@ -23,11 +23,11 @@
                       "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Duration Bucket"
+                  "Property": "Call Duration Bucket"
                 }
               },
               "queryRef": "FactDirectRouting.Duration Bucket",
-              "nativeQueryRef": "Duration Bucket",
+              "nativeQueryRef": "Call Duration Bucket",
               "active": true
             }
           ]
@@ -67,7 +67,7 @@
                     "Entity": "FactDirectRouting"
                   }
                 },
-                "Property": "Duration Bucket"
+                "Property": "Call Duration Bucket"
               }
             },
             "direction": "Descending"
@@ -82,7 +82,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'How long calls run'"
+                  "Value": "'Call Duration Distribution'"
                 }
               }
             }
@@ -109,6 +109,7 @@
     "filters": [
       {
         "name": "92b3291a18028e021405",
+        "ordinal": 0,
         "field": {
           "Column": {
             "Expression": {
@@ -116,7 +117,7 @@
                 "Entity": "FactDirectRouting"
               }
             },
-            "Property": "Duration Bucket"
+            "Property": "Call Duration Bucket"
           }
         },
         "type": "Categorical",
@@ -143,7 +144,7 @@
                                 "Source": "f"
                               }
                             },
-                            "Property": "Duration Bucket"
+                            "Property": "Call Duration Bucket"
                           }
                         }
                       ],
@@ -152,6 +153,13 @@
                           {
                             "Literal": {
                               "Value": "'0s (no connection)'"
+                            }
+                          }
+                        ],
+                        [
+                          {
+                            "Literal": {
+                              "Value": "'0s'"
                             }
                           }
                         ]
@@ -180,7 +188,8 @@
         }
       },
       {
-        "name": "b95f086a18e4900499c7",
+        "name": "11cf9feed0ba388009c0",
+        "ordinal": 1,
         "field": {
           "Aggregation": {
             "Expression": {
@@ -197,7 +206,118 @@
           }
         },
         "type": "Advanced"
+      },
+      {
+        "name": "fd7fe20655c15c59099b",
+        "ordinal": 2,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDirectRouting"
+              }
+            },
+            "Property": "Main IVR Status"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "f",
+              "Entity": "FactDirectRouting",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "f"
+                          }
+                        },
+                        "Property": "Main IVR Status"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'With Main IVR'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "3274328b2e6546088248",
+        "ordinal": 3,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDirectRouting"
+              }
+            },
+            "Property": "Is Final Leg"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "f",
+              "Entity": "FactDirectRouting",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "f"
+                          }
+                        },
+                        "Property": "Is Final Leg"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Final leg'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
       }
-    ]
+    ],
+    "filterSortOrder": "Custom"
   }
 }

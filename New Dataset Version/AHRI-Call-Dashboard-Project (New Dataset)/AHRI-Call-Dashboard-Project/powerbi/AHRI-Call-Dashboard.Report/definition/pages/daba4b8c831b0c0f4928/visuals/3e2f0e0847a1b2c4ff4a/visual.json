@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "3e2f0e0847a1b2c4ff4a",
   "position": {
-    "x": 76.750483558994191,
-    "y": 209.20696324951643,
+    "x": 61.666666666666671,
+    "y": 243.33333333333334,
     "z": 2000,
-    "height": 230,
-    "width": 551.25,
+    "height": 333.33333333333337,
+    "width": 881.66666666666674,
     "tabOrder": 2000
   },
   "visual": {
@@ -23,11 +23,11 @@
                       "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Outcome Category"
+                  "Property": "Call Outcome Group"
                 }
               },
               "queryRef": "FactDirectRouting.Outcome Category",
-              "nativeQueryRef": "Outcome Category",
+              "nativeQueryRef": "Call Outcome Group",
               "active": true
             }
           ]
@@ -44,15 +44,14 @@
                           "Entity": "FactDirectRouting"
                         }
                       },
-                      "Property": "FinalSIPPhrase"
+                      "Property": "SharedCorrelationId"
                     }
                   },
                   "Function": 5
                 }
               },
-              "queryRef": "CountNonNull(FactDirectRouting.FinalSIPPhrase)",
-              "nativeQueryRef": "Count of FinalSIPPhrase",
-              "format": "G"
+              "queryRef": "CountNonNull(FactDirectRouting.SharedCorrelationId)",
+              "nativeQueryRef": "Count of SharedCorrelationId"
             }
           ]
         }
@@ -69,7 +68,7 @@
                         "Entity": "FactDirectRouting"
                       }
                     },
-                    "Property": "FinalSIPPhrase"
+                    "Property": "SharedCorrelationId"
                   }
                 },
                 "Function": 5
@@ -77,7 +76,8 @@
             },
             "direction": "Descending"
           }
-        ]
+        ],
+        "isDefaultSort": true
       }
     },
     "visualContainerObjects": {
@@ -87,7 +87,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Outcome Breakdown'"
+                  "Value": "'How Main IVR calls ended'"
                 }
               }
             }
@@ -109,5 +109,120 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "1dea63e0c68618c824c5",
+        "ordinal": 0,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDirectRouting"
+              }
+            },
+            "Property": "Is Final Leg"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "f",
+              "Entity": "FactDirectRouting",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "f"
+                          }
+                        },
+                        "Property": "Is Final Leg"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'Final leg'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      },
+      {
+        "name": "a43a7cc3ed900c02acd7",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDirectRouting"
+              }
+            },
+            "Property": "Main IVR Status"
+          }
+        },
+        "type": "Categorical",
+        "filter": {
+          "Version": 2,
+          "From": [
+            {
+              "Name": "f",
+              "Entity": "FactDirectRouting",
+              "Type": 0
+            }
+          ],
+          "Where": [
+            {
+              "Condition": {
+                "In": {
+                  "Expressions": [
+                    {
+                      "Column": {
+                        "Expression": {
+                          "SourceRef": {
+                            "Source": "f"
+                          }
+                        },
+                        "Property": "Main IVR Status"
+                      }
+                    }
+                  ],
+                  "Values": [
+                    [
+                      {
+                        "Literal": {
+                          "Value": "'With Main IVR'"
+                        }
+                      }
+                    ]
+                  ]
+                }
+              }
+            }
+          ]
+        },
+        "howCreated": "User"
+      }
+    ],
+    "filterSortOrder": "Custom"
   }
 }

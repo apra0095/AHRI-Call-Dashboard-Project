@@ -1,13 +1,8 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/page/2.1.0/schema.json",
   "name": "daba4b8c831b0c0f4928",
-  "displayName": "Technical Outcomes",
-  "displayOption": "FitToPage",
-  "height": 720,
-  "width": 1280,
-  "pageBinding": {
-    "name": "19c84d912691ed476e0a",
-    "type": "Default",
-    "parameters": []
-  }
+  "displayName": "Outcome and Duration",
+  "displayOption": "ActualSize",
+  "height": 1080,
+  "width": 1920
 }

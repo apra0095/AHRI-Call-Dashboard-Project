@@ -6,7 +6,7 @@
     "y": 20,
     "z": 0,
     "height": 60,
-    "width": 420,
+    "width": 463.33333333333337,
     "tabOrder": 0
   },
   "visual": {
@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Technical Outcomes",
+                    "value": "Outcome & Duration",
                     "textStyle": {
                       "fontWeight": "bold",
                       "fontSize": "32pt",

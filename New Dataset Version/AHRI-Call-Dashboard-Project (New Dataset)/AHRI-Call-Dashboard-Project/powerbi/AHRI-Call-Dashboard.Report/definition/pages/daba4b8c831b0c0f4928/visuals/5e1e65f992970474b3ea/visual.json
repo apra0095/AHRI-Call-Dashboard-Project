@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "3887df8c9274465d259b",
+  "name": "5e1e65f992970474b3ea",
   "position": {
-    "x": 604.04907975460128,
-    "y": 109.32515337423312,
-    "z": 3000,
-    "height": 97.177914110429441,
-    "width": 566.50306748466255,
-    "tabOrder": 3000
+    "x": 1275,
+    "y": 120,
+    "z": 7000,
+    "height": 111.66666666666667,
+    "width": 583.33333333333337,
+    "tabOrder": 7000
   },
   "visual": {
     "visualType": "card",
@@ -23,32 +23,16 @@
                       "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Mean Duration"
+                  "Property": "Average Call Duration (mm ss)"
                 }
               },
-              "queryRef": "FactDirectRouting.Mean Duration",
-              "nativeQueryRef": "Mean Duration",
-              "format": "#,0\"s\""
+              "queryRef": "FactDirectRouting.Average Call Duration (mm ss)",
+              "nativeQueryRef": "Average Call Duration (mm ss)"
             }
           ]
         }
       },
       "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "FactDirectRouting"
-                  }
-                },
-                "Property": "Mean Duration"
-              }
-            },
-            "direction": "Descending"
-          }
-        ],
         "isDefaultSort": true
       }
     },
@@ -74,7 +58,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Mean Duration'"
+                  "Value": "'Average Call Duration'"
                 }
               }
             },
@@ -90,5 +74,25 @@
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "1f39aa723047d695cb08",
+        "ordinal": 0,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDirectRouting"
+              }
+            },
+            "Property": "Average Call Duration (mm ss)"
+          }
+        },
+        "type": "Advanced"
+      }
+    ],
+    "filterSortOrder": "Custom"
   }
 }

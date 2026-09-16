@@ -9,42 +9,69 @@ table FactDirectRouting
 		formatString: 0
 		lineageTag: 00c4546c-8185-4de7-9528-94ff05e56051
 
-	measure 'Success Rate' =
+	measure 'Call Success Rate' = ```
 			
-			DIVIDE(
-			    CALCULATE(
-			        COUNTROWS(FactDirectRouting),
-			        FactDirectRouting[Success] = "Yes"
-			    ),
-			    COUNTROWS(FactDirectRouting)
-			)
-		formatString: 0.00%;-0.00%;0.00%
+			VAR MainIVRCalls = 
+			    CALCULATETABLE(
+			        VALUES(FactDirectRouting[SharedCorrelationId]),
+			        FactDirectRouting[IsMainEntry] = TRUE()
+			    )
+			RETURN
+			    DIVIDE(
+			        CALCULATE(
+			            COUNTROWS(FactDirectRouting),
+			            FactDirectRouting[Is Final Leg] = "Final leg",
+			            FactDirectRouting[Success] = "Yes",
+			            FactDirectRouting[SharedCorrelationId] IN MainIVRCalls
+			        ),
+			        CALCULATE(
+			            COUNTROWS(FactDirectRouting),
+			            FactDirectRouting[Is Final Leg] = "Final leg",
+			            FactDirectRouting[SharedCorrelationId] IN MainIVRCalls
+			        )
+			    )
+			```
 		lineageTag: 924948aa-aefe-4bfd-8366-29892ee148ba
-
-	measure 'Zero-Duration Rate' =
-			
-			DIVIDE(
-			    CALCULATE(
-			        COUNTROWS(FactDirectRouting),
-			        FactDirectRouting[DurationSeconds] = 0
-			    ),
-			    COUNTROWS(FactDirectRouting)
-			)
-		lineageTag: 15466c99-0164-41a9-9966-803823983a81
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Mean Duration' = AVERAGE(FactDirectRouting[DurationSeconds])
+	measure 'Average Call Duration' = ```
+			CALCULATE( AVERAGE(FactDirectRouting[Call Total Duration]), FactDirectRouting[Is Final Leg] = "Final leg", FactDirectRouting[Main IVR Status] = "With Main IVR" ) 
+			```
 		formatString: 0
 		lineageTag: a68953ed-d310-449a-beca-ead3f32f0c6e
 
-	measure 'Longest Typical Call' =
+	measure 'Average Call Duration (mm ss)' = ```
+			
+			VAR TotalSeconds = [Average Call Duration]
+			VAR Minutes = INT(TotalSeconds / 60)
+			VAR Seconds = MOD(TotalSeconds, 60)
+			RETURN 
+			    Minutes & "m " & FORMAT(Seconds, "00") & "s"
+			```
+		lineageTag: 1d48e489-1e20-4ec8-9969-4a37b9724cad
+
+	measure 'Main IVR Calls' =
 			
 			CALCULATE(
-			    AVERAGE(FactDirectRouting[DurationSeconds]),
-			    FactDirectRouting[Outcome Category] = "Caller-initiated disconnect"
+			    COUNTROWS(FactDirectRouting),
+			    FactDirectRouting[Is Final Leg] = "Final leg",
+			    FactDirectRouting[Main IVR Status] = "With Main IVR"
 			)
-		lineageTag: 7d64e0f5-2cc9-429d-b61b-cb32b7d06c05
+		formatString: 0
+		lineageTag: dd28c151-b2af-4f97-adfa-0e5f909ee12e
+
+	measure 'Avg Queue Duration by Service' =
+			
+			AVERAGEX(
+			    SUMMARIZE(
+			        FILTER(FactDirectRouting, FactDirectRouting[Call Stage] = "Queue" && FactDirectRouting[Main IVR Status] = "With Main IVR"),
+			        FactDirectRouting[SharedCorrelationId],
+			        FactDirectRouting[QueueService]
+			    ),
+			    CALCULATE(SUM(FactDirectRouting[DurationSeconds]))
+			)
+		lineageTag: 1fdfc86e-cbb3-42b4-bbae-0e448821c3aa
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
@@ -317,53 +344,55 @@ table FactDirectRouting
 		summarizeBy: none
 		sourceColumn: DurationBandOrder
 
-	column 'Outcome Category' =
+	column 'Call Outcome Group' =
 			
+			VAR SipCode =
+			    FactDirectRouting[FinalSIPCode]
+			
+			VAR SubCode =
+			    FactDirectRouting[FinalMicrosoftSubcode]
+			
+			VAR Phrase =
+			    LOWER(FactDirectRouting[FinalSIPPhrase])
+			
+			RETURN
 			SWITCH(
 			    TRUE(),
-			    CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "transfer completed")
-			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "Call Transferred"), "Transfer completed",
-			
-			    CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "Normal call clearing")
-			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "NORMAL_CLEARING")
-			        || FactDirectRouting[FinalSIPPhrase] = "BYE"
-			        || FactDirectRouting[FinalSIPPhrase] = "Call is ended."
-			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "modality controller")
-			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "one participant was remaining")
-			        || FactDirectRouting[FinalSIPPhrase] = "Call ended by media agent."
-			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "recording_accepted")
-			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "recording_too_long"), "Normal hangup",
-			
-			    FactDirectRouting[FinalSIPPhrase] = "LocalUserInitiated"
-			        || FactDirectRouting[FinalSIPPhrase] = "ORIGINATOR_CANCEL"
-			        || FactDirectRouting[FinalSIPPhrase] = "Canceled"
-			        || FactDirectRouting[FinalSIPPhrase] = "Call cancelled on timeout."
-			        || CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "silence_timeout"), "Caller-initiated disconnect",
-			
-			    "System/infrastructure issue"
+			    SipCode IN {400, 404, 430, 480, 500, 502}
+			        || CONTAINSSTRING(Phrase, "server internal error")
+			        || CONTAINSSTRING(Phrase, "user data not found")
+			        || CONTAINSSTRING(Phrase, "trouter")
+			        || CONTAINSSTRING(Phrase, "delivery errors")
+			        || CONTAINSSTRING(Phrase, "temporary failure")
+			        || CONTAINSSTRING(Phrase, "bad request")
+			        || CONTAINSSTRING(Phrase, "terminated before flight")
+			        || SubCode = 10004,
+			        "Technical / routing issue",
+			    CONTAINSSTRING(Phrase, "localuserinitiated")
+			        || CONTAINSSTRING(Phrase, "originator_cancel")
+			        || CONTAINSSTRING(Phrase, "canceled")
+			        || CONTAINSSTRING(Phrase, "maximum_silence_timeout")
+			        || CONTAINSSTRING(Phrase, "initial_silence_timeout")
+			        || CONTAINSSTRING(Phrase, "recording_too_long")
+			        || SipCode = 603,
+			        "Disconnected / timed out",
+			    SipCode = 200
+			        || CONTAINSSTRING(Phrase, "normal call clearing")
+			        || CONTAINSSTRING(Phrase, "normal_clearing")
+			        || CONTAINSSTRING(Phrase, "bye")
+			        || CONTAINSSTRING(Phrase, "transfer completed successfully")
+			        || CONTAINSSTRING(Phrase, "call transferred")
+			        || CONTAINSSTRING(Phrase, "recording_accepted")
+			        || CONTAINSSTRING(Phrase, "call is ended"),
+			        "Completed",
+			    "Other / review"
 			)
 		lineageTag: e89926ac-a3a3-40d4-8900-db6cbc15cce4
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Failure Detail' =
-			
-			IF(
-			    FactDirectRouting[Outcome Category] = "System/infrastructure issue",
-			    IF(
-			        CONTAINSSTRING(FactDirectRouting[FinalSIPPhrase], "User data not found"),
-			        "Destination/routing issue",
-			        "Platform/technical issue"
-			    ),
-			    BLANK()
-			)
-		lineageTag: 603745f1-56eb-4000-b570-2e499f5ebab6
-		summarizeBy: none
-
-		annotation SummarizationSetBy = Automatic
-
-	column 'Queue Service Clean' = IF(ISBLANK(FactDirectRouting[QueueService]), "No queue reached", FactDirectRouting[QueueService])
+	column 'Queue Service' = IF(ISBLANK(FactDirectRouting[QueueService]), "No queue reached", FactDirectRouting[QueueService])
 		lineageTag: f10e1dc4-e28c-4227-bdb1-a67e33b58f94
 		summarizeBy: none
 
@@ -375,7 +404,7 @@ table FactDirectRouting
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Outcome Group' = IF( FactDirectRouting[Outcome Category] IN {"Normal hangup", "Transfer completed"}, "Normal hangup / transfer", "Disconnect / issue" )
+	column 'Outcome Group' = IF( FactDirectRouting[Call Outcome Group] IN {"Normal hangup", "Transfer completed"}, "Normal hangup / transfer", "Disconnect / issue" )
 		lineageTag: d7611898-375b-4008-b473-ebe8c650fd59
 		summarizeBy: none
 
@@ -387,9 +416,34 @@ table FactDirectRouting
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Duration Bucket' = SWITCH( TRUE(), FactDirectRouting[DurationSeconds] = 0, "0s (no connection)", FactDirectRouting[DurationSeconds] <= 30, "Under 30s", FactDirectRouting[DurationSeconds] <= 120, "30s-2min", FactDirectRouting[DurationSeconds] <= 300, "2-5min", "5min+" )
+	column 'Call Duration Bucket' = SWITCH( TRUE(), [Call Total Duration] = 0, "0s", [Call Total Duration] <= 30, "Under 30s", [Call Total Duration] <= 120, "30s-2min", [Call Total Duration] <= 300, "2-5min", "5min+" )
 		lineageTag: aa2ef3fd-d195-4fff-8e4c-59b876e4f495
 		summarizeBy: none
+		sortByColumn: 'Call Duration Bucket Order'
+
+		changedProperty = SortByColumn
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Main IVR Status' = VAR HasIVR = CALCULATE( COUNTROWS(FactDirectRouting), FILTER( ALLEXCEPT(FactDirectRouting, FactDirectRouting[SharedCorrelationId]), FactDirectRouting[Call Stage] = "IVR" ) ) > 0 RETURN IF(HasIVR, "With Main IVR", "Without Main IVR")
+		lineageTag: 50a20bf1-04a5-4530-8612-fe4ccfcca5bb
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Call Total Duration' = CALCULATE( SUM(FactDirectRouting[DurationSeconds]), ALLEXCEPT(FactDirectRouting, FactDirectRouting[SharedCorrelationId]) )
+		formatString: 0
+		lineageTag: 522f8985-0400-4136-a149-975783323a1d
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Call Duration Bucket Order' = SWITCH( TRUE(), [Call Total Duration] = 0, 1, [Call Total Duration] <= 30, 2, [Call Total Duration] <= 120, 3, [Call Total Duration] <= 300, 4, 5 )
+		formatString: 0
+		lineageTag: ee49ded6-5711-466a-92a5-c63df2da6bbb
+		summarizeBy: sum
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 

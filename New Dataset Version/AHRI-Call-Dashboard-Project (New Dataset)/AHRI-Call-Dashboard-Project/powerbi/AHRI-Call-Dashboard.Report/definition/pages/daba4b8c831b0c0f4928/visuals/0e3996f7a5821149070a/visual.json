@@ -2,12 +2,12 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "0e3996f7a5821149070a",
   "position": {
-    "x": 640,
-    "y": 209.20696324951643,
-    "z": 6000,
-    "height": 230,
-    "width": 573.75,
-    "tabOrder": 6000
+    "x": 960,
+    "y": 243.33333333333334,
+    "z": 5000,
+    "height": 333.33333333333337,
+    "width": 898.33333333333337,
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "barChart",
@@ -23,11 +23,11 @@
                       "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Failure Detail"
+                  "Property": "Call Outcome Group"
                 }
               },
-              "queryRef": "FactDirectRouting.Failure Detail",
-              "nativeQueryRef": "Failure Detail",
+              "queryRef": "FactDirectRouting.Outcome Category",
+              "nativeQueryRef": "Call Outcome Group",
               "active": true
             }
           ]
@@ -36,22 +36,18 @@
           "projections": [
             {
               "field": {
-                "Aggregation": {
+                "Measure": {
                   "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "FactDirectRouting"
-                        }
-                      },
-                      "Property": "Failure Detail"
+                    "SourceRef": {
+                      "Entity": "FactDirectRouting"
                     }
                   },
-                  "Function": 5
+                  "Property": "Average Call Duration"
                 }
               },
-              "queryRef": "CountNonNull(FactDirectRouting.Failure Detail)",
-              "nativeQueryRef": "Count of Failure Detail"
+              "queryRef": "FactDirectRouting.Average Call Duration",
+              "nativeQueryRef": "Average Call Duration",
+              "format": "#,0\"s\""
             }
           ]
         }
@@ -60,18 +56,13 @@
         "sort": [
           {
             "field": {
-              "Aggregation": {
+              "Measure": {
                 "Expression": {
-                  "Column": {
-                    "Expression": {
-                      "SourceRef": {
-                        "Entity": "FactDirectRouting"
-                      }
-                    },
-                    "Property": "Failure Detail"
+                  "SourceRef": {
+                    "Entity": "FactDirectRouting"
                   }
                 },
-                "Function": 5
+                "Property": "Average Call Duration"
               }
             },
             "direction": "Descending"
@@ -87,7 +78,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Failure Breakdown'"
+                  "Value": "'Avg. duration by outcome'"
                 }
               }
             }
@@ -103,11 +94,53 @@
                   "Value": "'Within the 455 system/infrastructure records'"
                 }
               }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
             }
           }
         }
       ]
     },
     "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "a551c57d035c1139e01d",
+        "ordinal": 0,
+        "field": {
+          "Measure": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDirectRouting"
+              }
+            },
+            "Property": "Average Call Duration"
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "17573a0828ad1d2456bc",
+        "ordinal": 1,
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "FactDirectRouting"
+              }
+            },
+            "Property": "Call Outcome Group"
+          }
+        },
+        "type": "Categorical"
+      }
+    ],
+    "filterSortOrder": "Custom"
   }
 }
