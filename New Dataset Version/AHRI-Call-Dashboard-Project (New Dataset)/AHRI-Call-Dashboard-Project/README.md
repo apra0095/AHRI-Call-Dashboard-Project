@@ -1,6 +1,6 @@
 # AHRI Call Dashboard
 
-This version uses only Ehsan's Direct Routing Excel export. There are no legacy CSV dependencies. The Power BI project contains four pages: Demand and timing, Routing and queue destinations, Technical outcomes, and Duration and data confidence.
+This version uses only Ehsan's Direct Routing Excel export. There are no legacy CSV dependencies. The Power BI project contains three pages: Demand and timing, Routing and queue destinations, and Outcomes and Duration.
 
 The original source is included at data/source/DirectRouting_Ehsan_2026-09-01.xlsx. Set ProjectRoot to the extracted project folder containing data and powerbi. Metric explanations are provided in the accompanying chat and as measure descriptions in the model.
 

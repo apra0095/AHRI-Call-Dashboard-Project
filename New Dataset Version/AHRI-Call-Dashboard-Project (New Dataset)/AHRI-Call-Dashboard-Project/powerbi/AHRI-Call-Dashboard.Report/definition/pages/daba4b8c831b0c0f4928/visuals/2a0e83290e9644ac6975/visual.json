@@ -23,11 +23,11 @@
                       "Entity": "FactDirectRouting"
                     }
                   },
-                  "Property": "Queue Service"
+                  "Property": "QueueService"
                 }
               },
-              "queryRef": "FactDirectRouting.Queue Service Clean",
-              "nativeQueryRef": "Queue Service",
+              "queryRef": "FactDirectRouting.QueueService",
+              "nativeQueryRef": "QueueService",
               "active": true
             }
           ]
@@ -176,6 +176,7 @@
             }
           ]
         },
+        "howCreated": "User",
         "objects": {
           "general": [
             {
