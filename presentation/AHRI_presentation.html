@@ -144,9 +144,10 @@ Sammi &amp; Aji
 <h2>Project Background</h2>
 <p>The <strong>Australian HR Institute (AHRI)</strong> supports HR professionals through membership, certification, training and events.</p>
 <ul>
+<li class="fragment">AHRI receives member enquiries through email, online forms, and Microsoft Teams calls.</li>
 <li class="fragment">Email and online-form enquiries are already reported through <strong>CRM dashboards</strong></li>
-<li class="fragment">Phone enquiries are handled in <strong>Microsoft Teams</strong>, but AHRI has relied on <strong>raw exports</strong>, not a dashboard view</li>
-<li class="fragment">Teams keeps call records for only <strong>~30 days</strong></li>
+<li class="fragment">Phone activity handled in <strong>Microsoft Teams</strong>, currently has no reporting beyond <strong>raw data exports</strong>.</li>
+<li class="fragment">This project transforms the Direct Routing Excel export into a Power BI dashboard</li>
 </ul>
 </section>
 <section id="business-problem" class="slide level2">
@@ -162,6 +163,51 @@ Sammi &amp; Aji
 <li><p>How long do calls take?</p></li>
 <li><p>Are there any unusual patterns?</p></li>
 </ul>
+</section>
+<section id="aim-and-contribution" class="slide level2">
+<h2>Aim and Contribution</h2>
+<h3 id="aim">Aim</h3>
+<p>To develop an interactive Power BI dashboard that converts raw inbound call records into clear and useful operational insights.</p>
+<h3 id="contribution">Contribution</h3>
+</section>
+<section id="ida" class="slide level2">
+<h2>IDA</h2>
+<p>IDA focused on understanding the structure and quality of the raw call export.</p>
+<p>Key checks included:</p>
+</section>
+<section id="method" class="slide level2 smaller">
+<h2>Method</h2>
+<ol type="1">
+<li><strong>Data preparation</strong>
+<ul>
+<li>Cleaned and checked the Direct Routing export</li>
+<li>Standardised relevant fields and timestamps</li>
+</ul></li>
+<li><strong>Record grouping</strong>
+<ul>
+<li>Used shared IDs to identify related call records</li>
+<li>Classified Main IVR, primary queue, and overflow records</li>
+</ul></li>
+<li><strong>Metric development</strong>
+<ul>
+<li>Created measures for call volume, duration, outcomes, queue activity, and overflow</li>
+</ul></li>
+<li><strong>Dashboard development</strong>
+<ul>
+<li>Built three Power BI pages:
+<ul>
+<li>Calls Overview</li>
+<li>Routing and Queue Destinations</li>
+<li>Outcome and Duration</li>
+</ul></li>
+</ul></li>
+</ol>
+</section>
+<section id="results" class="slide level2">
+<h2>Results</h2>
+</section>
+<section id="challenge-limitations" class="slide level2">
+<h2>Challenge &amp; Limitations</h2>
 
 </section>
     </div>

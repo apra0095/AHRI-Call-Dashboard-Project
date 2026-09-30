@@ -25,9 +25,10 @@ execute:
 The **Australian HR Institute (AHRI)** supports HR professionals through membership, certification, training and events.
 
 ::: incremental
+-   AHRI receives member enquiries through email, online forms, and Microsoft Teams calls.
 -   Email and online-form enquiries are already reported through **CRM dashboards**
--   Phone enquiries are handled in **Microsoft Teams**, but AHRI has relied on **raw exports**, not a dashboard view
--   Teams keeps call records for only **\~30 days**
+-   Phone activity handled in **Microsoft Teams**, currently has no reporting beyond **raw data exports**.
+-   This project transforms the Direct Routing Excel export into a Power BI dashboard
 :::
 
 ## Business problem
@@ -45,3 +46,38 @@ Without a dashboard, it is harder to answer questions such as:
 -   How long do calls take?
 
 -   Are there any unusual patterns?
+
+## Aim and Contribution
+
+### Aim
+
+To develop an interactive Power BI dashboard that converts raw inbound call records into clear and useful operational insights.
+
+### Contribution
+
+## IDA
+IDA focused on understanding the structure and quality of the raw call export.
+
+Key checks included:
+
+## Method {.smaller}
+1. **Data preparation**
+   - Cleaned and checked the Direct Routing export
+   - Standardised relevant fields and timestamps
+
+2. **Record grouping**
+   - Used shared IDs to identify related call records
+   - Classified Main IVR, primary queue, and overflow records
+
+3. **Metric development**
+   - Created measures for call volume, duration, outcomes, queue activity, and overflow
+
+4. **Dashboard development**
+   - Built three Power BI pages:
+     - Calls Overview
+     - Routing and Queue Destinations
+     - Outcome and Duration
+
+## Results
+
+## Challenge & Limitations
