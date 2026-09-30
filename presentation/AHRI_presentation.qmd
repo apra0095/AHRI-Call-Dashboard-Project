@@ -1,0 +1,47 @@
+---
+title: "AHRI Call Dashboard Project"
+subtitle: "Turning raw inbound call records into a Power BI dashboard"
+author: "Sammi & Aji"
+format:
+  revealjs:
+    theme: simple
+    slide-number: true
+    chalkboard: false
+    preview-links: auto
+    transition: fade
+    footer: "AHRI Call Dashboard Project"
+    css: styles.css
+    width: 1280
+    height: 720
+editor: visual
+execute:
+  echo: false
+  warning: false
+  message: false
+---
+
+## Project Background
+
+The **Australian HR Institute (AHRI)** supports HR professionals through membership, certification, training and events.
+
+::: incremental
+-   Email and online-form enquiries are already reported through **CRM dashboards**
+-   Phone enquiries are handled in **Microsoft Teams**, but AHRI has relied on **raw exports**, not a dashboard view
+-   Teams keeps call records for only **\~30 days**
+:::
+
+## Business problem
+
+> AHRI has no visibility and needs a clearer way to understand of when people call, where calls go, or how they end.
+
+Without a dashboard, it is harder to answer questions such as:
+
+-   When are calls happening?
+
+-   Which services receive the most demand?
+
+-   Where are overflow destinations?
+
+-   How long do calls take?
+
+-   Are there any unusual patterns?
