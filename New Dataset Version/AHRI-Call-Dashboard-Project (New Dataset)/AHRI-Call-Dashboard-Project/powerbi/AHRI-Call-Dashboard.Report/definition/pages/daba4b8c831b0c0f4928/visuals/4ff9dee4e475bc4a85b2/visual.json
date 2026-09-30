@@ -10,7 +10,7 @@
     "tabOrder": 8000
   },
   "visual": {
-    "visualType": "clusteredBarChart",
+    "visualType": "clusteredColumnChart",
     "query": {
       "queryState": {
         "Category": {
@@ -186,26 +186,6 @@
             }
           ]
         }
-      },
-      {
-        "name": "11cf9feed0ba388009c0",
-        "ordinal": 1,
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "FactDirectRouting"
-                  }
-                },
-                "Property": "SharedCorrelationId"
-              }
-            },
-            "Function": 5
-          }
-        },
-        "type": "Advanced"
       },
       {
         "name": "fd7fe20655c15c59099b",

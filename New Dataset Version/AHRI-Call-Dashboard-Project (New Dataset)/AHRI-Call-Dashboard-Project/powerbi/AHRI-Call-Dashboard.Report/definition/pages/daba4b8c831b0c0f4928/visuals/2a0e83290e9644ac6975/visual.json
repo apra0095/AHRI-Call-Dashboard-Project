@@ -32,9 +32,6 @@
             }
           ]
         },
-        "Series": {
-          "projections": []
-        },
         "Y": {
           "projections": [
             {
@@ -106,20 +103,6 @@
   },
   "filterConfig": {
     "filters": [
-      {
-        "name": "a641c6bb8d1b40497266",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDirectRouting"
-              }
-            },
-            "Property": "Avg Queue Duration by Service"
-          }
-        },
-        "type": "Advanced"
-      },
       {
         "name": "22912d84347d6d370294",
         "field": {

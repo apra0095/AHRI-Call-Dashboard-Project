@@ -416,7 +416,24 @@ table FactDirectRouting
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Call Duration Bucket' = SWITCH( TRUE(), [Call Total Duration] = 0, "0s", [Call Total Duration] <= 30, "Under 30s", [Call Total Duration] <= 120, "30s-2min", [Call Total Duration] <= 300, "2-5min", "5min+" )
+	column 'Call Duration Bucket' =
+			
+			SWITCH(
+			    TRUE(),
+			    [Call Total Duration] = 0, "0s",
+			    [Call Total Duration] <= 30, "0-30s",
+			    [Call Total Duration] <= 60, "30-60s",
+			    [Call Total Duration] <= 90, "1-1.5min",
+			    [Call Total Duration] <= 120, "1.5-2min",
+			    [Call Total Duration] <= 150, "2-2.5min",
+			    [Call Total Duration] <= 180, "2.5-3min",
+			    [Call Total Duration] <= 210, "3-3.5min",
+			    [Call Total Duration] <= 240, "3.5-4min",
+			    [Call Total Duration] <= 270, "4-4.5min",
+			    [Call Total Duration] <= 300, "4.5-5min",
+			    [Call Total Duration] <= 600, "5-10min",
+			    "10min+"
+			)
 		lineageTag: aa2ef3fd-d195-4fff-8e4c-59b876e4f495
 		summarizeBy: none
 		sortByColumn: 'Call Duration Bucket Order'
@@ -438,7 +455,24 @@ table FactDirectRouting
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Call Duration Bucket Order' = SWITCH( TRUE(), [Call Total Duration] = 0, 1, [Call Total Duration] <= 30, 2, [Call Total Duration] <= 120, 3, [Call Total Duration] <= 300, 4, 5 )
+	column 'Call Duration Bucket Order' =
+			
+			SWITCH(
+			    TRUE(),
+			    [Call Total Duration] = 0, 1,
+			    [Call Total Duration] <= 30, 2,
+			    [Call Total Duration] <= 60, 3,
+			    [Call Total Duration] <= 90, 4,
+			    [Call Total Duration] <= 120, 5,
+			    [Call Total Duration] <= 150, 6,
+			    [Call Total Duration] <= 180, 7,
+			    [Call Total Duration] <= 210, 8,
+			    [Call Total Duration] <= 240, 9,
+			    [Call Total Duration] <= 270, 10,
+			    [Call Total Duration] <= 300, 11,
+			    [Call Total Duration] <= 600, 12,
+			    13
+			)
 		formatString: 0
 		lineageTag: ee49ded6-5711-466a-92a5-c63df2da6bbb
 		summarizeBy: sum

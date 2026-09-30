@@ -332,23 +332,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "c60cb09dc36b8926e065",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDirectRouting"
-              }
-            },
-            "Property": "Main IVR Calls"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }

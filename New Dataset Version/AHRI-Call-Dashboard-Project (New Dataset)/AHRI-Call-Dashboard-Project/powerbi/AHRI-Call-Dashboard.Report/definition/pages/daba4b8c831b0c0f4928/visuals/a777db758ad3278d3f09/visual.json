@@ -333,23 +333,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "03ad0a7c96203e071296",
-        "field": {
-          "Measure": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "FactDirectRouting"
-              }
-            },
-            "Property": "Call Success Rate"
-          }
-        },
-        "type": "Advanced"
-      }
-    ]
   }
 }
