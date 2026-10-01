@@ -1,0 +1,40 @@
+table DimStaff
+	lineageTag: e0cbf8c6-b2ba-44bc-814d-26964a96119a
+
+	column UPN
+		dataType: string
+		lineageTag: 63f3364e-8862-4c4a-9fb7-c967e02c9978
+		summarizeBy: none
+		sourceColumn: UPN
+
+		annotation SummarizationSetBy = Automatic
+
+	column StaffName
+		dataType: string
+		lineageTag: 47dcf3a8-0319-4689-b3eb-7cc788013555
+		summarizeBy: none
+		sourceColumn: StaffName
+
+		annotation SummarizationSetBy = Automatic
+
+	column Team
+		dataType: string
+		lineageTag: ee594a86-8272-4904-9f34-7ad118e11b20
+		summarizeBy: none
+		sourceColumn: Team
+
+		annotation SummarizationSetBy = Automatic
+
+	partition DimStaff = m
+		mode: import
+		source =
+				let
+				    Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("bdPBbuIwEAbgVxnl3J1n2BYVWlSkFamWA+phkk6SKXaMbAeUt1/bobuskyP58jP2b+d4LL6M43OHNSmqLHtPP6mzgrXRSEPxUGyTw+qvh2c71hVb18m5+Hg4Fkp6wi/Ts8uybwFgG2EeupC4jpSg64aTyqf+vimUSedxHR3JtR3ZLLuLBI+JFhZrBnEo9iJ9my83ErwmmgedDz1QL4wV2fley2+Gp8RLNakRdd1K03A/a0qNsKs3yZZmU80jXsmfpJ9PjgiHCRfCpNGzyVOk4Z3NQrNk5UToNCmVN5sIykhLJxq27QgbMZaVktmRJob1jRcKIhvuEYcK7Jj3Ewi2E4WfL/tylSKtpd6jG7Rm2wirzyy3iQ7lP78PW664rgkra675gewng6do/01kY9t44UPKnPKz2Nw05oLeB8l1iscflhjP5MO2TT7zcXpjTwy/bm/c/0FN4sOnhldR8+xqQjgkDA+eL9x7N12Ajoaw4GZQjbF5Q2VCWE94F/z4Aw==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [UPN = _t, StaffName = _t, Team = _t]),
+				    #"Changed Type" = Table.TransformColumnTypes(Source,{{"UPN", type text}, {"StaffName", type text}, {"Team", type text}})
+				in
+				    #"Changed Type"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

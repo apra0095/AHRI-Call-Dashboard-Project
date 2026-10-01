@@ -1,0 +1,80 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "f12fc9cce393ba7da985",
+  "position": {
+    "x": 20,
+    "y": 0,
+    "z": 0,
+    "height": 922,
+    "width": 1772,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_OutboundMeasures"
+                    }
+                  },
+                  "Property": "Outbound unsuccessful"
+                }
+              },
+              "queryRef": "_OutboundMeasures.Outbound unsuccessful",
+              "nativeQueryRef": "Outbound unsuccessful"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_OutboundMeasures"
+                    }
+                  },
+                  "Property": "Outbound technically successful"
+                }
+              },
+              "queryRef": "_OutboundMeasures.Outbound technically successful",
+              "nativeQueryRef": "Outbound technically successful"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_OutboundMeasures"
+                    }
+                  },
+                  "Property": "Outbound technical success rate"
+                }
+              },
+              "queryRef": "_OutboundMeasures.Outbound technical success rate",
+              "nativeQueryRef": "Outbound technical success rate"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_OutboundMeasures"
+                    }
+                  },
+                  "Property": "Median successful outbound duration seconds"
+                }
+              },
+              "queryRef": "_OutboundMeasures.Median successful outbound duration seconds",
+              "nativeQueryRef": "Median successful outbound duration seconds"
+            }
+          ]
+        }
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

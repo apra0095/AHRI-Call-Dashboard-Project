@@ -5,3 +5,17 @@ expression ProjectRoot = "C:\Projects\AHRI-Call-Dashboard-Project" meta [IsParam
 
 	annotation PBI_ResultType = Text
 
+expression RawCallLogs =
+		let
+		    Source = Excel.Workbook(File.Contents("C:\Projects\AHRI-Call-Dashboard-Project\data\source\Export_Outbound.xlsx"), null, true),
+		    in_Sheet = Source{[Item="in",Kind="Sheet"]}[Data],
+		    #"Promoted Headers" = Table.PromoteHeaders(in_Sheet, [PromoteAllScalars=true]),
+		    #"Changed Type" = Table.TransformColumnTypes(#"Promoted Headers",{{"CorrelationId", type text}, {"AAD ObjectId", type text}, {"UPN", type text}, {"Caller Number", type text}, {"Callee Number", type text}, {"Shared correlation ID", type text}})
+		in
+		    #"Changed Type"
+	lineageTag: ba510b00-930e-40fa-b352-6524fae8eae5
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

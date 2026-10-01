@@ -1,0 +1,301 @@
+table FactOutbound
+	lineageTag: 43af272f-f992-4858-97fb-376a9b28d129
+
+	column CorrelationId
+		dataType: string
+		lineageTag: 40eacd62-d3ac-41bd-8697-3dddaabd5c76
+		summarizeBy: none
+		sourceColumn: CorrelationId
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'AAD ObjectId'
+		dataType: string
+		lineageTag: 971a9711-149c-4c16-9298-8c6608f6586a
+		summarizeBy: none
+		sourceColumn: AAD ObjectId
+
+		annotation SummarizationSetBy = Automatic
+
+	column UPN
+		dataType: string
+		lineageTag: fa3c7aa6-6ae5-4fba-bd88-bb44662ff1b5
+		summarizeBy: none
+		sourceColumn: UPN
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Display Name'
+		dataType: string
+		lineageTag: aaab8489-9a88-4061-88cd-0168bea35acd
+		summarizeBy: none
+		sourceColumn: Display Name
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'User country'
+		dataType: string
+		lineageTag: 4001bcbe-90b5-4d2f-b917-4b748ed4a8fb
+		summarizeBy: none
+		sourceColumn: User country
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'External Country'
+		dataType: string
+		lineageTag: 3c9bd504-4f80-444e-b302-ad6c6e36dd5b
+		summarizeBy: none
+		sourceColumn: External Country
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Invite time'
+		dataType: string
+		lineageTag: 76297ad0-5030-4114-9faa-5f09c64862a1
+		summarizeBy: none
+		sourceColumn: Invite time
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Start time'
+		dataType: string
+		lineageTag: 2e08fb39-108a-4bd6-ac4c-ae46284c8cc7
+		summarizeBy: none
+		sourceColumn: Start time
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Failure time'
+		dataType: string
+		lineageTag: e8ab1287-8992-4753-98df-8617eb8e777c
+		summarizeBy: none
+		sourceColumn: Failure time
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'End time'
+		dataType: string
+		lineageTag: a2b64ae9-51bc-40ee-8148-b05155240f67
+		summarizeBy: none
+		sourceColumn: End time
+
+		annotation SummarizationSetBy = Automatic
+
+	column DurationSeconds
+		dataType: int64
+		formatString: 0
+		lineageTag: 97aec136-1aff-4d62-b25a-c15062799813
+		summarizeBy: sum
+		sourceColumn: DurationSeconds
+
+		annotation SummarizationSetBy = Automatic
+
+	column Success
+		dataType: string
+		lineageTag: d94fdeb6-8384-4526-9dfa-dfac6fd618a5
+		summarizeBy: none
+		sourceColumn: Success
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Caller Number'
+		dataType: string
+		lineageTag: 000f7a00-a851-4c35-9a7d-f00f208a5a15
+		summarizeBy: none
+		sourceColumn: Caller Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Callee Number'
+		dataType: string
+		lineageTag: a316f71d-b2f4-4355-901e-044c20080655
+		summarizeBy: none
+		sourceColumn: Callee Number
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Call type'
+		dataType: string
+		lineageTag: b53ae1bf-6de6-4a04-9107-f637bad646ad
+		summarizeBy: none
+		sourceColumn: Call type
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Call Direction'
+		dataType: string
+		lineageTag: dfeb93f4-e5d0-44f9-b820-a82bea53b40d
+		summarizeBy: none
+		sourceColumn: Call Direction
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Azure region for Media'
+		dataType: string
+		lineageTag: 756d40f5-d579-4b18-8e99-e27ac2fe9f92
+		summarizeBy: none
+		sourceColumn: Azure region for Media
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Azure region for Signaling'
+		dataType: string
+		lineageTag: 7d0c34db-8b3c-4f76-8cda-b12789f3fa52
+		summarizeBy: none
+		sourceColumn: Azure region for Signaling
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Final SIP code'
+		dataType: string
+		lineageTag: 317a6529-33ad-474c-8487-f1a804b3013c
+		summarizeBy: none
+		sourceColumn: Final SIP code
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Final Microsoft subcode'
+		dataType: string
+		lineageTag: 13ae4365-6b0c-42af-a28c-d361fca279d8
+		summarizeBy: none
+		sourceColumn: Final Microsoft subcode
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Final SIP Phrase'
+		dataType: string
+		lineageTag: 0b10d03b-f0a8-4e70-9557-796d034927cd
+		summarizeBy: none
+		sourceColumn: Final SIP Phrase
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'SBC FQDN'
+		dataType: string
+		lineageTag: c66d4646-467d-424d-b3ce-a239ef992377
+		summarizeBy: none
+		sourceColumn: SBC FQDN
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Media bypass'
+		dataType: string
+		lineageTag: 5ab4a9fc-1abb-47a4-8a64-15d869ffa67d
+		summarizeBy: none
+		sourceColumn: Media bypass
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Shared correlation ID'
+		dataType: string
+		lineageTag: 8ea4f477-189f-4fa0-b87c-41cf200ce79c
+		summarizeBy: none
+		sourceColumn: Shared correlation ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Administrative Units'
+		dataType: string
+		lineageTag: b6ed2109-c35b-4ce1-a7cf-6fdd2d89155f
+		summarizeBy: none
+		sourceColumn: Administrative Units
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Transfer or Correlation ID'
+		dataType: string
+		lineageTag: 63f72f1b-44d1-4dd1-ad18-64b8ba4a3a8f
+		summarizeBy: none
+		sourceColumn: Transfer or Correlation ID
+
+		annotation SummarizationSetBy = Automatic
+
+	column InviteTimeMelbourne
+		dataType: dateTime
+		formatString: General Date
+		lineageTag: 5c554464-f871-4c2b-a6ac-1713bbd3a341
+		summarizeBy: none
+		sourceColumn: InviteTimeMelbourne
+
+		annotation SummarizationSetBy = Automatic
+
+	column InviteDateMelbourne
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: aa96ff53-7912-4a27-bd0d-2b0036ca643d
+		summarizeBy: none
+		sourceColumn: InviteDateMelbourne
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column InviteHourMelbourne
+		dataType: int64
+		formatString: 0
+		lineageTag: 182d8838-e7e0-4588-8737-a24fc3e3ed12
+		summarizeBy: sum
+		sourceColumn: InviteHourMelbourne
+
+		annotation SummarizationSetBy = Automatic
+
+	partition FactOutbound = m
+		mode: import
+		source =
+				let
+				    Source = RawCallLogs,
+				    #"Filtered Rows" = Table.SelectRows(Source, each ([Call Direction] = "Outbound")),
+				    #"Cleaned Text" = Table.TransformColumns(#"Filtered Rows",{{"UPN", Text.Clean, type text}}),
+				    #"Trimmed Text" = Table.TransformColumns(#"Cleaned Text",{{"UPN", Text.Trim, type text}}),
+				    #"Lowercased Text" = Table.TransformColumns(#"Trimmed Text",{{"UPN", Text.Lower, type text}}),
+				    #"Merged Queries" = Table.NestedJoin(#"Lowercased Text", {"UPN"}, DimStaff, {"UPN"}, "DimStaff", JoinKind.Inner),
+				    #"Removed Columns" = Table.RemoveColumns(#"Merged Queries",{"DimStaff"}),
+				    #"Renamed Columns" = Table.RenameColumns(#"Removed Columns",{{"Duration (seconds)", "DurationSeconds"}}),
+				    #"Changed Type" = Table.TransformColumnTypes(#"Renamed Columns",{{"DurationSeconds", Int64.Type}, {"Display Name", type text}, {"Call Direction", type text}, {"Invite time", type text}, {"Success", type text}}),
+				    #"Added Custom" = Table.AddColumn(#"Changed Type", "InviteTimeMelbourne", each if [Invite time] = null then null else
+				let
+				    UTC =
+				        DateTimeZone.RemoveZone(
+				            DateTimeZone.SwitchZone(
+				                DateTimeZone.FromText([Invite time]),
+				                0
+				            )
+				        ),
+				    Y = Date.Year(Date.From(UTC)),
+				    FirstSunday = (MonthNumber as number) as date =>
+				        let
+				            FirstDay = #date(Y, MonthNumber, 1)
+				        in
+				            Date.AddDays(
+				                FirstDay,
+				                Number.Mod(
+				                    7 - Date.DayOfWeek(FirstDay, Day.Sunday),
+				                    7
+				                )
+				            ),
+				    DstEndUTC =
+				        DateTime.From(FirstSunday(4))
+				        + #duration(0, 3, 0, 0)
+				        - #duration(0, 11, 0, 0),
+				    DstStartUTC =
+				        DateTime.From(FirstSunday(10))
+				        + #duration(0, 2, 0, 0)
+				        - #duration(0, 10, 0, 0),
+				    Offset =
+				        if UTC < DstEndUTC or UTC >= DstStartUTC
+				        then 11
+				        else 10
+				in
+				    UTC + #duration(0, Offset, 0, 0)),
+				    #"Changed Type1" = Table.TransformColumnTypes(#"Added Custom",{{"InviteTimeMelbourne", type datetime}}),
+				    #"Added Custom1" = Table.AddColumn(#"Changed Type1", "InviteDateMelbourne", each Date.From([InviteTimeMelbourne])),
+				    #"Changed Type2" = Table.TransformColumnTypes(#"Added Custom1",{{"InviteDateMelbourne", type date}}),
+				    #"Added Custom2" = Table.AddColumn(#"Changed Type2", "InviteHourMelbourne", each Time.Hour(Time.From([InviteTimeMelbourne]))),
+				    #"Changed Type3" = Table.TransformColumnTypes(#"Added Custom2",{{"InviteHourMelbourne", Int64.Type}})
+				in
+				    #"Changed Type3"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table
+

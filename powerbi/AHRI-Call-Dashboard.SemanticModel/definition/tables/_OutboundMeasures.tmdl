@@ -1,0 +1,98 @@
+table _OutboundMeasures
+	lineageTag: bdfc39fd-ef78-4923-9500-954b759eff76
+
+	measure 'Outbound attempts' =
+			
+			COALESCE(
+			    DISTINCTCOUNT(FactOutbound[CorrelationId]),
+			    0
+			)
+		formatString: 0
+		lineageTag: c1d8f981-cc54-44a2-968c-d5187a780e0c
+
+	measure 'Outbound staff' =
+			
+			COALESCE(
+			    DISTINCTCOUNT(FactOutbound[UPN]),
+			    0
+			)
+		formatString: 0
+		lineageTag: f920cac4-4952-4164-858f-11c00088e5d9
+
+	measure 'Average outbound attempts per weekday' =
+			
+			VAR EligibleDates =
+			    FILTER(
+			        DimRoutingDate,
+			        DimRoutingDate[WeekdayNumber] <= 5
+			            && DimRoutingDate[IsCompleteDay] = TRUE()
+			    )
+			RETURN
+			    AVERAGEX(
+			        EligibleDates,
+			        [Outbound attempts]
+			    )
+		formatString: 0.0
+		lineageTag: d0f6b5cb-e7cf-4fbd-8466-4830675902ca
+
+	measure 'Outbound technically successful' =
+			
+			CALCULATE(
+			    [Outbound attempts],
+			    KEEPFILTERS(FactOutbound[Success] = "Yes")
+			)
+		formatString: 0
+		lineageTag: ae2323a1-108b-431d-87e1-be2560c51b0a
+
+	measure 'Outbound unsuccessful' =
+			
+			CALCULATE(
+			    [Outbound attempts],
+			    KEEPFILTERS(FactOutbound[Success] = "No")
+			)
+		formatString: 0
+		lineageTag: 05908b85-2e6a-4c64-a745-3c0593a6af10
+
+	measure 'Outbound technical success rate' =
+			
+			DIVIDE(
+			    [Outbound technically successful],
+			    [Outbound attempts]
+			)
+		formatString: 0.0%;-0.0%;0.0%
+		lineageTag: bf89f8d8-a9ab-40fb-88d9-37b8aa0d5c7e
+
+	measure 'Average successful outbound duration seconds' =
+			
+			CALCULATE(
+			    AVERAGE(FactOutbound[DurationSeconds]),
+			    KEEPFILTERS(FactOutbound[Success] = "Yes")
+			)
+		formatString: 0.0
+		lineageTag: 3c4ff788-f0dd-4b7d-8c2c-eafa2ab22bfa
+
+	measure 'Median successful outbound duration seconds' =
+			
+			CALCULATE(
+			    MEDIAN(FactOutbound[DurationSeconds]),
+			    KEEPFILTERS(FactOutbound[Success] = "Yes")
+			)
+		formatString: 0.0
+		lineageTag: 8990644d-ae61-470e-9347-0b66c870c5fb
+
+	column Placeholder
+		isHidden
+		formatString: 0
+		lineageTag: daf0db80-45f2-4e5f-a3e8-14f645971ba3
+		summarizeBy: sum
+		isNameInferred
+		sourceColumn: [Placeholder]
+
+		annotation SummarizationSetBy = Automatic
+
+	partition _OutboundMeasures = calculated
+		mode: import
+		source = ROW("Placeholder", 0)
+
+	annotation PBI_Id = 954f8896f90f4dc3bea74b6490d94842
+

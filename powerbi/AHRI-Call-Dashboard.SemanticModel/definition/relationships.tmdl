@@ -6,3 +6,11 @@ relationship 772de6b3-0525-52c5-8e6e-d04aa1ed88c3
 	fromColumn: FactRoutingGroup.EntryDate
 	toColumn: DimRoutingDate.Date
 
+relationship AutoDetected_b378b173-9968-47a8-a869-3c3cd2dacc1c
+	fromColumn: FactOutbound.UPN
+	toColumn: DimStaff.UPN
+
+relationship b09f578e-5652-b398-4593-9691238bddcf
+	fromColumn: FactOutbound.InviteDateMelbourne
+	toColumn: DimRoutingDate.Date
+

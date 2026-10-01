@@ -18,7 +18,9 @@ table DimRoutingDate
 	column WeekdayNumber = WEEKDAY(DimRoutingDate[Date], 2)
 		formatString: 0
 		lineageTag: 32de1e41-51f8-509c-bad8-d5020a48ec12
-		summarizeBy: none
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
 
 	column YearMonth = FORMAT(DimRoutingDate[Date], "yyyy-MM")
 		lineageTag: 725ed941-2a18-58c1-ba2c-411af826498f

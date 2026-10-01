@@ -11,7 +11,7 @@
         {
           "location": {
             "x": 906.80608385980406,
-            "y": 16.111111111111114
+            "y": 21.046140247337888
           },
           "nodeIndex": "_RoutingMeasures",
           "nodeLineageTag": "b85260c2-ec77-5e97-b7cf-58576fab8767",
@@ -19,12 +19,12 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 1
         },
         {
           "location": {
             "x": 1184.1394171931374,
-            "y": 106.55555555555556
+            "y": 111.49058469178233
           },
           "nodeIndex": "DimQualityCheck",
           "nodeLineageTag": "13fc8f3c-a5ef-5ed1-b58a-5f4737d12d77",
@@ -32,12 +32,12 @@
             "height": 128,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 2
         },
         {
           "location": {
             "x": 334.1847511806298,
-            "y": 14.804949095111795
+            "y": 19.739978231338569
           },
           "nodeIndex": "DimRoutingDate",
           "nodeLineageTag": "899ef440-7377-59a3-9720-56cc8ab3e75a",
@@ -45,12 +45,12 @@
             "height": 224,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 8
         },
         {
           "location": {
             "x": 618.36163941535983,
-            "y": -9.8700582724535479
+            "y": -4.935029136226774
           },
           "nodeIndex": "FactDirectRouting",
           "nodeLineageTag": "d8249466-366d-5b9b-97a6-8e71d1cb829b",
@@ -58,12 +58,12 @@
             "height": 300,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 3
         },
         {
           "location": {
             "x": 50,
-            "y": -40.12994172754648
+            "y": -35.194912591319707
           },
           "nodeIndex": "FactRoutingGroup",
           "nodeLineageTag": "68da6c0c-9df5-5b8b-96ac-83eaeb8941a6",
@@ -71,7 +71,45 @@
             "height": 296,
             "width": 234
           },
-          "zIndex": 0
+          "zIndex": 4
+        },
+        {
+          "location": {
+            "x": 1827.1394171931374,
+            "y": 319.55555555555554
+          },
+          "nodeIndex": "DimStaff",
+          "nodeLineageTag": "e0cbf8c6-b2ba-44bc-814d-26964a96119a",
+          "size": {
+            "height": 152,
+            "width": 234
+          },
+          "zIndex": 5
+        },
+        {
+          "location": {
+            "x": 934.38941719313743,
+            "y": 445
+          },
+          "nodeIndex": "FactOutbound",
+          "nodeLineageTag": "43af272f-f992-4858-97fb-376a9b28d129",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 6
+        },
+        {
+          "location": {
+            "x": 2061.1394171931374,
+            "y": 153.37523407343764
+          },
+          "nodeIndex": "_OutboundMeasures",
+          "size": {
+            "height": 200,
+            "width": 234
+          },
+          "zIndex": 7
         }
       ],
       "name": "All tables",

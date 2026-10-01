@@ -11,11 +11,14 @@ annotation __PBI_TimeIntelligenceEnabled = 0
 
 annotation PBI_ProTooling = ["DevMode"]
 
-annotation PBI_QueryOrder = ["ProjectRoot","FactDirectRouting","FactRoutingGroup","DimQualityCheck","_RoutingMeasures"]
+annotation PBI_QueryOrder = ["ProjectRoot","FactDirectRouting","FactRoutingGroup","DimQualityCheck","_RoutingMeasures","RawCallLogs","DimStaff","FactOutbound"]
 
 ref table FactDirectRouting
 ref table FactRoutingGroup
 ref table DimRoutingDate
 ref table DimQualityCheck
 ref table _RoutingMeasures
+ref table DimStaff
+ref table FactOutbound
+ref table _OutboundMeasures
 
