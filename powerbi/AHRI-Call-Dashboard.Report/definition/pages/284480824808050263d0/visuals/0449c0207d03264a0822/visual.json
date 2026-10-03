@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "3c54cfb3e70aa7db130e",
+  "name": "0449c0207d03264a0822",
   "position": {
-    "x": 1280,
-    "y": 255,
-    "z": 7000,
-    "height": 120,
-    "width": 600,
-    "tabOrder": 7000
+    "x": 940,
+    "y": 402,
+    "z": 11000,
+    "height": 108,
+    "width": 940,
+    "tabOrder": 11000
   },
   "visual": {
     "visualType": "card",
@@ -23,15 +23,17 @@
                       "Entity": "_OutboundMeasures"
                     }
                   },
-                  "Property": "Average outbound attempts per weekday"
+                  "Property": "Average call length (m:ss)"
                 }
               },
-              "queryRef": "_OutboundMeasures.Average outbound attempts per weekday",
-              "nativeQueryRef": "Average outbound attempts per weekday",
-              "format": "#,0.0"
+              "queryRef": "_OutboundMeasures.Average call length (m:ss)",
+              "nativeQueryRef": "Average call length (m:ss)"
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "isDefaultSort": true
       }
     },
     "objects": {
@@ -132,7 +134,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Average attempts per weekday'"
+                  "Value": "'Average call length'"
                 }
               }
             },

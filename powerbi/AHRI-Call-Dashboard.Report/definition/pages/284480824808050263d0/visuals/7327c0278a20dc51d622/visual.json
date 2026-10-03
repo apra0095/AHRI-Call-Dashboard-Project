@@ -1,19 +1,19 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "1fdcb00c7e242afefc0a",
+  "name": "7327c0278a20dc51d622",
   "position": {
-    "x": 750,
-    "y": 705,
-    "z": 11000,
-    "height": 280,
-    "width": 1130,
-    "tabOrder": 11000
+    "x": 40,
+    "y": 402,
+    "z": 9000,
+    "height": 586,
+    "width": 880,
+    "tabOrder": 9000
   },
   "visual": {
-    "visualType": "pivotTable",
+    "visualType": "clusteredBarChart",
     "query": {
       "queryState": {
-        "Columns": {
+        "Category": {
           "projections": [
             {
               "field": {
@@ -23,49 +23,35 @@
                       "Entity": "FactOutbound"
                     }
                   },
-                  "Property": "InviteHourMelbourne"
+                  "Property": "Unsuccessful Reason"
                 }
               },
-              "queryRef": "FactOutbound.InviteHourMelbourne",
-              "nativeQueryRef": "InviteHourMelbourne",
+              "queryRef": "FactOutbound.Unsuccessful Reason",
+              "nativeQueryRef": "Unsuccessful Reason",
               "active": true
             }
           ]
         },
-        "Rows": {
+        "Y": {
           "projections": [
             {
               "field": {
-                "Column": {
+                "Aggregation": {
                   "Expression": {
-                    "SourceRef": {
-                      "Entity": "DimRoutingDate"
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "FactOutbound"
+                        }
+                      },
+                      "Property": "Unsuccessful Reason"
                     }
                   },
-                  "Property": "Weekday"
+                  "Function": 5
                 }
               },
-              "queryRef": "DimRoutingDate.Weekday",
-              "nativeQueryRef": "Weekday",
-              "active": true
-            }
-          ]
-        },
-        "Values": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_OutboundMeasures"
-                    }
-                  },
-                  "Property": "Outbound attempts"
-                }
-              },
-              "queryRef": "_OutboundMeasures.Outbound attempts",
-              "nativeQueryRef": "Outbound attempts"
+              "queryRef": "CountNonNull(FactOutbound.Unsuccessful Reason)",
+              "nativeQueryRef": "Count of Unsuccessful Reason"
             }
           ]
         }
@@ -74,111 +60,98 @@
         "sort": [
           {
             "field": {
-              "Column": {
+              "Aggregation": {
                 "Expression": {
-                  "SourceRef": {
-                    "Entity": "DimRoutingDate"
+                  "Column": {
+                    "Expression": {
+                      "SourceRef": {
+                        "Entity": "FactOutbound"
+                      }
+                    },
+                    "Property": "Unsuccessful Reason"
                   }
                 },
-                "Property": "Weekday"
+                "Function": 5
               }
             },
-            "direction": "Ascending"
+            "direction": "Descending"
           }
         ],
         "isDefaultSort": true
       }
     },
     "objects": {
-      "grid": [
+      "dataPoint": [
         {
           "properties": {
-            "textSize": {
+            "defaultColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "Literal": {
+                      "Value": "'#007F86'"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "labels": [
+        {
+          "properties": {
+            "show": {
               "expr": {
                 "Literal": {
-                  "Value": "11D"
-                }
-              }
-            }
-          }
-        }
-      ],
-      "rowHeaders": [
-        {
-          "properties": {
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#173A45'"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      ],
-      "columnHeaders": [
-        {
-          "properties": {
-            "fontColor": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#173A45'"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      ],
-      "values": [
-        {
-          "properties": {
-            "fontColorPrimary": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#173A45'"
-                    }
-                  }
+                  "Value": "true"
                 }
               }
             },
-            "backColorPrimary": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#EAF5F4'"
-                    }
-                  }
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
+              }
+            },
+            "labelPrecision": {
+              "expr": {
+                "Literal": {
+                  "Value": "0L"
                 }
               }
             }
           }
         }
       ],
-      "subTotals": [
+      "categoryAxis": [
         {
           "properties": {
-            "rowSubtotals": {
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "showAxisTitle": {
               "expr": {
                 "Literal": {
                   "Value": "false"
                 }
               }
             },
-            "columnSubtotals": {
+            "labelDisplayUnits": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "1D"
                 }
               }
             }
@@ -231,7 +204,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Outbound attempts by weekday and hour · Melbourne'"
+                  "Value": "'Unsuccessful attempts by reason'"
                 }
               }
             },
@@ -257,6 +230,26 @@
               "expr": {
                 "Literal": {
                   "Value": "'Segoe UI'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Unsuccessful Reason by Unsuccessful Reason'"
+                }
+              }
+            },
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

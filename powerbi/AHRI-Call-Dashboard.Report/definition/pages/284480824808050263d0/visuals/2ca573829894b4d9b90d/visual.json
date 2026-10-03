@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "3c54cfb3e70aa7db130e",
+  "name": "2ca573829894b4d9b90d",
   "position": {
-    "x": 1280,
-    "y": 255,
-    "z": 7000,
-    "height": 120,
-    "width": 600,
-    "tabOrder": 7000
+    "x": 471.055900621118,
+    "y": 258.38509316770183,
+    "z": 8000,
+    "height": 119.25465838509315,
+    "width": 449.19254658385091,
+    "tabOrder": 8000
   },
   "visual": {
     "visualType": "card",
@@ -23,15 +23,32 @@
                       "Entity": "_OutboundMeasures"
                     }
                   },
-                  "Property": "Average outbound attempts per weekday"
+                  "Property": "Outbound technically successful"
                 }
               },
-              "queryRef": "_OutboundMeasures.Average outbound attempts per weekday",
-              "nativeQueryRef": "Average outbound attempts per weekday",
-              "format": "#,0.0"
+              "queryRef": "_OutboundMeasures.Outbound technically successful",
+              "nativeQueryRef": "Outbound technically successful"
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_OutboundMeasures"
+                  }
+                },
+                "Property": "Outbound technically successful"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
       }
     },
     "objects": {
@@ -79,7 +96,7 @@
             "labelPrecision": {
               "expr": {
                 "Literal": {
-                  "Value": "1L"
+                  "Value": "0L"
                 }
               }
             }
@@ -132,7 +149,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Average attempts per weekday'"
+                  "Value": "'Successful attempts'"
                 }
               }
             },

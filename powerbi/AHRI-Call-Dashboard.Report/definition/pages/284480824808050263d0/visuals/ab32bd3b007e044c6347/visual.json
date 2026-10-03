@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "3c54cfb3e70aa7db130e",
+  "name": "ab32bd3b007e044c6347",
   "position": {
-    "x": 1280,
-    "y": 255,
-    "z": 7000,
-    "height": 120,
-    "width": 600,
-    "tabOrder": 7000
+    "x": 39.751552795031053,
+    "y": 254.40993788819873,
+    "z": 5000,
+    "height": 119.25465838509315,
+    "width": 415.40372670807449,
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "card",
@@ -23,12 +23,12 @@
                       "Entity": "_OutboundMeasures"
                     }
                   },
-                  "Property": "Average outbound attempts per weekday"
+                  "Property": "Outbound attempts"
                 }
               },
-              "queryRef": "_OutboundMeasures.Average outbound attempts per weekday",
-              "nativeQueryRef": "Average outbound attempts per weekday",
-              "format": "#,0.0"
+              "queryRef": "_OutboundMeasures.Outbound attempts",
+              "nativeQueryRef": "Outbound attempts",
+              "format": "#,0"
             }
           ]
         }
@@ -79,7 +79,7 @@
             "labelPrecision": {
               "expr": {
                 "Literal": {
-                  "Value": "1L"
+                  "Value": "0L"
                 }
               }
             }
@@ -132,7 +132,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Average attempts per weekday'"
+                  "Value": "'Outbound call attempts'"
                 }
               }
             },

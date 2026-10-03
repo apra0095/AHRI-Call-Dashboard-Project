@@ -1,17 +1,38 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.12.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
   "name": "0b0a17793d0308225963",
   "position": {
     "x": 40,
     "y": 1032,
-    "width": 1840,
+    "z": 13000,
     "height": 30,
-    "z": 14,
-    "tabOrder": 14
+    "width": 1840,
+    "tabOrder": 13000
   },
   "visual": {
     "visualType": "textbox",
-    "drillFilterOtherVisuals": true,
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Weekday averages include zero-call days and public holidays; export boundary dates excluded. Monthly chart: May–August; selected dates still apply.",
+                    "textStyle": {
+                      "fontFamily": "Segoe UI",
+                      "fontSize": "11pt",
+                      "color": "#173a45"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "background": [
         {
@@ -27,28 +48,6 @@
         }
       ]
     },
-    "objects": {
-      "general": [
-        {
-          "properties": {
-            "paragraphs": [
-              {
-                "textRuns": [
-                  {
-                    "value": "Weekday averages include zero-call days and public holidays; export boundary dates excluded. Monthly chart: May–August; selected dates still apply.",
-                    "textStyle": {
-                      "fontFamily": "Segoe UI",
-                      "fontSize": "11pt",
-                      "fontWeight": "normal",
-                      "color": "#173A45"
-                    }
-                  }
-                ]
-              }
-            ]
-          }
-        }
-      ]
-    }
+    "drillFilterOtherVisuals": true
   }
 }

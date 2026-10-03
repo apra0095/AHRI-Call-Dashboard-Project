@@ -70,7 +70,7 @@
                 "Property": "Call Duration Bucket"
               }
             },
-            "direction": "Descending"
+            "direction": "Ascending"
           }
         ]
       }

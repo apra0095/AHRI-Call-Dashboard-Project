@@ -1,85 +1,67 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "3c54cfb3e70aa7db130e",
+  "name": "f448ae8771ca5dd7c82b",
   "position": {
-    "x": 1280,
-    "y": 255,
-    "z": 7000,
-    "height": 120,
-    "width": 600,
-    "tabOrder": 7000
+    "x": 40,
+    "y": 135,
+    "z": 2000,
+    "height": 100,
+    "width": 650,
+    "tabOrder": 2000
   },
   "visual": {
-    "visualType": "card",
+    "visualType": "slicer",
     "query": {
       "queryState": {
         "Values": {
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "_OutboundMeasures"
+                      "Entity": "DimRoutingDate"
                     }
                   },
-                  "Property": "Average outbound attempts per weekday"
+                  "Property": "Date"
                 }
               },
-              "queryRef": "_OutboundMeasures.Average outbound attempts per weekday",
-              "nativeQueryRef": "Average outbound attempts per weekday",
-              "format": "#,0.0"
+              "queryRef": "DimRoutingDate.Date",
+              "nativeQueryRef": "Date",
+              "active": true
             }
           ]
         }
       }
     },
     "objects": {
-      "categoryLabels": [
+      "data": [
         {
           "properties": {
-            "show": {
+            "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "'Between'"
                 }
               }
             }
           }
         }
       ],
-      "labels": [
+      "selection": [
         {
           "properties": {
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#007F86'"
-                    }
-                  }
+            "singleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             },
-            "fontSize": {
+            "selectAllCheckboxEnabled": {
               "expr": {
                 "Literal": {
-                  "Value": "34D"
-                }
-              }
-            },
-            "labelDisplayUnits": {
-              "expr": {
-                "Literal": {
-                  "Value": "1D"
-                }
-              }
-            },
-            "labelPrecision": {
-              "expr": {
-                "Literal": {
-                  "Value": "1L"
+                  "Value": "true"
                 }
               }
             }
@@ -132,7 +114,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Average attempts per weekday'"
+                  "Value": "'Call date · Melbourne'"
                 }
               }
             },

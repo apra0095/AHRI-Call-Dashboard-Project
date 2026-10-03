@@ -41,7 +41,7 @@ table _OutboundMeasures
 			    [Outbound attempts],
 			    KEEPFILTERS(FactOutbound[Success] = "Yes")
 			)
-		formatString: 0
+		formatString: #,0
 		lineageTag: ae2323a1-108b-431d-87e1-be2560c51b0a
 
 	measure 'Outbound unsuccessful' =
@@ -50,7 +50,7 @@ table _OutboundMeasures
 			    [Outbound attempts],
 			    KEEPFILTERS(FactOutbound[Success] = "No")
 			)
-		formatString: 0
+		formatString: #,0
 		lineageTag: 05908b85-2e6a-4c64-a745-3c0593a6af10
 
 	measure 'Outbound technical success rate' =
@@ -79,6 +79,12 @@ table _OutboundMeasures
 			)
 		formatString: 0.0
 		lineageTag: 8990644d-ae61-470e-9347-0b66c870c5fb
+
+	measure 'Average call length (m:ss)' =
+			
+			VAR s = ROUND ( [Average successful outbound duration seconds], 0 )
+			RETURN IF ( NOT ISBLANK ( s ), INT ( s / 60 ) & ":" & FORMAT ( MOD ( s, 60 ), "00" ) )
+		lineageTag: 86359fde-d88d-42a1-b85b-a140df72235d
 
 	column Placeholder
 		isHidden

@@ -78,7 +78,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Avg. duration by outcome'"
+                  "Value": "'Avg duration by outcome'"
                 }
               }
             }

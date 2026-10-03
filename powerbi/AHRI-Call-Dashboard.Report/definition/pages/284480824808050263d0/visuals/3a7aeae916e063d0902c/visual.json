@@ -1,12 +1,12 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "3c54cfb3e70aa7db130e",
+  "name": "3a7aeae916e063d0902c",
   "position": {
-    "x": 1280,
-    "y": 255,
+    "x": 1405.2173913043478,
+    "y": 254.40993788819873,
     "z": 7000,
-    "height": 120,
-    "width": 600,
+    "height": 121.24223602484471,
+    "width": 475.03105590062108,
     "tabOrder": 7000
   },
   "visual": {
@@ -23,15 +23,32 @@
                       "Entity": "_OutboundMeasures"
                     }
                   },
-                  "Property": "Average outbound attempts per weekday"
+                  "Property": "Outbound technical success rate"
                 }
               },
-              "queryRef": "_OutboundMeasures.Average outbound attempts per weekday",
-              "nativeQueryRef": "Average outbound attempts per weekday",
-              "format": "#,0.0"
+              "queryRef": "_OutboundMeasures.Outbound technical success rate",
+              "nativeQueryRef": "Outbound technical success rate"
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_OutboundMeasures"
+                  }
+                },
+                "Property": "Outbound technical success rate"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
       }
     },
     "objects": {
@@ -132,7 +149,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Average attempts per weekday'"
+                  "Value": "'Success Rate'"
                 }
               }
             },

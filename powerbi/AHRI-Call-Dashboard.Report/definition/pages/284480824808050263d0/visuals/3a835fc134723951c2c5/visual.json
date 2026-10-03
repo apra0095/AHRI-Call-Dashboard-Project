@@ -1,86 +1,129 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
-  "name": "3c54cfb3e70aa7db130e",
+  "name": "3a835fc134723951c2c5",
   "position": {
-    "x": 1280,
-    "y": 255,
-    "z": 7000,
-    "height": 120,
-    "width": 600,
-    "tabOrder": 7000
+    "x": 720,
+    "y": 135,
+    "z": 3000,
+    "height": 100,
+    "width": 400,
+    "tabOrder": 3000
   },
   "visual": {
-    "visualType": "card",
+    "visualType": "slicer",
     "query": {
       "queryState": {
         "Values": {
           "projections": [
             {
               "field": {
-                "Measure": {
+                "Column": {
                   "Expression": {
                     "SourceRef": {
-                      "Entity": "_OutboundMeasures"
+                      "Entity": "DimStaff"
                     }
                   },
-                  "Property": "Average outbound attempts per weekday"
+                  "Property": "Team"
                 }
               },
-              "queryRef": "_OutboundMeasures.Average outbound attempts per weekday",
-              "nativeQueryRef": "Average outbound attempts per weekday",
-              "format": "#,0.0"
+              "queryRef": "DimStaff.Team",
+              "nativeQueryRef": "Team",
+              "active": true
             }
           ]
         }
       }
     },
     "objects": {
-      "categoryLabels": [
+      "data": [
         {
           "properties": {
-            "show": {
+            "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "'Dropdown'"
                 }
               }
             }
           }
         }
       ],
-      "labels": [
+      "selection": [
         {
           "properties": {
-            "color": {
-              "solid": {
-                "color": {
-                  "expr": {
-                    "Literal": {
-                      "Value": "'#007F86'"
+            "singleSelect": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "selectAllCheckboxEnabled": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "general": [
+        {
+          "properties": {
+            "filter": {
+              "filter": {
+                "Version": 2,
+                "From": [
+                  {
+                    "Name": "d",
+                    "Entity": "DimStaff",
+                    "Type": 0
+                  }
+                ],
+                "Where": [
+                  {
+                    "Condition": {
+                      "In": {
+                        "Expressions": [
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "d"
+                                }
+                              },
+                              "Property": "Team"
+                            }
+                          }
+                        ],
+                        "Values": [
+                          [
+                            {
+                              "Literal": {
+                                "Value": "'Events'"
+                              }
+                            }
+                          ],
+                          [
+                            {
+                              "Literal": {
+                                "Value": "'Membership'"
+                              }
+                            }
+                          ],
+                          [
+                            {
+                              "Literal": {
+                                "Value": "'HRSC'"
+                              }
+                            }
+                          ]
+                        ]
+                      }
                     }
                   }
-                }
-              }
-            },
-            "fontSize": {
-              "expr": {
-                "Literal": {
-                  "Value": "34D"
-                }
-              }
-            },
-            "labelDisplayUnits": {
-              "expr": {
-                "Literal": {
-                  "Value": "1D"
-                }
-              }
-            },
-            "labelPrecision": {
-              "expr": {
-                "Literal": {
-                  "Value": "1L"
-                }
+                ]
               }
             }
           }
@@ -132,7 +175,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Average attempts per weekday'"
+                  "Value": "'Team'"
                 }
               }
             },

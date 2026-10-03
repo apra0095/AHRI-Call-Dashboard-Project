@@ -239,6 +239,55 @@ table FactOutbound
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Unsuccessful Reason' =
+			
+			IF (
+			    FactOutbound[Success] = "No",
+			    SWITCH (
+			        FactOutbound[Final SIP code],
+			        "487", "Not answered",
+			        "480", "Not answered",
+			        "603", "Call rejected or line busy",
+			        "486", "Call rejected or line busy",
+			        "408", "System or network issue",
+			        "403", "System or network issue",
+			        "502", "System or network issue",
+			        "Other"
+			    )
+			)
+		lineageTag: 4ac24c02-ee89-4e2a-8f70-72493c14623d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Duration Band' =
+			
+			VAR s = FactOutbound[DurationSeconds]
+			VAR b = IF ( s <= 30, 0, MIN ( INT ( ( s - 1 ) / 30 ), 10 ) )
+			VAR startS = b * 30
+			VAR endS = startS + 30
+			RETURN
+			    IF (
+			        b = 10,
+			        "Over 5:00",
+			        INT ( startS / 60 ) & ":" & FORMAT ( MOD ( startS, 60 ), "00" )
+			            & "-" & INT ( endS / 60 ) & ":" & FORMAT ( MOD ( endS, 60 ), "00" )
+			    )
+		lineageTag: b29ba17e-f10e-4d59-a32c-72283531e04d
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Duration Band Sort' =
+			
+			VAR s = FactOutbound[DurationSeconds]
+			RETURN IF ( s <= 30, 0, MIN ( INT ( ( s - 1 ) / 30 ), 10 ) )
+		formatString: 0
+		lineageTag: 3c5f42d5-3f34-447d-ae79-0b38769df543
+		summarizeBy: sum
+
+		annotation SummarizationSetBy = Automatic
+
 	partition FactOutbound = m
 		mode: import
 		source =
