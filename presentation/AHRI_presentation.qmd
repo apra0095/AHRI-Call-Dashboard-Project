@@ -1,6 +1,6 @@
 ---
 title: "AHRI Call Dashboard Project"
-subtitle: "Turning raw inbound call records into a Power BI dashboard"
+subtitle: "Turning inbound & outbound call records into a Power BI dashboard"
 author: "Sammi & Aji"
 format:
   revealjs:
@@ -9,7 +9,7 @@ format:
     chalkboard: false
     preview-links: auto
     transition: fade
-    footer: "AHRI Call Dashboard Project"
+    footer: "AHRI Call Dashboard · Inbound and outbound"
     css: styles.css
     width: 1280
     height: 720
@@ -20,7 +20,7 @@ execute:
   message: false
 ---
 
-## Project Background
+## Background
 
 The **Australian HR Institute (AHRI)** supports HR professionals through membership, certification, training and events.
 
@@ -31,7 +31,7 @@ The **Australian HR Institute (AHRI)** supports HR professionals through members
 -   This project transforms the Direct Routing Excel export into a Power BI dashboard
 :::
 
-## Business problem
+## Business problem {.smaller}
 
 > AHRI has no visibility and needs a clearer way to understand of when people call, where calls go, or how they end.
 
@@ -47,37 +47,97 @@ Without a dashboard, it is harder to answer questions such as:
 
 -   Are there any unusual patterns?
 
-## Aim and Contribution
+::: {.callout-box}
+**Goal:** give the Member Engagement Team a clear view of phone activity.
+:::
 
-### Aim
+## Scope {.smaller}
 
-To develop an interactive Power BI dashboard that converts raw inbound call records into clear and useful operational insights.
+::: {.columns}
+::: {.column width="50%"}
+### In scope
+- **Inbound:** when calls arrive, how they are routed, how they end
+- **Outbound:** who calls, when, how calls end, how long connected calls last
+- Current-state visibility
+:::
 
-### Contribution
+::: {.column width="50%"}
+### Out of scope
+- Real-time or live reporting
+- Individual staff performance. The outbound pages show **activity**, not performance.
+:::
+:::
 
-## IDA
-IDA focused on understanding the structure and quality of the raw call export.
+## Business questions {.smaller}
 
-Key checks included:
+| | Question | Dashboard page |
+|---|---|---|
+| Inbound | How many calls arrive, and when? | Inbound Call Overview |
+| Inbound | Where do callers go? | Routing and queue destinations |
+| Inbound | How do calls end, and how long do they take? | Outcome and Duration |
+| Outbound | Who is making outbound calls, and when? | Outbound activity |
+| Outbound | How do outbound calls end, and how long do they last? | Outbound outcome and duration |
 
-## Method {.smaller}
-1. **Data preparation**
-   - Cleaned and checked the Direct Routing export
-   - Standardised relevant fields and timestamps
+## Data {.smaller}
 
-2. **Record grouping**
-   - Used shared IDs to identify related call records
-   - Classified Main IVR, primary queue, and overflow records
+::: {.columns}
+::: {.column width="50%"}
+### Inbound
+- Teams Direct Routing export
+- 6 April – 1 September 2026
+- **3,986 unique calls** through main IVR
+:::
 
-3. **Metric development**
-   - Created measures for call volume, duration, outcomes, queue activity, and overflow
+::: {.column width="50%"}
+### Outbound
+- Export Outbound file
+- 6 April – 1 September 2026
+- Pages focus on **18 staff** mapped to three teams: **6,046 attempts**
+:::
+:::
 
-4. **Dashboard development**
-   - Built three Power BI pages:
-     - Calls Overview
-     - Routing and Queue Destinations
-     - Outcome and Duration
+## Approach {.smaller}
 
-## Results
+::: {.columns}
+::: {.column width="50%"}
 
-## Challenge & Limitations
+1.  **Data preparation**
+    -   Cleaned and checked the Direct Routing export and Outbound export
+    -   Standardised relevant fields and timestamps
+2.  **Record grouping**
+    -   Used shared IDs to identify related call records
+    -   Classified Main IVR, primary queue, and overflow records
+3.  **Metric development**
+    -   Created measures for call volume, duration, outcomes, queue activity, and overflow
+:::
+
+::: {.column width="50%"}
+4.  **Dashboard development**
+    -   Built five Power BI pages:
+        -   Calls Overview
+        -   Routing and Queue Destinations
+        -   Outcome and Duration
+        -   Outbound activity
+        -  Outbound outcome and duration
+:::
+:::
+
+# Inbound Results
+# Outbound results
+
+## Challenge & Limitations {.smaller}
+::: {.columns}
+::: {.column width="50%"}
+### Inbound
+- Whether a staff member answered
+- Whether a caller abandoned in the queue
+- Whether the caller's question was resolved
+:::
+
+::: {.column width="50%"}
+### Outbound
+- Whether the **member** answered, rather than voicemail
+- The **purpose** of the call (fees, welcome, other)
+- Whether the call achieved its goal
+:::
+:::

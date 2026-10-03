@@ -129,7 +129,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">AHRI Call Dashboard Project</h1>
-  <p class="subtitle">Turning raw inbound call records into a Power BI dashboard</p>
+  <p class="subtitle">Turning inbound &amp; outbound call records into a Power BI dashboard</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -140,8 +140,8 @@ Sammi &amp; Aji
 </div>
 
 </section>
-<section id="project-background" class="slide level2">
-<h2>Project Background</h2>
+<section id="background" class="slide level2">
+<h2>Background</h2>
 <p>The <strong>Australian HR Institute (AHRI)</strong> supports HR professionals through membership, certification, training and events.</p>
 <ul>
 <li class="fragment">AHRI receives member enquiries through email, online forms, and Microsoft Teams calls.</li>
@@ -150,7 +150,7 @@ Sammi &amp; Aji
 <li class="fragment">This project transforms the Direct Routing Excel export into a Power BI dashboard</li>
 </ul>
 </section>
-<section id="business-problem" class="slide level2">
+<section id="business-problem" class="slide level2 smaller">
 <h2>Business problem</h2>
 <blockquote>
 <p>AHRI has no visibility and needs a clearer way to understand of when people call, where calls go, or how they end.</p>
@@ -163,24 +163,99 @@ Sammi &amp; Aji
 <li><p>How long do calls take?</p></li>
 <li><p>Are there any unusual patterns?</p></li>
 </ul>
+<div class="callout-box">
+<p><strong>Goal:</strong> give the Member Engagement Team a clear view of phone activity.</p>
+</div>
 </section>
-<section id="aim-and-contribution" class="slide level2">
-<h2>Aim and Contribution</h2>
-<h3 id="aim">Aim</h3>
-<p>To develop an interactive Power BI dashboard that converts raw inbound call records into clear and useful operational insights.</p>
-<h3 id="contribution">Contribution</h3>
+<section id="scope" class="slide level2 smaller">
+<h2>Scope</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="in-scope">In scope</h3>
+<ul>
+<li><strong>Inbound:</strong> when calls arrive, how they are routed, how they end</li>
+<li><strong>Outbound:</strong> who calls, when, how calls end, how long connected calls last</li>
+<li>Current-state visibility</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="out-of-scope">Out of scope</h3>
+<ul>
+<li>Real-time or live reporting</li>
+<li>Individual staff performance. The outbound pages show <strong>activity</strong>, not performance.</li>
+</ul>
+</div></div>
 </section>
-<section id="ida" class="slide level2">
-<h2>IDA</h2>
-<p>IDA focused on understanding the structure and quality of the raw call export.</p>
-<p>Key checks included:</p>
+<section id="business-questions" class="slide level2 smaller">
+<h2>Business questions</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>Question</th>
+<th>Dashboard page</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Inbound</td>
+<td>How many calls arrive, and when?</td>
+<td>Inbound Call Overview</td>
+</tr>
+<tr class="even">
+<td>Inbound</td>
+<td>Where do callers go?</td>
+<td>Routing and queue destinations</td>
+</tr>
+<tr class="odd">
+<td>Inbound</td>
+<td>How do calls end, and how long do they take?</td>
+<td>Outcome and Duration</td>
+</tr>
+<tr class="even">
+<td>Outbound</td>
+<td>Who is making outbound calls, and when?</td>
+<td>Outbound activity</td>
+</tr>
+<tr class="odd">
+<td>Outbound</td>
+<td>How do outbound calls end, and how long do they last?</td>
+<td>Outbound outcome and duration</td>
+</tr>
+</tbody>
+</table>
 </section>
-<section id="method" class="slide level2 smaller">
-<h2>Method</h2>
+<section id="data" class="slide level2 smaller">
+<h2>Data</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="inbound">Inbound</h3>
+<ul>
+<li>Teams Direct Routing export</li>
+<li>6 April – 1 September 2026</li>
+<li><strong>3,986 unique calls</strong> through main IVR</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="outbound">Outbound</h3>
+<ul>
+<li>Export Outbound file</li>
+<li>6 April – 1 September 2026</li>
+<li>Pages focus on <strong>18 staff</strong> mapped to three teams: <strong>6,046 attempts</strong></li>
+</ul>
+</div></div>
+</section>
+<section id="approach" class="slide level2 smaller">
+<h2>Approach</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
 <ol type="1">
 <li><strong>Data preparation</strong>
 <ul>
-<li>Cleaned and checked the Direct Routing export</li>
+<li>Cleaned and checked the Direct Routing export and Outbound export</li>
 <li>Standardised relevant fields and timestamps</li>
 </ul></li>
 <li><strong>Record grouping</strong>
@@ -192,28 +267,57 @@ Sammi &amp; Aji
 <ul>
 <li>Created measures for call volume, duration, outcomes, queue activity, and overflow</li>
 </ul></li>
+</ol>
+</div><div class="column" style="width:50%;">
+<ol start="4" type="1">
 <li><strong>Dashboard development</strong>
 <ul>
-<li>Built three Power BI pages:
+<li>Built five Power BI pages:
 <ul>
 <li>Calls Overview</li>
 <li>Routing and Queue Destinations</li>
 <li>Outcome and Duration</li>
+<li>Outbound activity</li>
+<li>Outbound outcome and duration</li>
 </ul></li>
 </ul></li>
 </ol>
+</div></div>
 </section>
-<section id="results" class="slide level2">
-<h2>Results</h2>
-</section>
-<section id="challenge-limitations" class="slide level2">
-<h2>Challenge &amp; Limitations</h2>
+<section id="inbound-results" class="title-slide slide level1 center">
+<h1>Inbound Results</h1>
 
 </section>
+
+<section>
+<section id="outbound-results" class="title-slide slide level1 center">
+<h1>Outbound results</h1>
+
+</section>
+<section id="challenge-limitations" class="slide level2 smaller">
+<h2>Challenge &amp; Limitations</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="inbound-1">Inbound</h3>
+<ul>
+<li>Whether a staff member answered</li>
+<li>Whether a caller abandoned in the queue</li>
+<li>Whether the caller’s question was resolved</li>
+</ul>
+</div><div class="column" style="width:50%;">
+<h3 id="outbound-1">Outbound</h3>
+<ul>
+<li>Whether the <strong>member</strong> answered, rather than voicemail</li>
+<li>The <strong>purpose</strong> of the call (fees, welcome, other)</li>
+<li>Whether the call achieved its goal</li>
+</ul>
+</div></div>
+
+</section></section>
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-<p>AHRI Call Dashboard Project</p>
+<p>AHRI Call Dashboard · Inbound and outbound</p>
 </div>
 </div></div>
 
