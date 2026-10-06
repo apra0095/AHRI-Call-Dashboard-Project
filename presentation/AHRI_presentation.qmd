@@ -25,10 +25,10 @@ execute:
 The **Australian HR Institute (AHRI)** supports HR professionals through membership, certification, training and events.
 
 ::: incremental
--   AHRI receives member enquiries through email, online forms, and Microsoft Teams calls.
--   Email and online-form enquiries are already reported through **CRM dashboards**
--   Phone activity handled in **Microsoft Teams**, currently has no reporting beyond **raw data exports**.
--   This project transforms the Direct Routing Excel export into a Power BI dashboard
+- AHRI receives member enquiries through email, online forms, and Microsoft Teams calls.
+- Email and online-form enquiries are already reported through **CRM dashboards**
+- Phone activity handled in **Microsoft Teams**, currently has no reporting beyond **raw data exports**.
+- This project transforms the Direct Routing Excel export into a Power BI dashboard
 :::
 
 ## Business problem {.smaller}
@@ -37,25 +37,26 @@ The **Australian HR Institute (AHRI)** supports HR professionals through members
 
 Without a dashboard, it is harder to answer questions such as:
 
--   When are calls happening?
+- When are calls happening?
 
--   Which services receive the most demand?
+- Which services receive the most demand?
 
--   Where are overflow destinations?
+- Where are overflow destinations?
 
--   How long do calls take?
+- How long do calls take?
 
--   Are there any unusual patterns?
+- Are there any unusual patterns?
 
-::: {.callout-box}
+::: callout-box
 **Goal:** give the Member Engagement Team a clear view of phone activity.
 :::
 
 ## Scope {.smaller}
 
-::: {.columns}
+::::: columns
 ::: {.column width="50%"}
 ### In scope
+
 - **Inbound:** when calls arrive, how they are routed, how they end
 - **Outbound:** who calls, when, how calls end, how long connected calls last
 - Current-state visibility
@@ -63,15 +64,16 @@ Without a dashboard, it is harder to answer questions such as:
 
 ::: {.column width="50%"}
 ### Out of scope
+
 - Real-time or live reporting
 - Individual staff performance. The outbound pages show **activity**, not performance.
 :::
-:::
+:::::
 
 ## Business questions {.smaller}
 
-| | Question | Dashboard page |
-|---|---|---|
+|   | Question | Dashboard page |
+|----|----|----|
 | Inbound | How many calls arrive, and when? | Inbound Call Overview |
 | Inbound | Where do callers go? | Routing and queue destinations |
 | Inbound | How do calls end, and how long do they take? | Outcome and Duration |
@@ -80,9 +82,10 @@ Without a dashboard, it is harder to answer questions such as:
 
 ## Data {.smaller}
 
-::: {.columns}
+::::: columns
 ::: {.column width="50%"}
 ### Inbound
+
 - Teams Direct Routing export
 - 6 April – 1 September 2026
 - **3,986 unique calls** through main IVR
@@ -90,45 +93,48 @@ Without a dashboard, it is harder to answer questions such as:
 
 ::: {.column width="50%"}
 ### Outbound
+
 - Export Outbound file
 - 6 April – 1 September 2026
 - Pages focus on **18 staff** mapped to three teams: **6,046 attempts**
 :::
-:::
+:::::
 
 ## Approach {.smaller}
 
-::: {.columns}
+::::: columns
 ::: {.column width="50%"}
-
 1.  **Data preparation**
-    -   Cleaned and checked the Direct Routing export and Outbound export
-    -   Standardised relevant fields and timestamps
+    - Cleaned and checked the Direct Routing export and Outbound export
+    - Standardised relevant fields and timestamps
 2.  **Record grouping**
-    -   Used shared IDs to identify related call records
-    -   Classified Main IVR, primary queue, and overflow records
+    - Used shared IDs to identify related call records
+    - Classified Main IVR, primary queue, and overflow records
 3.  **Metric development**
-    -   Created measures for call volume, duration, outcomes, queue activity, and overflow
+    - Created measures for call volume, duration, outcomes, queue activity, and overflow
 :::
 
 ::: {.column width="50%"}
 4.  **Dashboard development**
-    -   Built five Power BI pages:
-        -   Calls Overview
-        -   Routing and Queue Destinations
-        -   Outcome and Duration
-        -   Outbound activity
-        -  Outbound outcome and duration
+    - Built five Power BI pages:
+      - Calls Overview
+      - Routing and Queue Destinations
+      - Outcome and Duration
+      - Outbound activity
+      - Outbound outcome and duration
 :::
-:::
+:::::
 
 # Inbound Results
+
 # Outbound results
 
 ## Challenge & Limitations {.smaller}
-::: {.columns}
+
+::::: columns
 ::: {.column width="50%"}
 ### Inbound
+
 - Whether a staff member answered
 - Whether a caller abandoned in the queue
 - Whether the caller's question was resolved
@@ -136,8 +142,9 @@ Without a dashboard, it is harder to answer questions such as:
 
 ::: {.column width="50%"}
 ### Outbound
+
 - Whether the **member** answered, rather than voicemail
 - The **purpose** of the call (fees, welcome, other)
 - Whether the call achieved its goal
 :::
-:::
+:::::

@@ -1,0 +1,66 @@
+---
+title: "Understanding AHRI's Telephone Activity"
+subtitle: "A Power BI dashboard for inbound demand and outbound activity"
+author:
+  - Aji Pratama
+  - Sumintra Boonmat
+date: 2026-10-06
+date-format: "D MMMM YYYY"
+lang: en-AU
+format:
+  pdf:
+    documentclass: scrartcl
+    pdf-engine: xelatex
+    papersize: a4
+    fontsize: 11pt
+    geometry:
+      - margin=25mm
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    colorlinks: true
+bibliography: reference.bib
+csl: apa.csl
+link-citations: true
+---
+
+        
+**ETC5543 Business analytics creative activity — Group project report**
+
+**Git repository:** [AHRI Call Dashboard Project](https://github.com/apra0095/AHRI-Call-Dashboard-Project)
+
+**Project version reviewed:** Commit `872cfdf`, inspected on 6 October 2026.
+
+# Background and objectives {#sec-background}
+
+## The organisation and the reporting problem
+
+The Australian HR Institute (AHRI) is a professional membership body supporting human resources practitioners. Its activities include professional certification, training, practical resources and events. These services generate different reasons for members and prospective members to contact the organisation, from membership enquiries to questions about professional development [@ahri]. Phone activity is therefore part of service delivery, alongside email and online enquiries. Understanding this activity matters because the same staff may need to manage several channels during a working day.
+
+At the first meeting, AHRI described a gap between its digital and telephone reporting. Email and online enquiries fed into its Dynamics customer relationship management system, where existing dashboards provided visibility. Telephone activity was handled through Microsoft Teams, but the Member Engagement Team relied on raw exports obtained by IT. Staff could inspect individual records, yet there was no convenient shared view of demand, destinations or calling patterns. The project addressed that reporting gap rather than proposing a replacement telephone system [@kickoff].
+
+The initial brief asked for call volumes, routing destinations, answer and abandonment rates, waiting time and talk time. It also identified outbound activity as a possible extension. However, a requested metric is not automatically a measurable one. The files eventually available contained technical call records rather than a complete record of queue events or customer conversations. The project therefore had to establish what each row represented before selecting indicators. This distinction became the central analytical challenge, because incorrect counting could produce a visually attractive but misleading dashboard.
+
+The intended audience is AHRI's Member Engagement Team and colleagues responsible for understanding telephone operations. They need a report that supports questions such as when inbound demand is concentrated, which services appear in queue records, and how outbound activity varies across teams. They also need clear boundaries around interpretation. A technical connection status is useful information, but it cannot establish whether a member spoke to an employee or had their enquiry resolved. The dashboard is designed to support investigation and planning without presenting unsupported service-performance claims.
+
+## How calls move through the system
+
+An inbound caller may contact AHRI's main telephone number and hear an automated menu, commonly called an interactive voice response system, or IVR. The caller's choice can direct the call towards a service such as Membership or Events. A call queue is a system component that distributes calls to staff according to its configuration. An overflow destination is an alternative destination configured for particular queue conditions. Microsoft distinguishes queue overflow, timeout and other exception settings; the export alone does not reveal which configured condition actually operated for a particular record [@queue].
+
+One telephone interaction can produce several records as it moves between system accounts. For example, a person may enter the main menu and then reach a queue. The export can contain a record associated with the menu and another associated with the queue. Counting both as separate incoming customer enquiries would inflate demand. Conversely, counting only rows labelled Main IVR when examining routing would discard related records that help describe the destinations observed. The project uses separate record-level and group-level views to address these different questions.
+
+There is also a route that bypasses the main menu: someone may call a staff member directly. During the project, Vanessa confirmed that calls without a Main IVR record were mostly direct calls to staff. This clarification explains why the export contains more linked groups than Main IVR entries. It does not prove that every remaining group has the same explanation. The report consequently uses the observed label “without a Main IVR record” when discussing the full reconciliation, while using the stakeholder explanation to justify the narrower inbound focus.
+
+## Objectives and contribution
+
+The first objective was to establish defensible counting rules for inbound demand and outbound activity. This required distinguishing source rows, related-record groups, Main IVR entries and outbound attempts. The second objective was to prepare a consistent model that could support date, service, team and staff comparisons. The third was to build clear Power BI pages through which users could explore those comparisons. The fourth was to evaluate the reliability and limits of the resulting measures, including the effects of incomplete dates, missing fields and ambiguous technical outcomes.
+
+The contribution is a practical analytical tool supported by documented definitions and checks. It combines Power Query preparation, a structured semantic model, DAX calculations and interactive report pages. The value comes from making existing records understandable and reusable rather than developing a new statistical algorithm. A particularly useful contribution is the reconciliation of apparently conflicting call totals. Explaining why several thousand source rows reduce to a smaller number of relevant groups gives users a sound basis for interpreting every subsequent chart.
+
+The scope is retrospective visibility over the supplied export period. Real-time monitoring, service-level targets, customer satisfaction, staff productivity and causal evaluation are outside the current scope. Forecasting was also excluded: the immediate priority was reliable measurement, and the available period is too limited to justify strong claims about recurring annual patterns. This report evaluates the repository snapshot dated 6 October 2026. It reports verified results alongside implementation limitations, and separates proposed improvements from work already completed.
+
+# References {.unnumbered}
+
+::: {#refs}
+:::
+
