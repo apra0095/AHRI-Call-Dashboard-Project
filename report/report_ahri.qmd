@@ -59,6 +59,49 @@ The contribution is a practical analytical tool supported by documented definiti
 
 The scope is retrospective visibility over the supplied export period. Real-time monitoring, service-level targets, customer satisfaction, staff productivity and causal evaluation are outside the current scope. Forecasting was also excluded: the immediate priority was reliable measurement, and the available period is too limited to justify strong claims about recurring annual patterns. This report evaluates the repository snapshot dated 6 October 2026. It reports verified results alongside implementation limitations, and separates proposed improvements from work already completed.
 
+# Data sources and initial data analysis {#sec-data}
+
+## Files, coverage and analytical populations
+
+The project uses two Excel files supplied for AHRI's Microsoft Teams Direct Routing activity. The inbound workbook, `DirectRouting_Ehsan_2026-09-01.xlsx`, contains 9,859 inbound records. The later workbook, `Export_Outbound.xlsx`, contains 17,655 records covering both directions: 9,859 inbound and 7,796 outbound. Despite its filename, the second workbook is not restricted to outbound calls. Filtering Call Direction is therefore necessary before analysing outbound activity. Comparing the common columns also confirms that its inbound records match those in the original workbook.
+
+The observed overall coverage runs from 6 April to 1 September 2026 in Melbourne time. These dates indicate the earliest and latest observed activity, but do not confirm that both boundary days were fully captured. For example, an export could end partway through its final day. The model therefore excludes the first and last observed dates when calculating daily averages. It treats May through August as fully covered months, assuming that the export contains continuous coverage between its boundaries. This assumption needs confirmation when another export is added.
+
+The main reporting populations are summarised in @tbl-populations. These counts describe different levels and subsets of the data, so they should not be added together.
+
+| Reporting population | Count | Meaning |
+|:--|--:|:--|
+| Original inbound records | 9,859 | Individual system records |
+| Distinct inbound shared-ID groups | 6,361 | Groups of related records |
+| Groups containing Main IVR | 3,986 | Main-menu population used for inbound analysis |
+| Other inbound groups | 2,375 | Groups without a Main IVR record |
+| All outbound records | 7,796 | Outbound records before staff selection |
+| Selected outbound attempts | 6,046 | Attempts associated with the approved staff |
+
+: Source populations and counting units, recalculated from the workbooks stored in the project repository. {#tbl-populations}
+
+The outbound analysis follows the stakeholder's list of staff in Membership, HRSC and Events. It includes eleven Membership staff, five HRSC staff and two Events staff. Their account-to-team mapping is stored in `DimStaff`, using the user principal name, or UPN, as the matching key. Name variations involving Lara and Georgina were clarified during the project before finalising the mapping. Matching against the approved accounts excludes 1,750 outbound records outside the agreed staff list. These records are outside the scope of this analysis; their exclusion does not mean they are incorrect.
+
+## Understanding the main fields
+
+The two main identifiers are `CorrelationId` and `Shared correlation ID`. CorrelationId is a technical identifier associated with a recorded call. Shared correlation ID connects related call records. Neither identifies a unique person. The UPN identifies the associated user or resource account, while Display Name provides a readable account label. Call Direction distinguishes inbound from outbound activity. Invite time records the initial call invitation and provides a timestamp for analysing attempts, including unsuccessful ones. Duration, Success, SIP codes and SIP phrases describe recorded technical activity [@directrouting; @pstn].
+
+These fields need to be interpreted at the correct level. A shared-ID group can contain several rows associated with different accounts or destinations. It should not automatically be treated as a complete customer journey, because the export may not contain every event needed to reconstruct that journey. A telephone number also cannot establish the identity of a unique customer. Numbers may be shared, withheld or unavailable. The report therefore avoids presenting shared-ID groups as unique people or using these records to make claims about individual customer behaviour.
+
+## Missing values and their treatment
+
+Initial data analysis checked the number of records, call directions, missing values, duplicate rows, repeated identifiers and timestamp coverage. The inbound workbook contains 334 missing UPN values and 334 missing display names. It also contains 785 records without start and end timestamps. Records with missing account information were retained, with their account identity treated as unknown. Other fields in these rows can still contribute to the analysis, including shared identifiers, invitation timestamps and technical outcomes. Removing the rows would change the reporting population without establishing that the records were invalid.
+
+Missing timestamps were also retained rather than replaced with estimated values. In the inbound workbook, all 785 records without start timestamps have an unsuccessful status. In the selected outbound population, all 542 unsuccessful attempts have missing start timestamps and zero recorded duration. These patterns show why missing values should be considered alongside other fields. Replacing a missing start time with Invite time could imply that a connection occurred when the source does not establish one. Deleting unsuccessful attempts would also understate activity and remove information needed to describe technical outcomes.
+
+The preparation therefore keeps these records while applying the relevant population filter to each measure. Outbound attempt counts include both technically successful and unsuccessful records. Successful-duration measures use records marked successful. Missing account details remain a limitation when identifying destinations, but do not automatically make every other field in the same row unusable. This approach preserves the available evidence without filling gaps with unsupported assumptions.
+
+## Duplicate checks and consistent data types
+
+No exact duplicate rows were identified in the inbound workbook. However, one correlation identifier appears more than once. This distinction matters because a repeated identifier does not necessarily mean that the entire row is duplicated. Records must be compared before deciding whether anything should be removed. Two inbound columns contain no observed values: an unnamed Excel column and Administrative Units. These columns are excluded during preparation because they contribute no information to the current analysis.
+
+Phone numbers and identifiers are stored as text rather than numeric values. Telephone fields can contain values such as `anonymous`, and numeric conversion can also remove leading zeros or mishandle international prefixes. Duration is assigned a numeric type, while dates and timestamps receive the appropriate temporal types. Account text is cleaned, trimmed and converted to lowercase before matching. These preparation steps reduce avoidable matching errors and provide consistent fields for the relationships and calculations described in the next section.
+
 # References {.unnumbered}
 
 ::: {#refs}
