@@ -102,6 +102,60 @@ No exact duplicate rows were identified in the inbound workbook. However, one co
 
 Phone numbers and identifiers are stored as text rather than numeric values. Telephone fields can contain values such as `anonymous`, and numeric conversion can also remove leading zeros or mishandle international prefixes. Duration is assigned a numeric type, while dates and timestamps receive the appropriate temporal types. Account text is cleaned, trimmed and converted to lowercase before matching. These preparation steps reduce avoidable matching errors and provide consistent fields for the relationships and calculations described in the next section.
 
+# Analytical approach and Power BI implementation {#sec-method}
+
+## Separating data preparation from calculations
+
+The implementation separates data preparation, model relationships and reporting measures. Power Query imports the workbooks, cleans fields, selects the relevant records and creates classification columns. Relationships connect the prepared tables so that date, team and staff selections filter the appropriate records. Data Analysis Expressions (DAX) measures then calculate the values shown in the report. This separation makes it easier to investigate an unexpected result: the issue may come from the source data, a preparation step, a relationship or the measure itself.
+
+## Identifying Main IVR entries and related records
+
+The inbound model starts with `FactDirectRouting`, which contains the prepared inbound records. Power Query renames the source UPN field to `ResourceAccount`. A record is classified as a Main IVR entry when the cleaned account equals `aa-mainivr-v2@ahri.com.au` and its CorrelationId equals its Shared correlation ID. The account condition identifies the main-menu resource, while the identifier condition selects the entry record used by the measure. In this export, the rule produces 3,986 entries.
+
+A second table, `FactRoutingGroup`, groups the inbound records by Shared correlation ID. Each group receives indicators showing whether it contains Main IVR, queue, overflow-named, user-associated or unsuccessful records. Its entry date is the earliest observed Invite time within the group, converted to Melbourne time. The resulting table has one row per related-record group. This supports group-level summaries while retaining the individual records in `FactDirectRouting` for more detailed analysis.
+
+The two tables answer different questions. Counting source rows describes recorded system activity. Counting shared-ID groups combines related records. Restricting the groups to those containing Main IVR then applies the agreed inbound scope. The reduction from 9,859 records to 6,361 groups is therefore a grouping operation, while the reduction to 3,986 Main IVR groups is a scope decision. Neither step should be described as removing thousands of duplicate or invalid calls.
+
+The Main IVR entry count equals the number of groups containing the Main IVR account in this export. This agreement provides a useful check, but it should be tested again with future data. The model does not assume that every possible export will contain exactly one qualifying entry per group. Keeping separate entry and group measures makes their counting rules visible and allows differences to be investigated.
+
+## Classifying queue destinations
+
+Queue classification uses the presence of “Queue” in Display Name. A queue record is additionally classified as overflow when its name contains “Overflow”. Service names are derived from these labels so that primary and overflow destinations can be compared within the same service. This approach uses information available in the export, but depends on consistent account naming. A maintained account-to-service mapping would be more reliable if names or routing arrangements change.
+
+Main IVR groups are assigned to three mutually exclusive categories. A group containing an overflow-named queue record is classified as “Overflow queue observed”. A group containing queue records but no overflow-named record is classified as “Primary queue only observed”. The remaining groups are classified as “No queue record observed”. These categories describe the available records. The absence of a queue record does not establish that the caller abandoned the menu or that the call ended at that point.
+
+The queue measure counts distinct shared IDs associated with queue records in the selected service and period. Overflow destination share divides groups containing overflow-named records by groups containing any queue record. Primary and overflow counts can overlap when the same group contains both types of record. The percentage therefore describes recorded destination associations, rather than a confirmed probability of escalation.
+
+The percentage chart displays a service only when it has at least thirty queue-associated groups in the current selection. Here, `n` means the number of observed groups, and the rule is `n >= 30`. Thirty is a display threshold chosen during development, not a value extracted from Excel or a telephone queue capacity. It reduces attention to percentages based on very small counts, but does not guarantee statistical reliability. Its sensitivity is considered in the evaluation section.
+
+## Selecting and counting outbound activity
+
+Outbound preparation starts from `RawCallLogs`, filters Call Direction to Outbound and standardises the UPN before matching it against `DimStaff`. An inner join retains records associated with the approved staff accounts. The nested match column is then removed because staff names and teams remain available through the model relationship. The mapping contains one row per UPN, supporting an unambiguous account-to-team assignment and the one-to-many relationship required by the model.
+
+The resulting `FactOutbound` table contains 6,046 records and 6,046 distinct correlation IDs. The main outbound measure uses a distinct count of CorrelationId to make its counting unit explicit. This equals the row count in the current selected dataset. A separate measure counts distinct staff accounts with recorded outbound activity. That measure describes observed participation within the selection, rather than the number of employees available or rostered to work.
+
+For example, selecting one week may reduce the staff count because some approved staff have no recorded attempts during that week. Those staff remain in the approved mapping, but do not appear in the activity-based count. This distinction prevents the dashboard from presenting a changing activity count as a changing team headcount. Team and staff selections are applied through `DimStaff`, allowing the same measures to be reused consistently across different views.
+
+## Time conversion and average activity
+
+Invite timestamps are parsed as UTC and converted to Melbourne time before the date and hour fields are created. The Power Query logic uses date-based daylight saving rules to select an offset of ten or eleven hours. The supplied reporting period falls within the ten-hour offset. Extracting the date after conversion is important because an evening UTC timestamp can fall on the following calendar day in Melbourne. Using the original UTC date would therefore misclassify some daily and hourly activity.
+
+The date table contains every date between the observed inbound boundaries. Average weekday activity is calculated over selected Monday-to-Friday dates that pass the complete-day rule. Dates with zero activity remain in the denominator, while the first and last observed dates are excluded. Public holidays remain included because the model does not contain a verified AHRI operating calendar. The measure should therefore be understood as an average per calendar weekday, rather than per confirmed working day.
+
+Across the full export, there are 105 eligible weekdays. These contain 3,925 Main IVR entries and 6,027 selected outbound attempts. Dividing each count by 105 gives 37.4 inbound entries and 57.4 outbound attempts per weekday. These numerators differ from the full-period totals because the averages use a narrower set of dates. The monthly weekday comparison applies the same principle, allowing months with different numbers of weekdays to be compared more fairly.
+
+The model also defines a trailing seven-day average. For each date, it divides the Main IVR entries from that date and the preceding six calendar days by seven. Each window includes one occurrence of every weekday and retains zero-activity days. This reduces short-term variation while preserving the broader movement in activity. Only windows entirely within the accepted source boundaries are included. The calculation can retrieve preceding dates outside a narrow date selection, so selecting one date does not automatically reduce its window to one day.
+
+## Technical outcomes and duration
+
+Technical outcome measures use the source's Yes and No values. The outbound technical success rate divides successful attempts by all selected attempts. Mean and median duration are calculated from technically successful outbound records, including recorded zero durations. The mean describes the arithmetic average, while the median identifies the middle observation and is less affected by unusually long durations. These measures describe recorded technical activity, they are not treated as staff talk time or evidence that a customer's enquiry was resolved.
+
+## Relationships and reproducibility
+
+The date table, `DimRoutingDate`, has active relationships with the date fields in `FactDirectRouting`, `FactRoutingGroup` and `FactOutbound`. `DimStaff` connects to `FactOutbound` through UPN. Filtering operates from the dimension tables towards the fact tables. This follows the dimensional modelling principle of separating attributes used for filtering from observations used for summarisation [@starschema]. During development, a missing outbound date relationship prevented daily filters from reaching the outbound records. Creating that relationship corrected the weekday-average behaviour.
+
+Both workbook queries use the `ProjectRoot` parameter to construct their source paths. Collaborators can therefore update their local project location without rewriting each query. The Power BI project format stores report and model definitions in text files, supporting version control and inspection of changes [@pbip]. Separate checks against the Excel workbooks provide an additional comparison for the main counts. These checks support the intended calculation rules, but do not replace testing the rendered report and its interactive filters in Power BI Desktop.
+
 # References {.unnumbered}
 
 ::: {#refs}
