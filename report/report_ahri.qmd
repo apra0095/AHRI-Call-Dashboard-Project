@@ -156,6 +156,281 @@ The date table, `DimRoutingDate`, has active relationships with the date fields 
 
 Both workbook queries use the `ProjectRoot` parameter to construct their source paths. Collaborators can therefore update their local project location without rewriting each query. The Power BI project format stores report and model definitions in text files, supporting version control and inspection of changes [@pbip]. Separate checks against the Excel workbooks provide an additional comparison for the main counts. These checks support the intended calculation rules, but do not replace testing the rendered report and its interactive filters in Power BI Desktop.
 
+# Inbound findings {#sec-inbound}
+
+```{r}
+#| label: prepare-inbound-results
+#| include: false
+
+library(readxl)
+library(dplyr)
+library(lubridate)
+library(ggplot2)
+
+# Locate the workbook when rendering from either the report folder
+# or the repository root.
+source_candidates <- c(
+  "../data/source/DirectRouting_Ehsan_2026-09-01.xlsx",
+  "data/source/DirectRouting_Ehsan_2026-09-01.xlsx"
+)
+
+available_sources <- source_candidates[file.exists(source_candidates)]
+
+if (length(available_sources) == 0) {
+  stop(
+    "Cannot find DirectRouting_Ehsan_2026-09-01.xlsx. ",
+    "Check that the workbook is in the repository's data/source folder."
+  )
+}
+
+inbound_source_file <- available_sources[[1]]
+
+# Read identifiers as text and retain the fields needed for this section.
+inbound_records <- read_excel(
+  inbound_source_file,
+  sheet = 1,
+  col_types = "text"
+) |>
+  transmute(
+    shared_id = trimws(`Shared correlation ID`),
+    correlation_id = trimws(CorrelationId),
+    account = tolower(trimws(UPN)),
+    display_name = coalesce(trimws(`Display Name`), ""),
+    direction = tolower(trimws(`Call Direction`)),
+    invite_utc = ymd_hms(`Invite time`, tz = "UTC", quiet = TRUE)
+  ) |>
+  filter(direction == "inbound") |>
+  mutate(
+    invite_local = with_tz(invite_utc, "Australia/Melbourne"),
+    date = as.Date(invite_local, tz = "Australia/Melbourne"),
+    entry_hour = hour(invite_local),
+    is_main_account = coalesce(
+      account == "aa-mainivr-v2@ahri.com.au",
+      FALSE
+    ),
+    is_main_entry = is_main_account &
+      coalesce(correlation_id == shared_id, FALSE),
+    is_queue = grepl("Queue", display_name, ignore.case = TRUE),
+    is_overflow = is_queue &
+      grepl("Overflow", display_name, ignore.case = TRUE)
+  )
+
+# Dates and shared IDs are required for these calculations.
+stopifnot(
+  !anyNA(inbound_records$date),
+  !anyNA(inbound_records$shared_id),
+  all(nzchar(inbound_records$shared_id))
+)
+
+inbound_entries <- inbound_records |>
+  filter(is_main_entry)
+
+inbound_groups <- inbound_records |>
+  group_by(shared_id) |>
+  summarise(
+    has_main = any(is_main_account),
+    has_queue = any(is_queue),
+    has_overflow = any(is_overflow),
+    .groups = "drop"
+  )
+
+# These checks tie the written findings to the analysed data snapshot.
+# If the source changes, review the narrative before rendering again.
+stopifnot(
+  nrow(inbound_records) == 9859,
+  nrow(inbound_groups) == 6361,
+  nrow(inbound_entries) == 3986,
+  sum(inbound_groups$has_main) == 3986,
+  sum(inbound_groups$has_queue) == 1262,
+  sum(inbound_groups$has_overflow) == 337,
+  all(inbound_groups$has_main[inbound_groups$has_queue])
+)
+
+source_start <- min(inbound_records$date)
+source_end <- max(inbound_records$date)
+
+# Build a continuous calendar so zero-entry days remain in averages.
+inbound_daily <- tibble(
+  date = seq(source_start, source_end, by = "day")
+) |>
+  left_join(
+    inbound_entries |> count(date, name = "entries"),
+    by = "date"
+  ) |>
+  mutate(
+    entries = coalesce(entries, 0L),
+    weekday_number = wday(date, week_start = 1),
+    eligible_day = date > source_start & date < source_end,
+    trailing_7 = as.numeric(
+      stats::filter(entries, rep(1 / 7, 7), sides = 1)
+    ),
+    # Exclude windows containing either potentially partial boundary day.
+    trailing_7 = if_else(
+      date >= source_start + 7 & date < source_end,
+      trailing_7,
+      NA_real_
+    )
+  )
+
+inbound_weekday_summary <- inbound_daily |>
+  filter(eligible_day) |>
+  group_by(weekday_number) |>
+  summarise(
+    days = n(),
+    average_entries = mean(entries),
+    .groups = "drop"
+  )
+
+inbound_monthly_summary <- inbound_daily |>
+  filter(
+    eligible_day,
+    weekday_number <= 5,
+    date >= as.Date("2026-05-01"),
+    date <= as.Date("2026-08-31")
+  ) |>
+  mutate(month = format(date, "%Y-%m")) |>
+  group_by(month) |>
+  summarise(
+    weekdays = n(),
+    entries = sum(entries),
+    average_entries = mean(entries),
+    .groups = "drop"
+  )
+
+# Count distinct shared IDs within each named queue service.
+# Overflow groups are included within the service total.
+queue_summary <- inbound_records |>
+  filter(is_queue) |>
+  mutate(
+    service = trimws(
+      sub(
+        " Queue.*$",
+        "",
+        gsub(" [Oo]verflow", "", display_name)
+      )
+    )
+  ) |>
+  group_by(service) |>
+  summarise(
+    groups = n_distinct(shared_id),
+    overflow = n_distinct(shared_id[is_overflow]),
+    .groups = "drop"
+  ) |>
+  mutate(overflow_share = overflow / groups) |>
+  arrange(desc(groups))
+
+ahri_plot_theme <- theme_minimal(base_size = 10) +
+  theme(
+    panel.grid.minor = element_blank(),
+    legend.position = "bottom",
+    legend.title = element_blank(),
+    axis.title = element_text(colour = "#173741"),
+    plot.margin = margin(8, 12, 8, 8)
+  )
+```
+
+## Demand over time
+
+The inbound analysis identifies 3,986 Main IVR entries between 6 April and 1 September 2026. These entries represent activity through AHRI's main telephone menu. They do not represent every call to AHRI or the number of different people who called. The corresponding average is 37.4 entries per eligible weekday. The total describes the volume observed, while the average allows comparison between periods containing different numbers of weekdays.
+
+The figures in this section are reproduced from the source workbook using the definitions in @sec-method. They provide a reproducible presentation of the findings rather than screenshots of the Power BI interface.
+
+@fig-inbound-trend shows considerable variation between individual days. The largest observed peak is 134 Main IVR entries on 21 May. The trailing seven-day average on that date is 55.3, calculated from 387 entries across 15–21 May. The daily count identifies the immediate spike, while the average places it within the surrounding week's activity. AHRI could investigate whether a campaign, event deadline or member communication coincided with this period. The call records alone cannot explain the cause.
+
+```{r}
+#| label: fig-inbound-trend
+#| echo: false
+#| fig-width: 8
+#| fig-height: 3.6
+#| fig-cap: "Daily Main IVR entries and trailing seven-day average, calculated from the inbound workbook in Melbourne time. The average includes zero-entry days and weekends. It is shown only for seven-day windows that exclude the first and last observed dates."
+
+ggplot(inbound_daily, aes(x = date)) +
+  geom_line(
+    aes(y = entries, colour = "Daily entries"),
+    linewidth = 0.45
+  ) +
+  geom_line(
+    aes(y = trailing_7, colour = "Trailing seven-day average"),
+    linewidth = 0.95,
+    na.rm = TRUE
+  ) +
+  scale_colour_manual(
+    values = c(
+      "Daily entries" = "#8298A1",
+      "Trailing seven-day average" = "#007F86"
+    ),
+    breaks = c("Daily entries", "Trailing seven-day average")
+  ) +
+  scale_x_date(date_breaks = "1 month", date_labels = "%b") +
+  scale_y_continuous(expand = expansion(mult = c(0, 0.06))) +
+  labs(
+    x = "2026",
+    y = "Main IVR entries"
+  ) +
+  ahri_plot_theme
+```
+
+Comparing fully covered months gives a clearer indication of sustained demand than comparing monthly totals alone. Average weekday entries fall from 53.0 in May to 39.5 in June, 37.4 in July and 29.5 in August. August's average is approximately 44% lower than May's. The calculation accounts for the different numbers of weekdays: 21 in May, 22 in June, 23 in July and 21 in August. Public holidays remain included as weekdays.
+
+This decline describes the supplied period; it is not evidence of a continuing downward trend. May contains unusually busy days, making it a potentially unrepresentative baseline. Lower call volume might reflect quieter business activity, a change in contact channels or incomplete records. These possibilities cannot be distinguished from the export alone. A longer series, supported by information about campaigns and service changes, would make the monthly pattern easier to interpret.
+
+## Weekday and hourly patterns
+
+Tuesday has the highest average Main IVR demand, at 43.6 entries per eligible Tuesday. Monday averages 37.4, Wednesday 36.6, Thursday 36.0 and Friday 33.2. Each value is an average for one occurrence of that day, not a weekly total. For example, Tuesday's value divides all eligible Tuesday entries by the number of eligible Tuesdays, including Tuesdays with no entries.
+
+Weekend activity is very limited, with 15 Main IVR entries across the observed export. Activity is also concentrated during daytime hours: 3,822 entries, or 95.9% of the total, occur from 09:00 up to, but excluding, 17:00 in Melbourne.
+
+These patterns provide a starting point for reviewing telephone coverage. AHRI could compare Tuesday availability with other weekdays and check whether meetings or other duties reduce coverage during busy periods. However, the figures do not establish how many staff are required. That decision also depends on handling time, simultaneous calls, staff availability and the desired service level. Counts of entries describe demand without measuring the full workload involved in responding to it.
+
+## Recorded queue destinations
+
+Of the 3,986 Main IVR groups, 1,262 contain a queue record and 2,724 do not. Every queue-associated group in this export also contains a Main IVR record. Among the 1,262 queue-associated groups, 337 contain an overflow-named destination, equivalent to 26.7%. The other 925 contain primary queue records without an observed overflow destination.
+
+These categories describe what appears in the export. A group without a queue record cannot automatically be classified as abandoned or unanswered. Similarly, an overflow-named record identifies an associated destination without establishing why the call reached it or whether a staff member answered.
+
+```{r}
+#| label: fig-queues
+#| echo: false
+#| fig-width: 8
+#| fig-height: 4
+#| fig-cap: "Distinct queue-associated groups by service. Darker bars show groups with overflow-named records within each service's total; the bars are not additive. Source: calculations from the inbound workbook."
+
+ggplot(queue_summary, aes(y = reorder(service, groups))) +
+  geom_col(
+    aes(x = groups, fill = "All queue-associated groups"),
+    width = 0.65
+  ) +
+  geom_col(
+    aes(x = overflow, fill = "With overflow records"),
+    width = 0.28
+  ) +
+  geom_text(
+    aes(x = groups, label = groups),
+    hjust = -0.25,
+    size = 3.2,
+    colour = "#173741"
+  ) +
+  scale_fill_manual(
+    values = c(
+      "All queue associated groups" = "#C5D6DA",
+      "With overflow records" = "#007F86"
+    ),
+    breaks = c("All queue-associated groups", "With overflow records")
+  ) +
+  scale_x_continuous(expand = expansion(mult = c(0, 0.12))) +
+  labs(
+    x = "Distinct shared-ID groups",
+    y = NULL
+  ) +
+  ahri_plot_theme
+```
+
+Membership has the largest number of queue-associated groups, with 432, followed by Reception with 374 and Career Support with 348. CPD Events has 68 groups, Organisation Members 35, Student Support four and Corporate Sales one. @fig-queues shows the volumes alongside their overflow-associated subsets. Presenting counts is important because a high percentage can otherwise draw attention away from how little activity underlies it.
+
+Among services meeting the dashboard's minimum of 30 groups for percentage comparisons, CPD Events has the highest overflow share: 34 of 68 groups, or 50.0%. Career Support follows with 165 of 348, or 47.4%. Organisation Members records eight of 35, or 22.9%; Membership records 96 of 432, or 22.2%; and Reception records 33 of 374, or 8.8%. The minimum of 30 is a reporting choice to limit comparisons based on very small counts. It is not a telephone-system setting or a guarantee of statistical reliability.
+
+The differences identify areas for investigation rather than a ranking of service performance. For example, CPD Events' 50% share supports reviewing how its primary and alternative destinations are configured. It does not demonstrate that half its callers waited too long or failed to receive assistance. AHRI's telephone administrator would need to confirm the routing rules before the observed shares could support conclusions about operational problems. This distinction allows the dashboard to guide practical questions while keeping its conclusions within the evidence available.
+
 # References {.unnumbered}
 
 ::: {#refs}
