@@ -1,133 +1,241 @@
 ---
 title: "AHRI Call Dashboard Project"
 subtitle: "Turning inbound & outbound call records into a Power BI dashboard"
-author: "Sammi & Aji"
+author:
+  - name: "Sammi & Aji"
+    affiliations:
+      - name: "ETC5543 Business Analytics Creative Activity"
+      - name: "Australian HR Institute (AHRI)"
 format:
-  revealjs:
-    theme: simple
-    slide-number: true
-    chalkboard: false
-    preview-links: auto
-    transition: fade
+  presentation-revealjs+letterbox:
+    css: presentation.css
     footer: "AHRI Call Dashboard · Inbound and outbound"
-    css: styles.css
-    width: 1280
-    height: 720
+    transition: fade
+    preview-links: auto
 editor: visual
-execute:
-  echo: false
-  warning: false
-  message: false
 ---
 
 ## Background
 
 The **Australian HR Institute (AHRI)** supports HR professionals through membership, certification, training and events.
 
-::: incremental
-- AHRI receives member enquiries through email, online forms, and Microsoft Teams calls.
-- Email and online-form enquiries are already reported through **CRM dashboards**
-- Phone activity handled in **Microsoft Teams**, currently has no reporting beyond **raw data exports**.
-- This project transforms the Direct Routing Excel export into a Power BI dashboard
+### AHRI hears from members every day
+
+::::::: columns
+::: {.column width="55%"}
+Members get in touch three ways:
+
+| Channel                     | Reporting today             |
+|-----------------------------|-----------------------------|
+| Email                       | CRM dashboard ✓             |
+| Online forms                | CRM dashboard ✓             |
+| **Phone (Microsoft Teams)** | **Raw Excel export only ✗** |
 :::
 
-## Business problem {.smaller}
-
-> AHRI has no visibility and needs a clearer way to understand of when people call, where calls go, or how they end.
-
-Without a dashboard, it is harder to answer questions such as:
-
-- When are calls happening?
-
-- Which services receive the most demand?
-
-- Where are overflow destinations?
-
-- How long do calls take?
-
-- Are there any unusual patterns?
-
-::: callout-box
-**Goal:** give the Member Engagement Team a clear view of phone activity.
+::::: {.column width="45%"}
+::: big-stat
+[\~10,000]{.num} phone interactions in five months, with **no dashboard**
 :::
 
-## Scope {.smaller}
-
-::::: columns
-::: {.column width="50%"}
-### In scope
-
-- **Inbound:** when calls arrive, how they are routed, how they end
-- **Outbound:** who calls, when, how calls end, how long connected calls last
-- Current-state visibility
-:::
-
-::: {.column width="50%"}
-### Out of scope
-
-- Real-time or live reporting
-- Individual staff performance. The outbound pages show **activity**, not performance.
+::: muted
+3,986 inbound calls + 6,046 outbound attempts, 6 Apr – 1 Sep 2026
 :::
 :::::
+:::::::
 
-## Business questions {.smaller}
+## Business problem
+
+::::::: columns
+:::: {.column width="55%"}
+AHRI has no visibility and needs a clearer way to understand of
+
+::: incremental
+-   **When** do members call?
+-   **Where** do their calls go?
+-   **How** do calls end, and how long do they take?
+-   **Who** is calling members back, and when?
+:::
+::::
+
+:::: {.column width="45%"}
+::: callout-box
+**Our goal**
+
+Turn the Teams phone exports into a Power BI dashboard that shows AHRI what's happening on the phones.
+:::
+
+**In scope:** inbound and outbound activity across the period of the export.<br> **Out of scope:** live reporting and individual staff performance.
+::::
+:::::::
+
+## Business questions
 
 |   | Question | Dashboard page |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Inbound | How many calls arrive, and when? | Inbound Call Overview |
 | Inbound | Where do callers go? | Routing and queue destinations |
 | Inbound | How do calls end, and how long do they take? | Outcome and Duration |
 | Outbound | Who is making outbound calls, and when? | Outbound activity |
 | Outbound | How do outbound calls end, and how long do they last? | Outbound outcome and duration |
 
-## Data {.smaller}
+## Data
 
 ::::: columns
 ::: {.column width="50%"}
 ### Inbound
 
-- Teams Direct Routing export
-- 6 April – 1 September 2026
-- **3,986 unique calls** through main IVR
+-   Teams Direct Routing export
+-   6 April – 1 September 2026
+-   **3,986 unique calls** through main IVR
 :::
 
 ::: {.column width="50%"}
 ### Outbound
 
-- Export Outbound file
-- 6 April – 1 September 2026
-- Pages focus on **18 staff** mapped to three teams: **6,046 attempts**
+-   Export Outbound file
+-   6 April – 1 September 2026
+-   Focus on **18 staff** mapped to three teams: **6,046 attempts**
 :::
 :::::
 
-## Approach {.smaller}
+## Approach
 
-::::: columns
-::: {.column width="50%"}
-1.  **Data preparation**
-    - Cleaned and checked the Direct Routing export and Outbound export
-    - Standardised relevant fields and timestamps
-2.  **Record grouping**
-    - Used shared IDs to identify related call records
-    - Classified Main IVR, primary queue, and overflow records
-3.  **Metric development**
-    - Created measures for call volume, duration, outcomes, queue activity, and overflow
+### From two Excel exports to five dashboard pages
+
+::::::::::::: pipeline
+:::: stage
+::: stage-n
+1
 :::
 
-::: {.column width="50%"}
-4.  **Dashboard development**
-    - Built five Power BI pages:
-      - Calls Overview
-      - Routing and Queue Destinations
-      - Outcome and Duration
-      - Outbound activity
-      - Outbound outcome and duration
+**Clean**<br>Teams Direct Routing + Outbound exports; fix timestamps to Melbourne time
+::::
+
+:::: stage
+::: stage-n
+2
 :::
-:::::
 
-# Inbound Results
+**Group**<br>Used shared IDs to identify related call records: 6,361 groups, **3,986 via Main IVR**
+::::
 
-# Outbound results
+:::: stage
+::: stage-n
+3
+:::
+
+**Classify**<br>Main IVR, primary queue or overflow; outbound call staff mapped to 3 teams
+::::
+
+:::: stage
+::: stage-n
+4
+:::
+
+**Measure**<br>DAX measures for volume, routing, outcomes and duration
+::::
+
+:::: stage
+::: stage-n
+5
+:::
+
+**Build**<br>5 Power BI pages: 3 inbound, 2 outbound
+::::
+:::::::::::::
+
+::: muted
+Inbound: 6 Apr – 1 Sep 2026, calls through the Main IVR. <br> Outbound: same period, 18 staff in Membership, HRSC and Events.
+:::
+
+# Inbound Results {background-color="#006DAE"}
+
+## Calls follow office hours, and Tuesday is the busiest day {.result}
+
+:::::: columns
+::: {.column width="72%"}
+![Page 1 · Inbound calls overview](images/inbound1.png){.shot}
+:::
+
+:::: {.column width="28%"}
+::: takeaways
+-   **3,986** calls, about **37 per weekday**
+-   Steady **9am–5pm**; almost nothing outside it
+-   **Tuesday** is busiest (\~44/day), Friday quietest (\~33)
+-   Weekday average fell from **\~53 in May to \~30 in August**
+:::
+::::
+::::::
+
+## Career Support overflows most {.result}
+
+:::::: columns
+::: {.column width="72%"}
+![Page 2 · Routing and queue destinations](images/inbound2.png){.shot}
+:::
+
+:::: {.column width="28%"}
+::: takeaways
+-   **68%** of calls show no queue record (they ended in the menu or went elsewhere)
+-   **Membership, Reception and Career Support** take most queue demand
+-   **Career Support:** \~47% of its queue calls reach overflow
+-   **Reception:** under 10%
+:::
+::::
+::::::
+
+## Most calls complete; dropped calls tend to be the long ones {.result}
+
+:::::: columns
+::: {.column width="72%"}
+![Page 3 · Outcome and duration](images/inbound3.png){.shot}
+:::
+
+:::: {.column width="28%"}
+::: takeaways
+-   \~**3,300** completed, \~**600** disconnected / timed out
+-   Typical call: **1.5–2 min**; average **2m 58s**
+-   Disconnected calls average **\~5 min**, about twice as long as completed ones
+-   **Career Support** has the longest queue time (**\~6.5 min**)
+:::
+::::
+::::::
+
+# Outbound results {background-color="#006DAE"}
+
+## The Membership team makes almost 9 in 10 outbound calls {.result}
+
+:::::: columns
+::: {.column width="72%"}
+![Page 4 · Outbound activity](images/outbound1.png){.shot}
+:::
+
+:::: {.column width="28%"}
+::: takeaways
+-   **6,046** attempts by **18 staff**, about **57 per weekday**
+-   **Membership: 87%** (5,275); HRSC 680; Events 91
+-   Busiest **Tuesday 11am–2pm**; quietest day **Monday**
+-   May was the peak month (**77.8/weekday**)
+:::
+::::
+::::::
+
+## 91% of outbound calls connect, but most last under a minute {.result}
+
+:::::: columns
+::: {.column width="72%"}
+![Page 5 · Outbound outcome and duration](images/outbound2.png){.shot}
+:::
+
+:::: {.column width="28%"}
+::: takeaways
+-   **5,504** connected (**91%**); **542** didn't
+-   Main failure: **not answered** (375)
+-   **69%** of connected calls last **under 1 minute**; average **1:36**
+-   Short calls may be **voicemail**: the export can't tell us
+:::
+::::
+::::::
 
 ## Challenge & Limitations {.smaller}
 
@@ -135,16 +243,18 @@ Without a dashboard, it is harder to answer questions such as:
 ::: {.column width="50%"}
 ### Inbound
 
-- Whether a staff member answered
-- Whether a caller abandoned in the queue
-- Whether the caller's question was resolved
+-   Whether a staff member answered
+-   Whether a caller abandoned in the queue
+-   Whether the caller's question was resolved
 :::
 
 ::: {.column width="50%"}
 ### Outbound
 
-- Whether the **member** answered, rather than voicemail
-- The **purpose** of the call (fees, welcome, other)
-- Whether the call achieved its goal
+-   Whether the **member** answered, rather than voicemail
+-   The **purpose** of the call (fees, welcome, other)
+-   Whether the call achieved its goal
 :::
 :::::
+
+:::::: :::::::

@@ -1,0 +1,64 @@
+/* AHRI presentation */
+:root {
+  --monash-blue: #006DAE;
+  --monash-blue-dark: #004B7A;
+  --monash-blue-tint: #E6F0F7;
+  --ink-muted: #5f6b73;
+}
+
+.reveal { font-size: 30px; }
+.reveal h2 { color: var(--monash-blue-dark); font-size: 1.45em; font-weight: 700; margin-bottom: 0.5em; }
+.reveal h3 { color: var(--monash-blue); font-size: 1.05em; margin-bottom: 0.3em; }
+.reveal ul, .reveal ol { margin-left: 0.6em; }
+.reveal li { margin-bottom: 0.25em; }
+.reveal table { font-size: 0.8em; }
+.reveal table th { border-bottom: 2px solid var(--monash-blue); }
+.reveal .slide-number { font-size: 0.5em; }
+
+/* Title slide: push the text below the Monash logo */
+.reveal #title-slide .title { margin-top: 140px; font-size: 2.2em; line-height: 1.1; }
+.reveal #title-slide .subtitle { font-size: 0.85em; }
+
+/* section header slides (blue background) */
+.reveal section.title-slide h1, .reveal .slide-background-content { }
+.reveal section[data-background-color="#006DAE"] h1 { color: #fff; }
+
+/* muted helper text */
+.reveal .muted { color: var(--ink-muted); font-size: 0.65em; margin-top: 0.8em; }
+
+/* callout box */
+.reveal .callout-box {
+  background: var(--monash-blue-tint);
+  border-left: 6px solid var(--monash-blue);
+  padding: 0.6em 0.9em;
+  border-radius: 4px;
+  font-size: 0.85em;
+  margin-top: 0.6em;
+}
+.reveal .callout-box p { margin: 0.2em 0; }
+
+/* hero number */
+.reveal .big-stat { font-size: 0.95em; line-height: 1.3; margin-top: 1.2em; }
+.reveal .big-stat .num { display: block; font-size: 3em; font-weight: 700; color: var(--monash-blue); line-height: 1; margin-bottom: 0.15em; }
+.reveal section.center .big-stat { font-size: 1.6em; }
+
+/* call-flow diagram */
+.reveal .flow { display: flex; flex-direction: column; align-items: flex-start; gap: 0.1em; margin-top: 0.3em; font-size: 0.62em; }
+.reveal .flow .step { border: 2px solid var(--monash-blue); border-radius: 8px; padding: 0.25em 0.7em; background: #fff; min-width: 9em; line-height: 1.2; }
+.reveal .flow .step.accent { background: var(--monash-blue); color: #fff; }
+.reveal .flow .step small { font-size: 0.75em; opacity: 0.85; }
+.reveal .flow .arrow { transform: rotate(90deg); color: var(--monash-blue); margin-left: 1.6em; line-height: 1; font-weight: 700; }
+
+/* pipeline (approach) */
+.reveal .pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5em; margin-top: 0.8em; }
+.reveal .pipeline .stage { background: var(--monash-blue-tint); border-top: 6px solid var(--monash-blue); border-radius: 4px; padding: 0.5em 0.6em; font-size: 0.75em; line-height: 1.4; min-height: 9em; }
+.reveal .pipeline .stage p { margin: 0; }
+.reveal .pipeline .stage-n { font-size: 2em; font-weight: 700; color: var(--monash-blue); line-height: 1; margin-bottom: 0.2em; }
+
+/* dashboard result slides */
+.reveal section.result h2 { font-size: 1.2em; }
+.reveal img.shot { border: 1px solid #d0d7de; border-radius: 4px; box-shadow: 0 2px 10px rgba(0,0,0,0.12); margin: 0; max-height: 560px; }
+.reveal section.result figcaption, .reveal section.result .caption { font-size: 0.5em; color: var(--ink-muted); margin-top: 0.3em; }
+.reveal .takeaways { font-size: 0.64em; }
+.reveal .takeaways ul { list-style: none; margin-left: 0; padding-left: 0; }
+.reveal .takeaways li { border-left: 4px solid var(--monash-blue); padding: 0.15em 0 0.15em 0.6em; margin-bottom: 0.6em; line-height: 1.3; }
