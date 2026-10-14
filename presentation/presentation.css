@@ -42,13 +42,6 @@
 .reveal .big-stat .num { display: block; font-size: 3em; font-weight: 700; color: var(--monash-blue); line-height: 1; margin-bottom: 0.15em; }
 .reveal section.center .big-stat { font-size: 1.6em; }
 
-/* call-flow diagram */
-.reveal .flow { display: flex; flex-direction: column; align-items: flex-start; gap: 0.1em; margin-top: 0.3em; font-size: 0.62em; }
-.reveal .flow .step { border: 2px solid var(--monash-blue); border-radius: 8px; padding: 0.25em 0.7em; background: #fff; min-width: 9em; line-height: 1.2; }
-.reveal .flow .step.accent { background: var(--monash-blue); color: #fff; }
-.reveal .flow .step small { font-size: 0.75em; opacity: 0.85; }
-.reveal .flow .arrow { transform: rotate(90deg); color: var(--monash-blue); margin-left: 1.6em; line-height: 1; font-weight: 700; }
-
 /* pipeline (approach) */
 .reveal .pipeline { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.5em; margin-top: 0.8em; }
 .reveal .pipeline .stage { background: var(--monash-blue-tint); border-top: 6px solid var(--monash-blue); border-radius: 4px; padding: 0.5em 0.6em; font-size: 0.75em; line-height: 1.4; min-height: 9em; }
@@ -62,3 +55,4 @@
 .reveal .takeaways { font-size: 0.64em; }
 .reveal .takeaways ul { list-style: none; margin-left: 0; padding-left: 0; }
 .reveal .takeaways li { border-left: 4px solid var(--monash-blue); padding: 0.15em 0 0.15em 0.6em; margin-bottom: 0.6em; line-height: 1.3; }
+

@@ -19,8 +19,6 @@ editor: visual
 
 The **Australian HR Institute (AHRI)** supports HR professionals through membership, certification, training and events.
 
-### AHRI hears from members every day
-
 ::::::: columns
 ::: {.column width="55%"}
 Members get in touch three ways:
@@ -50,10 +48,10 @@ Members get in touch three ways:
 AHRI has no visibility and needs a clearer way to understand of
 
 ::: incremental
-- **When** do members call?
-- **Where** do their calls go?
-- **How** do calls end, and how long do they take?
-- **Who** is calling members back, and when?
+-   **When** do members call?
+-   **Where** do their calls go?
+-   **How** do calls end, and how long do they take?
+-   **Who** is calling members back, and when?
 :::
 ::::
 
@@ -71,7 +69,7 @@ Turn the Teams phone exports into a Power BI dashboard that shows AHRI what's ha
 ## Business questions
 
 |   | Question | Dashboard page |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Inbound | How many calls arrive, and when? | Inbound Call Overview |
 | Inbound | Where do callers go? | Routing and queue destinations |
 | Inbound | How do calls end, and how long do they take? | Outcome and Duration |
@@ -84,17 +82,17 @@ Turn the Teams phone exports into a Power BI dashboard that shows AHRI what's ha
 ::: {.column width="50%"}
 ### Inbound
 
-- Teams Direct Routing export
-- 6 April – 1 September 2026
-- **3,986 unique calls** through main IVR
+-   Teams Direct Routing export
+-   6 April – 1 September 2026
+-   **3,986 unique calls** through main IVR
 :::
 
 ::: {.column width="50%"}
 ### Outbound
 
-- Export Outbound file
-- 6 April – 1 September 2026
-- Focus on **18 staff** mapped to three teams: **6,046 attempts**
+-   Export Outbound file
+-   6 April – 1 September 2026
+-   Focus on **18 staff** mapped to three teams: **6,046 attempts**
 :::
 :::::
 
@@ -108,9 +106,9 @@ Turn the Teams phone exports into a Power BI dashboard that shows AHRI what's ha
 Initial data analysis · Power Query
 :::
 
-- **Inbound quality:** 334 missing account names and 785 missing start/end timestamps. Retained the rows with unknown values.
-- **Scope:** grouped inbound rows by shared ID, selected Main IVR groups and filtered outbound to 18 approved staff.
-- **Consistency:** cleaned account labels, set data types and converted UTC timestamps to Melbourne time.
+-   **Inbound quality:** 334 missing account names and 785 missing start/end timestamps. Retained the rows with unknown values.
+-   **Scope:** grouped inbound rows by shared ID, selected Main IVR groups and filtered outbound to 18 approved staff.
+-   **Consistency:** cleaned account labels, set data types and converted UTC timestamps to Melbourne time.
 ::::
 
 :::: {.column width="49%"}
@@ -120,9 +118,9 @@ Initial data analysis · Power Query
 Exploratory data analysis · Power BI and DAX
 :::
 
-- **Timing:** compared daily, weekday, hourly and monthly activity, including a 7-day trailing average.
-- **Routing and teams:** compared queue/overflow destinations and outbound volumes across teams.
-- **Outcomes and duration:** examined technical statuses and duration bands. Compared mean and median to assess the effect of long calls.
+-   **Timing:** compared daily, weekday, hourly and monthly activity, including a 7-day trailing average.
+-   **Routing and teams:** compared queue/overflow destinations and outbound volumes across teams.
+-   **Outcomes and duration:** examined technical statuses and duration bands. Compared mean and median to assess the effect of long calls.
 ::::
 :::::::
 
@@ -148,164 +146,144 @@ For fairer comparisons, weekday averages include zero-activity days and exclude 
 These are descriptive findings. Technical success does not prove that a member spoke to staff, and recorded duration does not establish queue waiting time.
 :::
 
-## Approach
-
-### From two Excel exports to five dashboard pages
-
-::::::::::::: pipeline
-:::: stage
-::: stage-n
-1
-:::
-
-**Clean**<br>Teams Direct Routing + Outbound exports; fix timestamps to Melbourne time
-::::
-
-:::: stage
-::: stage-n
-2
-:::
-
-**Group**<br>Used shared IDs to identify related call records: 6,361 groups, **3,986 via Main IVR**
-::::
-
-:::: stage
-::: stage-n
-3
-:::
-
-**Classify**<br>Main IVR, primary queue or overflow; outbound call staff mapped to 3 teams
-::::
-
-:::: stage
-::: stage-n
-4
-:::
-
-**Measure**<br>DAX measures for volume, routing, outcomes and duration
-::::
-
-:::: stage
-::: stage-n
-5
-:::
-
-**Build**<br>5 Power BI pages: 3 inbound, 2 outbound
-::::
-:::::::::::::
-
-::: muted
-Inbound: 6 Apr – 1 Sep 2026, calls through the Main IVR. <br> Outbound: same period, 18 staff in Membership, HRSC and Events.
-:::
-
 # Inbound Results {background-color="#006DAE"}
 
-## Calls follow office hours, and Tuesday is the busiest day {.result}
+## Inbound calls peak during business hours, with Tuesday the busiest day {.result}
 
-:::::: columns
+::::::: columns
 ::: {.column width="72%"}
 ![Page 1 · Inbound calls overview](images/inbound1.png){.shot}
 :::
 
-:::: {.column width="28%"}
+::::: {.column width="28%"}
 ::: takeaways
-- **3,986** calls, about **37 per weekday**
-- Steady **9am–5pm**; almost nothing outside it
-- **Tuesday** is busiest (\~44/day), Friday quietest (\~33)
-- Weekday average fell from **\~53 in May to \~30 in August**
+-   **Call volume:** 3,986 entries, averaging 37.4 per weekday.
+-   **Peak hours:** Most calls occur between 9 AM and 4 PM, declining after 5 PM.
+-   **Busiest day:** Tuesday (\~44 entries), compared with Friday (\~33).
+-   **Monthly trend:** Average weekday demand declined from \~53 in May to \~30 in August.
 :::
-::::
-::::::
 
-## Career Support overflows most {.result}
+::: callout-box
+**For AHRI:** The dashboard identifies peak calling periods and demand patterns that can support staffing and phone coverage planning.
+:::
+:::::
+:::::::
 
-:::::: columns
+## Overflow use varies widely between services {.result}
+
+::::::: columns
 ::: {.column width="72%"}
-![Page 2 · Routing and queue destinations](images/inbound2.png){.shot}
+![](images/inbound2.png){.shot}
 :::
 
-:::: {.column width="28%"}
+::::: {.column width="28%"}
 ::: takeaways
-- **68%** of calls show no queue record (they ended in the menu or went elsewhere)
-- **Membership, Reception and Career Support** take most queue demand
-- **Career Support:** \~47% of its queue calls reach overflow
-- **Reception:** under 10%
+-   **Top demand:** Membership, Reception, Career Support get the most calls
+-   **Overflow:** about 1 in 4 queued calls
+-   **High overflow share:** Career Support (\~47%), CPD Events (\~50%)
 :::
-::::
-::::::
 
-## Most calls complete; dropped calls tend to be the long ones {.result}
+::: callout-box
+**For AHRI:** The dashboard shows where calls are routed, to support routing and resourcing reviews.
+:::
+:::::
+:::::::
 
-:::::: columns
+## Most calls end normally, but dropped calls are the longest {.result}
+
+::::::: columns
 ::: {.column width="72%"}
-![Page 3 · Outcome and duration](images/inbound3.png){.shot}
+![](images/inbound3.png){.shot}
 :::
 
-:::: {.column width="28%"}
+::::: {.column width="28%"}
 ::: takeaways
-- \~**3,300** completed, \~**600** disconnected / timed out
-- Typical call: **1.5–2 min**; average **2m 58s**
-- Disconnected calls average **\~5 min**, about twice as long as completed ones
-- **Career Support** has the longest queue time (**\~6.5 min**)
+-   **Call outcome:** 97.1% success rate
+-   **Dropped calls:** disconnected or timed-out calls lasted longest (\~5 min)
+-   **Longest in queue:** Career Support (\~6.5 min on average)
 :::
-::::
-::::::
+
+::: callout-box
+**For AHRI:** The dashboard shows where calls spend longest in the queue. *A completed call doesn't mean the enquiry was resolved.*
+:::
+:::::
+:::::::
 
 # Outbound results {background-color="#006DAE"}
 
 ## The Membership team makes almost 9 in 10 outbound calls {.result}
 
-:::::: columns
+::::::: columns
 ::: {.column width="72%"}
-![Page 4 · Outbound activity](images/outbound1.png){.shot}
+![](images/outbound1.png){.shot}
 :::
 
-:::: {.column width="28%"}
+::::: {.column width="28%"}
 ::: takeaways
-- **6,046** attempts by **18 staff**, about **57 per weekday**
-- **Membership: 87%** (5,275); HRSC 680; Events 91
-- Busiest **Tuesday 11am–2pm**; quietest day **Monday**
-- May was the peak month (**77.8/weekday**)
-:::
-::::
-::::::
-
-## 91% of outbound calls connect, but most last under a minute {.result}
-
-:::::: columns
-::: {.column width="72%"}
-![Page 5 · Outbound outcome and duration](images/outbound2.png){.shot}
+-   **By team:** Membership 5,275 (\~87%), HRSC 680, Events 91
+-   **By month:** peaked in May (77.8/weekday), dipped in June (39.0)
+-   **Busiest time:** Tuesday, 11am–2pm
 :::
 
-:::: {.column width="28%"}
-::: takeaways
-- **5,504** connected (**91%**); **542** didn't
-- Main failure: **not answered** (375)
-- **69%** of connected calls last **under 1 minute**; average **1:36**
-- Short calls may be **voicemail**: the export can't tell us
-:::
-::::
-::::::
-
-## Challenge & Limitations {.smaller}
-
-::::: columns
-::: {.column width="50%"}
-### Inbound
-
-- Whether a staff member answered
-- Whether a caller abandoned in the queue
-- Whether the caller's question was resolved
-:::
-
-::: {.column width="50%"}
-### Outbound
-
-- Whether the **member** answered, rather than voicemail
-- The **purpose** of the call (fees, welcome, other)
-- Whether the call achieved its goal
+::: callout-box
+**For AHRI:** shows outbound workload by team and over time. *Counts are call attempts, not staff performance.*
 :::
 :::::
+:::::::
+
+## 91% of outbound calls connect, most last under a minute {.result}
+
+::::::: columns
+::: {.column width="72%"}
+![](images/outbound2.png){.shot}
+:::
+
+::::: {.column width="28%"}
+::: takeaways
+-   **Connected:** 5,504 of 6,046 attempts (91%)
+-   **Main failure:** not answered (375 of 542)
+-   **Short calls:** 69% of connected calls last under 1 min (average 1:36)
+:::
+
+::: callout-box
+**For AHRI:** shows how outbound calls end. *Connected may include voicemail; the data can't tell.*
+:::
+:::::
+:::::::
+
+::: notes
+~1.5 min. Wrap-up: "Outbound calls achieved a 91% technical success rate, with unanswered calls the main reason for failure. Most connected calls were short. Many may be voicemail, but the data can't distinguish a person from voicemail."
+Also on the chart: 145 rejected or busy, 22 system or network issues.
+:::
+
+## Project achievements & limitations
+
+::::::: columns
+:::: {.column width="50%"}
+### Key achievements
+
+::: small-list
+-   **Call Visibility:** 3,986 inbound calls + 6,046 outbound attempts in the dashboard
+-   **Business insights:** 5 business questions, one dashboard page each
+-   **Repeatable process:** Power Query steps re-apply to future exports
+-   **Interactive analysis:** filter by date, team and staff
+:::
+::::
+
+:::: {.column width="50%"}
+### Current limitations
+
+::: small-list
+-   **Inbound:** no data on whether calls were resolved
+-   **Outbound:** no data on whether a person or voicemail answered, or why the call was made
+-   **Data constraints:** limited to what Microsoft Teams exports
+:::
+::::
+:::::::
+
+::: callout-box
+**Next step:** add answer status, abandonment and call reason to the data, to measure **service quality** alongside call activity.
+:::
 
 ::: :::::::
 :::
