@@ -19,29 +19,49 @@ editor: visual
 
 The **Australian HR Institute (AHRI)** supports HR professionals through membership, certification, training and events.
 
-### AHRI hears from members every day
+### How incoming calls reach AHRI
 
-::::::: columns
-::: {.column width="55%"}
-Members get in touch three ways:
+```{mermaid}
+%%| fig-width: 12
+%%| fig-align: center
+flowchart LR
+    C["`**External caller**`"] -->|"Main number"| M["`**Main IVR**
+Automated menu`"]
 
-| Channel                     | Reporting today             |
-|-----------------------------|-----------------------------|
-| Email                       | CRM dashboard ✓             |
-| Online forms                | CRM dashboard ✓             |
-| **Phone (Microsoft Teams)** | **Raw Excel export only ✗** |
-:::
+    M -->|"Service selection"| Q["`**Team queue**
+Routes calls to staff`"]
 
-::::: {.column width="45%"}
-::: big-stat
-[\~10,000]{.num} phone interactions in five months, with **no dashboard**
+    Q -->|"Call offered"| S["`**Staff phone**`"]
+
+    C -.->|"Direct staff number"| S
+
+    classDef main fill:#006DAE,stroke:#006DAE,color:#ffffff,font-size:22px;
+    classDef light fill:#E6F0F7,stroke:#006DAE,color:#004B7A,font-size:22px;
+
+    class M main;
+    class C,Q,S light;
+
+    linkStyle 0,1,2 stroke:#006DAE,stroke-width:2px;
+    linkStyle 3 stroke:#7F8C97,stroke-width:2px;
+```
+
+::: callout-box
+**The reporting gap:** email and online forms had CRM reporting. Phone activity was available mainly as raw Excel exports.
 :::
 
 ::: muted
-3,986 inbound calls + 6,046 outbound attempts, 6 Apr – 1 Sep 2026
+Illustrative routes: not every Main IVR call reaches a queue or a staff member. Our inbound analysis focuses on the main menu; outbound activity is analysed separately.
 :::
-:::::
-:::::::
+
+::: notes
+AHRI supports HR professionals through membership, certification, training and events.
+
+A caller to the main number hears an automated menu. Depending on their selection and the system settings, their call may enter a team queue, where it can be offered to staff. Other calls go directly to a staff number.
+
+The diagram illustrates the distinction between those routes. It does not establish that every call followed the entire sequence or that a person answered.
+
+AHRI already had reporting for emails and online forms. Phone activity was mainly available in Excel exports, which motivated this dashboard.
+:::
 
 ## Business problem
 
@@ -71,32 +91,66 @@ Turn the Teams phone exports into a Power BI dashboard that shows AHRI what's ha
 ## Business questions
 
 |   | Question | Dashboard page |
-|----|----|----|
+|------------------------|------------------------|------------------------|
 | Inbound | How many calls arrive, and when? | Inbound Call Overview |
 | Inbound | Where do callers go? | Routing and queue destinations |
 | Inbound | How do calls end, and how long do they take? | Outcome and Duration |
 | Outbound | Who is making outbound calls, and when? | Outbound activity |
 | Outbound | How do outbound calls end, and how long do they last? | Outbound outcome and duration |
 
-## Data
+## Data and analysis scope
 
-::::: columns
-::: {.column width="50%"}
-### Inbound
+Both exports cover **6 April to 1 September 2026**.
 
-- Teams Direct Routing export
-- 6 April – 1 September 2026
-- **3,986 unique calls** through main IVR
+**Inbound:** one call can create several system records.
+
+```{mermaid}
+%%| fig-width: 12
+%%| fig-align: center
+flowchart LR
+    R["`**9,859**
+Inbound records`"] -->|"Group by shared ID"| G["`**6,361**
+Linked call groups`"]
+
+    G -->|"Include"| I["`**3,986**
+With Main IVR`"]
+
+    G -->|"Exclude"| D["`**2,375**
+Without Main IVR`"]
+
+    classDef source fill:#E6F0F7,stroke:#006DAE,color:#004B7A,font-size:24px;
+    classDef group fill:#004B7A,stroke:#004B7A,color:#ffffff,font-size:24px;
+    classDef included fill:#006DAE,stroke:#006DAE,color:#ffffff,font-size:24px;
+    classDef excluded fill:#F1F3F5,stroke:#AAB3BA,color:#5F6B73,font-size:24px;
+
+    class R source;
+    class G group;
+    class I included;
+    class D excluded;
+
+    linkStyle 0,1 stroke:#006DAE,stroke-width:2px;
+    linkStyle 2 stroke:#7F8C97,stroke-width:2px;
+```
+
+::: {.muted style="margin-top: 0.2em;"}
+Vanessa confirmed that calls without Main IVR are mostly direct to staff. We retain the 3,986 Main IVR groups and their related records. Groups do not represent unique people.
 :::
 
-::: {.column width="50%"}
-### Outbound
-
-- Export Outbound file
-- 6 April – 1 September 2026
-- Focus on **18 staff** mapped to three teams: **6,046 attempts**
+::: callout-box
+**Outbound scope:** 6,046 attempts by 18 approved staff across Membership, HRSC and Events.
 :::
-:::::
+
+::: notes
+The inbound file contains 9,859 system records. One call can generate multiple records as it moves through the system, so we group related records by their shared identifier.
+
+This gives 6,361 linked groups. We identify the 3,986 groups with a Main IVR account record and retain their related records for the inbound analysis.
+
+The other 2,375 groups have no Main IVR record. Vanessa confirmed that these calls are mostly direct calls to staff. They sit outside our chosen inbound scope.
+
+These counts describe groups of records rather than unique people. Someone can call more than once.
+
+Separately, we filter the other export to outbound calls and the 18 staff approved by AHRI. This gives 6,046 outbound attempts.
+:::
 
 ## IDA and EDA: checking and exploring the data {#ida-eda}
 
@@ -125,10 +179,6 @@ Exploratory data analysis · Power BI and DAX
 - **Outcomes and duration:** examined technical statuses and duration bands. Compared mean and median to assess the effect of long calls.
 ::::
 :::::::
-
-::: callout-box
-**Scope check:** 9,859 inbound records form 6,361 shared-ID groups. Our inbound analysis focuses on the **3,986 containing Main IVR**.
-:::
 
 ::: muted
 Weekday averages include zero-activity days and exclude boundary dates. Full-month comparisons cover May–August.
