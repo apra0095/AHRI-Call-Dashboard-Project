@@ -19,11 +19,6 @@ editor: visual
 
 The **Australian HR Institute (AHRI)** supports HR professionals through membership, certification, training and events.
 
-<<<<<<< HEAD
-::::::: columns
-::: {.column width="55%"}
-Members get in touch three ways:
-=======
 ### How incoming calls reach AHRI
 
 ```{mermaid}
@@ -32,7 +27,6 @@ Members get in touch three ways:
 flowchart LR
     C["`**External caller**`"] -->|"Main number"| M["`**Main IVR**
 Automated menu`"]
->>>>>>> 7088763c3cd00dcbd30ac8872d8835db3db329ce
 
     M -->|"Service selection"| Q["`**Team queue**
 Routes calls to staff`"]
@@ -108,11 +102,6 @@ Turn the Teams phone exports into a Power BI dashboard that shows AHRI what's ha
 
 Both exports cover **6 April to 1 September 2026**.
 
-<<<<<<< HEAD
--   Teams Direct Routing export
--   6 April – 1 September 2026
--   **3,986 unique calls** through main IVR
-=======
 **Inbound:** one call can create several system records.
 
 ```{mermaid}
@@ -145,18 +134,13 @@ Without Main IVR`"]
 
 ::: {.muted style="margin-top: 0.2em;"}
 Vanessa confirmed that calls without Main IVR are mostly direct to staff. We retain the 3,986 Main IVR groups and their related records. Groups do not represent unique people.
->>>>>>> 7088763c3cd00dcbd30ac8872d8835db3db329ce
 :::
 
 ::: callout-box
 **Outbound scope:** 6,046 attempts by 18 approved staff across Membership, HRSC and Events.
 :::
 
-<<<<<<< HEAD
--   Export Outbound file
--   6 April – 1 September 2026
--   Focus on **18 staff** mapped to three teams: **6,046 attempts**
-=======
+
 ::: notes
 The inbound file contains 9,859 system records. One call can generate multiple records as it moves through the system, so we group related records by their shared identifier.
 
@@ -167,7 +151,6 @@ The other 2,375 groups have no Main IVR record. Vanessa confirmed that these cal
 These counts describe groups of records rather than unique people. Someone can call more than once.
 
 Separately, we filter the other export to outbound calls and the 18 staff approved by AHRI. This gives 6,046 outbound attempts.
->>>>>>> 7088763c3cd00dcbd30ac8872d8835db3db329ce
 :::
 
 ## IDA and EDA: checking and exploring the data {#ida-eda}
