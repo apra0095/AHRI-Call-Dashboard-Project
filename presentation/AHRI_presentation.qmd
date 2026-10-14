@@ -71,7 +71,7 @@ Turn the Teams phone exports into a Power BI dashboard that shows AHRI what's ha
 ## Business questions
 
 |   | Question | Dashboard page |
-|------------------------|------------------------|------------------------|
+|----|----|----|
 | Inbound | How many calls arrive, and when? | Inbound Call Overview |
 | Inbound | Where do callers go? | Routing and queue destinations |
 | Inbound | How do calls end, and how long do they take? | Outcome and Duration |
@@ -100,9 +100,8 @@ Turn the Teams phone exports into a Power BI dashboard that shows AHRI what's ha
 
 ## IDA and EDA: checking and exploring the data {#ida-eda}
 
-::::: {.columns style="font-size: 0.85em; display: flex; gap: 2em;"}
-
-::: {.column width="49%"}
+::::::: {.columns style="font-size: 0.85em; display: flex; gap: 2em;"}
+:::: {.column width="49%"}
 ### IDA · Check and prepare
 
 ::: muted
@@ -112,9 +111,9 @@ Initial data analysis · Power Query
 - **Inbound quality:** 334 missing account names and 785 missing start/end timestamps. Retained the rows with unknown values.
 - **Scope:** grouped inbound rows by shared ID, selected Main IVR groups and filtered outbound to 18 approved staff.
 - **Consistency:** cleaned account labels, set data types and converted UTC timestamps to Melbourne time.
-:::
+::::
 
-::: {.column width="49%"}
+:::: {.column width="49%"}
 ### EDA · Explore patterns
 
 ::: muted
@@ -124,9 +123,8 @@ Exploratory data analysis · Power BI and DAX
 - **Timing:** compared daily, weekday, hourly and monthly activity, including a 7-day trailing average.
 - **Routing and teams:** compared queue/overflow destinations and outbound volumes across teams.
 - **Outcomes and duration:** examined technical statuses and duration bands. Compared mean and median to assess the effect of long calls.
-:::
-
-:::::
+::::
+:::::::
 
 ::: callout-box
 **Scope check:** 9,859 inbound records form 6,361 shared-ID groups. Our inbound analysis focuses on the **3,986 containing Main IVR**.
