@@ -86,6 +86,35 @@ table _OutboundMeasures
 			RETURN IF ( NOT ISBLANK ( s ), INT ( s / 60 ) & ":" & FORMAT ( MOD ( s, 60 ), "00" ) )
 		lineageTag: 86359fde-d88d-42a1-b85b-a140df72235d
 
+	measure 'Outbound 7 day average' =
+			
+			VAR CurrentDate =
+			    MAX(DimRoutingDate[Date])
+			
+			VAR WindowDates =
+			    FILTER(
+			        ALL(DimRoutingDate),
+			        DimRoutingDate[Date] >= CurrentDate - 6
+			            && DimRoutingDate[Date] <= CurrentDate
+			            && DimRoutingDate[IsCompleteDay] = TRUE()
+			    )
+			
+			RETURN
+			    IF(
+			        COUNTROWS(WindowDates) = 7,
+			        CALCULATE(
+			            AVERAGEX(
+			                WindowDates,
+			                [Outbound attempts]
+			            ),
+			            REMOVEFILTERS(DimRoutingDate)
+			        ),
+			        BLANK()
+			    )
+		lineageTag: a2cc8a0a-5796-4213-b52d-7fde376d58a5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	column Placeholder
 		isHidden
 		formatString: 0

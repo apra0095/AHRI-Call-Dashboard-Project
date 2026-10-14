@@ -1,5 +1,5 @@
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.11.0/schema.json",
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
   "name": "4ca3a9ad30ca5457a705",
   "position": {
     "x": 49.35595376851137,
@@ -47,6 +47,20 @@
               },
               "queryRef": "_RoutingMeasures.Main IVR entries",
               "nativeQueryRef": "Main IVR entries"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_RoutingMeasures"
+                    }
+                  },
+                  "Property": "7 day average"
+                }
+              },
+              "queryRef": "_RoutingMeasures.7 day average",
+              "nativeQueryRef": "7 day average"
             }
           ]
         }
