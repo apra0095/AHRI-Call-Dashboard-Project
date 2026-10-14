@@ -50,10 +50,10 @@ Members get in touch three ways:
 AHRI has no visibility and needs a clearer way to understand of
 
 ::: incremental
--   **When** do members call?
--   **Where** do their calls go?
--   **How** do calls end, and how long do they take?
--   **Who** is calling members back, and when?
+- **When** do members call?
+- **Where** do their calls go?
+- **How** do calls end, and how long do they take?
+- **Who** is calling members back, and when?
 :::
 ::::
 
@@ -84,19 +84,71 @@ Turn the Teams phone exports into a Power BI dashboard that shows AHRI what's ha
 ::: {.column width="50%"}
 ### Inbound
 
--   Teams Direct Routing export
--   6 April – 1 September 2026
--   **3,986 unique calls** through main IVR
+- Teams Direct Routing export
+- 6 April – 1 September 2026
+- **3,986 unique calls** through main IVR
 :::
 
 ::: {.column width="50%"}
 ### Outbound
 
--   Export Outbound file
--   6 April – 1 September 2026
--   Focus on **18 staff** mapped to three teams: **6,046 attempts**
+- Export Outbound file
+- 6 April – 1 September 2026
+- Focus on **18 staff** mapped to three teams: **6,046 attempts**
 :::
 :::::
+
+## IDA and EDA: checking and exploring the data {#ida-eda}
+
+::::: {.columns style="font-size: 0.85em; display: flex; gap: 2em;"}
+
+::: {.column width="49%"}
+### IDA · Check and prepare
+
+::: muted
+Initial data analysis · Power Query
+:::
+
+- **Inbound quality:** 334 missing account names and 785 missing start/end timestamps. Retained the rows with unknown values.
+- **Scope:** grouped inbound rows by shared ID, selected Main IVR groups and filtered outbound to 18 approved staff.
+- **Consistency:** cleaned account labels, set data types and converted UTC timestamps to Melbourne time.
+:::
+
+::: {.column width="49%"}
+### EDA · Explore patterns
+
+::: muted
+Exploratory data analysis · Power BI and DAX
+:::
+
+- **Timing:** compared daily, weekday, hourly and monthly activity, including a 7-day trailing average.
+- **Routing and teams:** compared queue/overflow destinations and outbound volumes across teams.
+- **Outcomes and duration:** examined technical statuses and duration bands. Compared mean and median to assess the effect of long calls.
+:::
+
+:::::
+
+::: callout-box
+**Scope check:** 9,859 inbound records form 6,361 shared-ID groups. Our inbound analysis focuses on the **3,986 containing Main IVR**.
+:::
+
+::: muted
+Weekday averages include zero-activity days and exclude boundary dates. Full-month comparisons cover May–August.
+:::
+
+::: notes
+IDA means initial data analysis. We checked what each record represents, missing values, duplicates and timestamp coverage before calculating the dashboard measures.
+
+We retained records with missing account names or timestamps because their other fields could still be useful. We did not invent replacement values. No exact duplicate inbound rows were found. Grouping related records by shared ID is therefore different from removing duplicates.
+
+The 9,859 inbound records form 6,361 shared-ID groups, of which 3,986 contain Main IVR. Vanessa confirmed that groups without Main IVR are mostly direct calls to staff. This supported our decision to focus the inbound analysis on Main IVR. These groups are not counts of unique people.
+
+EDA means exploratory data analysis. We used Power BI charts and DAX measures to investigate when activity occurs, which destinations and teams account for it, and how technical outcomes and recorded durations vary.
+
+For fairer comparisons, weekday averages include zero-activity days and exclude the first and last observed dates. Public holidays remain included, and continuous coverage between the boundary dates is assumed. The trailing average covers the current day and the previous six calendar days.
+
+These are descriptive findings. Technical success does not prove that a member spoke to staff, and recorded duration does not establish queue waiting time.
+:::
 
 ## Approach
 
@@ -159,10 +211,10 @@ Inbound: 6 Apr – 1 Sep 2026, calls through the Main IVR. <br> Outbound: same p
 
 :::: {.column width="28%"}
 ::: takeaways
--   **3,986** calls, about **37 per weekday**
--   Steady **9am–5pm**; almost nothing outside it
--   **Tuesday** is busiest (\~44/day), Friday quietest (\~33)
--   Weekday average fell from **\~53 in May to \~30 in August**
+- **3,986** calls, about **37 per weekday**
+- Steady **9am–5pm**; almost nothing outside it
+- **Tuesday** is busiest (\~44/day), Friday quietest (\~33)
+- Weekday average fell from **\~53 in May to \~30 in August**
 :::
 ::::
 ::::::
@@ -176,10 +228,10 @@ Inbound: 6 Apr – 1 Sep 2026, calls through the Main IVR. <br> Outbound: same p
 
 :::: {.column width="28%"}
 ::: takeaways
--   **68%** of calls show no queue record (they ended in the menu or went elsewhere)
--   **Membership, Reception and Career Support** take most queue demand
--   **Career Support:** \~47% of its queue calls reach overflow
--   **Reception:** under 10%
+- **68%** of calls show no queue record (they ended in the menu or went elsewhere)
+- **Membership, Reception and Career Support** take most queue demand
+- **Career Support:** \~47% of its queue calls reach overflow
+- **Reception:** under 10%
 :::
 ::::
 ::::::
@@ -193,10 +245,10 @@ Inbound: 6 Apr – 1 Sep 2026, calls through the Main IVR. <br> Outbound: same p
 
 :::: {.column width="28%"}
 ::: takeaways
--   \~**3,300** completed, \~**600** disconnected / timed out
--   Typical call: **1.5–2 min**; average **2m 58s**
--   Disconnected calls average **\~5 min**, about twice as long as completed ones
--   **Career Support** has the longest queue time (**\~6.5 min**)
+- \~**3,300** completed, \~**600** disconnected / timed out
+- Typical call: **1.5–2 min**; average **2m 58s**
+- Disconnected calls average **\~5 min**, about twice as long as completed ones
+- **Career Support** has the longest queue time (**\~6.5 min**)
 :::
 ::::
 ::::::
@@ -212,10 +264,10 @@ Inbound: 6 Apr – 1 Sep 2026, calls through the Main IVR. <br> Outbound: same p
 
 :::: {.column width="28%"}
 ::: takeaways
--   **6,046** attempts by **18 staff**, about **57 per weekday**
--   **Membership: 87%** (5,275); HRSC 680; Events 91
--   Busiest **Tuesday 11am–2pm**; quietest day **Monday**
--   May was the peak month (**77.8/weekday**)
+- **6,046** attempts by **18 staff**, about **57 per weekday**
+- **Membership: 87%** (5,275); HRSC 680; Events 91
+- Busiest **Tuesday 11am–2pm**; quietest day **Monday**
+- May was the peak month (**77.8/weekday**)
 :::
 ::::
 ::::::
@@ -229,10 +281,10 @@ Inbound: 6 Apr – 1 Sep 2026, calls through the Main IVR. <br> Outbound: same p
 
 :::: {.column width="28%"}
 ::: takeaways
--   **5,504** connected (**91%**); **542** didn't
--   Main failure: **not answered** (375)
--   **69%** of connected calls last **under 1 minute**; average **1:36**
--   Short calls may be **voicemail**: the export can't tell us
+- **5,504** connected (**91%**); **542** didn't
+- Main failure: **not answered** (375)
+- **69%** of connected calls last **under 1 minute**; average **1:36**
+- Short calls may be **voicemail**: the export can't tell us
 :::
 ::::
 ::::::
@@ -243,18 +295,19 @@ Inbound: 6 Apr – 1 Sep 2026, calls through the Main IVR. <br> Outbound: same p
 ::: {.column width="50%"}
 ### Inbound
 
--   Whether a staff member answered
--   Whether a caller abandoned in the queue
--   Whether the caller's question was resolved
+- Whether a staff member answered
+- Whether a caller abandoned in the queue
+- Whether the caller's question was resolved
 :::
 
 ::: {.column width="50%"}
 ### Outbound
 
--   Whether the **member** answered, rather than voicemail
--   The **purpose** of the call (fees, welcome, other)
--   Whether the call achieved its goal
+- Whether the **member** answered, rather than voicemail
+- The **purpose** of the call (fees, welcome, other)
+- Whether the call achieved its goal
 :::
 :::::
 
-:::::: :::::::
+::: :::::::
+:::

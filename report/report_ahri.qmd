@@ -329,20 +329,168 @@ ahri_plot_theme <- theme_minimal(base_size = 10) +
   )
 ```
 
-## Demand over time
+```{r}
+#| label: prepare-inbound-timing
+#| include: false
 
-The inbound analysis identifies 3,986 Main IVR entries between 6 April and 1 September 2026. These entries represent activity through AHRI's main telephone menu. They do not represent every call to AHRI or the number of different people who called. The corresponding average is 37.4 entries per eligible weekday. The total describes the volume observed, while the average allows comparison between periods containing different numbers of weekdays.
+weekday_names <- c(
+  "Monday", "Tuesday", "Wednesday", "Thursday",
+  "Friday", "Saturday", "Sunday"
+)
 
-The figures in this section are reproduced from the source workbook using the definitions in @sec-method. They provide a reproducible presentation of the findings rather than screenshots of the Power BI interface.
+# Retain all eligible dates, including dates with zero entries.
+eligible_calendar <- inbound_daily |>
+  filter(eligible_day)
 
-@fig-inbound-trend shows considerable variation between individual days. The largest observed peak is 134 Main IVR entries on 21 May. The trailing seven-day average on that date is 55.3, calculated from 387 entries across 15–21 May. The daily count identifies the immediate spike, while the average places it within the surrounding week's activity. AHRI could investigate whether a campaign, event deadline or member communication coincided with this period. The call records alone cannot explain the cause.
+eligible_main_entries <- inbound_entries |>
+  semi_join(
+    eligible_calendar |> select(date),
+    by = "date"
+  ) |>
+  mutate(
+    weekday_number = wday(date, week_start = 1)
+  )
+
+eligible_weekday_count <- sum(
+  eligible_calendar$weekday_number <= 5
+)
+
+# Compare average demand with the median daily count.
+inbound_weekday_profile <- eligible_calendar |>
+  group_by(weekday_number) |>
+  summarise(
+    days = n(),
+    entries = sum(entries),
+    average_entries = mean(entries),
+    median_entries = median(entries),
+    .groups = "drop"
+  ) |>
+  mutate(
+    weekday = factor(
+      weekday_names[weekday_number],
+      levels = rev(weekday_names)
+    )
+  )
+
+# Hourly averages use all eligible Monday-Friday dates.
+# A date with no calls in a particular hour contributes zero.
+inbound_hour_profile <- tibble(entry_hour = 0:23) |>
+  left_join(
+    eligible_main_entries |>
+      filter(weekday_number <= 5) |>
+      count(entry_hour, name = "entries"),
+    by = "entry_hour"
+  ) |>
+  mutate(
+    entries = coalesce(entries, 0L),
+    average_entries = entries / eligible_weekday_count
+  )
+
+# Complete every weekday-hour combination before averaging.
+inbound_day_hour <- as_tibble(
+  expand.grid(
+    weekday_number = 1:7,
+    entry_hour = 0:23
+  )
+) |>
+  left_join(
+    eligible_main_entries |>
+      count(
+        weekday_number,
+        entry_hour,
+        name = "entries"
+      ),
+    by = c("weekday_number", "entry_hour")
+  ) |>
+  left_join(
+    inbound_weekday_profile |>
+      select(weekday_number, days),
+    by = "weekday_number"
+  ) |>
+  mutate(
+    entries = coalesce(entries, 0L),
+    average_entries = entries / days,
+    weekday = factor(
+      weekday_names[weekday_number],
+      levels = rev(weekday_names)
+    )
+  )
+
+# Restrict monthly comparisons to May-August.
+full_month_weekdays <- eligible_calendar |>
+  filter(
+    weekday_number <= 5,
+    date >= as.Date("2026-05-01"),
+    date <= as.Date("2026-08-31")
+  ) |>
+  mutate(month = format(date, "%Y-%m"))
+
+inbound_monthly_details <- full_month_weekdays |>
+  group_by(month) |>
+  summarise(
+    weekdays = n(),
+    average_entries = mean(entries),
+    median_entries = median(entries),
+    .groups = "drop"
+  )
+
+monthly_busiest_day <- full_month_weekdays |>
+  group_by(month, weekday_number) |>
+  summarise(
+    average_entries = mean(entries),
+    .groups = "drop"
+  ) |>
+  group_by(month) |>
+  summarise(
+    busiest_day = paste(
+      weekday_names[
+        weekday_number[
+          average_entries == max(average_entries)
+        ]
+      ],
+      collapse = ", "
+    ),
+    .groups = "drop"
+  )
+
+inbound_monthly_details <- inbound_monthly_details |>
+  left_join(monthly_busiest_day, by = "month")
+
+# Sensitivity check only: the main results retain these dates.
+may_without_two_peaks <- full_month_weekdays |>
+  filter(
+    month == "2026-05",
+    !date %in% as.Date(c("2026-05-20", "2026-05-21"))
+  ) |>
+  summarise(average_entries = mean(entries)) |>
+  pull(average_entries)
+
+stopifnot(
+  eligible_weekday_count == 105,
+  sum(inbound_hour_profile$entries) == 3925
+)
+```
+
+## Overall demand and the comparison period
+
+AHRI's main telephone menu received 3,986 recorded Main IVR entries between 6 April and 1 September 2026. These entries describe activity through the main menu rather than every call received by AHRI. Repeated calls from the same person can contribute multiple entries.
+
+The timing analysis excludes the first and last observed dates because their coverage may be incomplete. This leaves 147 calendar days, including 105 Monday-to-Friday dates. Those weekdays contain 3,925 entries, giving an average of 37.4 per weekday. The median is 33, meaning that a typical weekday has fewer entries than the arithmetic average suggests. Higher-volume days pull the average upward.
+
+Dates with no entries remain included. Public holidays also remain classified by their calendar weekday. The analysis assumes that the export provides continuous coverage between its boundary dates; the records alone cannot prove that every day was captured completely.
+
+## Daily variation and unusually busy periods
+
+@fig-inbound-trend shows that demand varies considerably between days. The two largest daily counts occur consecutively: 130 entries on 20 May and 134 on 21 May. Together, these dates account for 23.7% of May's weekday entries. This concentration suggests that the month's high average deserves investigation alongside AHRI's communication, renewal and event calendars.
+
+The trailing seven-day average helps distinguish a single busy day from a broader period of activity. On 21 May, it is 55.3 entries per calendar day, calculated from 387 entries across 15–21 May. This includes the weekend within that window. It therefore answers a different question from the average per weekday, which excludes Saturdays and Sundays.
 
 ```{r}
 #| label: fig-inbound-trend
 #| echo: false
 #| fig-width: 8
-#| fig-height: 3.6
-#| fig-cap: "Daily Main IVR entries and trailing seven-day average, calculated from the inbound workbook in Melbourne time. The average includes zero-entry days and weekends. It is shown only for seven-day windows that exclude the first and last observed dates."
+#| fig-height: 3.5
+#| fig-cap: "Daily Main IVR entries and trailing seven-day average in Melbourne time. The moving average includes weekends and zero-entry days. Only windows excluding the first and last observed dates are shown."
 
 ggplot(inbound_daily, aes(x = date)) +
   geom_line(
@@ -359,10 +507,18 @@ ggplot(inbound_daily, aes(x = date)) +
       "Daily entries" = "#8298A1",
       "Trailing seven-day average" = "#007F86"
     ),
-    breaks = c("Daily entries", "Trailing seven-day average")
+    breaks = c(
+      "Daily entries",
+      "Trailing seven-day average"
+    )
   ) +
-  scale_x_date(date_breaks = "1 month", date_labels = "%b") +
-  scale_y_continuous(expand = expansion(mult = c(0, 0.06))) +
+  scale_x_date(
+    date_breaks = "1 month",
+    date_labels = "%b"
+  ) +
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.06))
+  ) +
   labs(
     x = "2026",
     y = "Main IVR entries"
@@ -370,32 +526,194 @@ ggplot(inbound_daily, aes(x = date)) +
   ahri_plot_theme
 ```
 
-Comparing fully covered months gives a clearer indication of sustained demand than comparing monthly totals alone. Average weekday entries fall from 53.0 in May to 39.5 in June, 37.4 in July and 29.5 in August. August's average is approximately 44% lower than May's. The calculation accounts for the different numbers of weekdays: 21 in May, 22 in June, 23 in July and 21 in August. Public holidays remain included as weekdays.
+These peaks are observations to explain, rather than errors to remove automatically. As a sensitivity check, excluding 20 and 21 May reduces May's weekday average from 53.0 to 44.6. May remains busier than August even under this alternative calculation. The comparison shows that the two peaks influence the size of the decline but do not fully explain it.
 
-This decline describes the supplied period; it is not evidence of a continuing downward trend. May contains unusually busy days, making it a potentially unrepresentative baseline. Lower call volume might reflect quieter business activity, a change in contact channels or incomplete records. These possibilities cannot be distinguished from the export alone. A longer series, supported by information about campaigns and service changes, would make the monthly pattern easier to interpret.
+## Changes across fully covered months
 
-## Weekday and hourly patterns
+Average weekday demand decreases from 53.0 in May to 39.5 in June, 37.4 in July and 29.5 in August. August's average is approximately 44.2% below May's. The monthly medians also decline, from 46 to 38, 34 and 26 respectively, supporting a broader reduction beyond the effect of a few exceptionally busy days.
 
-Tuesday has the highest average Main IVR demand, at 43.6 entries per eligible Tuesday. Monday averages 37.4, Wednesday 36.6, Thursday 36.0 and Friday 33.2. Each value is an average for one occurrence of that day, not a weekly total. For example, Tuesday's value divides all eligible Tuesday entries by the number of eligible Tuesdays, including Tuesdays with no entries.
+@tbl-inbound-monthly accounts for the different numbers of weekdays in each month. It also shows that the busiest named weekday changes across months.
 
-Weekend activity is very limited, with 15 Main IVR entries across the observed export. Activity is also concentrated during daytime hours: 3,822 entries, or 95.9% of the total, occur from 09:00 up to, but excluding, 17:00 in Melbourne.
+```{r}
+#| label: tbl-inbound-monthly
+#| echo: false
+#| tbl-cap: "Main IVR demand during fully covered months. Means and medians refer to daily counts on Monday-Friday dates. The busiest day is the named weekday with the highest average within that month."
 
-These patterns provide a starting point for reviewing telephone coverage. AHRI could compare Tuesday availability with other weekdays and check whether meetings or other duties reduce coverage during busy periods. However, the figures do not establish how many staff are required. That decision also depends on handling time, simultaneous calls, staff availability and the desired service level. Counts of entries describe demand without measuring the full workload involved in responding to it.
+monthly_display <- inbound_monthly_details |>
+  transmute(
+    Month = month.abb[
+      as.integer(substr(month, 6, 7))
+    ],
+    Weekdays = weekdays,
+    Mean = sprintf("%.1f", average_entries),
+    Median = sprintf("%.0f", median_entries),
+    `Busiest day` = busiest_day
+  )
+
+knitr::kable(
+  monthly_display,
+  align = c("l", "r", "r", "r", "l"),
+  booktabs = TRUE
+)
+```
+
+This remains a descriptive comparison over four full months. It does not establish a recurring seasonal pattern or predict future demand. A reduction in calls could reflect quieter activity, different contact channels or changes in the reasons members call. Information about campaigns and a longer history would be needed to distinguish these explanations.
+
+## Differences between days of the week
+
+Tuesday has the highest overall average, with 43.6 entries per eligible Tuesday. Monday averages 37.4, Wednesday 36.6, Thursday 36.0 and Friday 33.2. Tuesday's average is approximately 31% higher than Friday's. Each named weekday occurs 21 times in the eligible period, so these comparisons use equal numbers of dates.
+
+The medians add useful context, as shown in panel (a) of @fig-inbound-timing. Tuesday also has the highest median, at 37 entries, indicating that its higher average is not solely associated with one unusually busy date. However, Friday's median of 33 exceeds Wednesday's and Thursday's medians of 29. The day with the lowest average is therefore not necessarily the day with the lowest typical count.
+
+Only 15 entries occur on eligible weekends: ten on Saturdays and five on Sundays. Both weekend medians are zero. This indicates that observed demand is strongly concentrated on weekdays, although the export does not explain AHRI's opening arrangements or the needs of those weekend callers.
+
+```{r}
+#| label: fig-inbound-timing
+#| echo: false
+#| layout-ncol: 2
+#| fig-width: 4.6
+#| fig-height: 3.8
+#| fig-cap: "Weekday and hourly Main IVR patterns in Melbourne time. Panel (a) uses 21 occurrences of each named day. Panel (b) divides each hourly total by all 105 eligible Monday-Friday dates, including dates with no entries in that hour."
+#| fig-subcap:
+#|   - "Mean and median daily entries."
+#|   - "Mean entries within each hour."
+
+ggplot(
+  inbound_weekday_profile,
+  aes(y = weekday)
+) +
+  geom_col(
+    aes(x = average_entries),
+    fill = "#007F86",
+    width = 0.65
+  ) +
+  geom_point(
+    aes(x = median_entries),
+    shape = 21,
+    fill = "#173741",
+    colour = "white",
+    size = 2.8,
+    stroke = 0.5
+  ) +
+  geom_text(
+    aes(
+      x = average_entries,
+      label = sprintf("%.1f", average_entries)
+    ),
+    hjust = -0.2,
+    size = 3
+  ) +
+  scale_x_continuous(
+    expand = expansion(mult = c(0.02, 0.16))
+  ) +
+  labs(
+    subtitle = "Bars: mean; dots: median",
+    x = "Entries per day",
+    y = NULL
+  ) +
+  ahri_plot_theme
+
+ggplot(
+  inbound_hour_profile,
+  aes(x = entry_hour, y = average_entries)
+) +
+  geom_col(
+    fill = "#007F86",
+    width = 0.85
+  ) +
+  scale_x_continuous(
+    breaks = seq(0, 21, by = 3),
+    labels = function(x) sprintf("%02d", x)
+  ) +
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.08))
+  ) +
+  labs(
+    subtitle = "Each bar covers one hour",
+    x = "Hour starting, Melbourne time",
+    y = "Entries per weekday-hour"
+  ) +
+  ahri_plot_theme
+```
+
+Tuesday should not be treated as the busiest day in every month. Wednesday has the highest weekday average in May, while Monday leads in August. The overall Tuesday pattern provides a useful starting point for reviewing coverage, but the changing monthly pattern argues against basing a permanent roster on the overall ranking alone.
+
+## When during the day calls arrive
+
+Panel (b) of @fig-inbound-timing shows a broad daytime concentration. Of the 3,925 eligible weekday entries, 3,764 occur between 09:00 and 17:00, representing 95.9%. There are 79 entries before 09:00 and 82 from 17:00 onward.
+
+The highest hourly average occurs from 11:00 to 12:00, at 4.9 entries per eligible weekday. However, this is only slightly above the surrounding hours. From 09:00 to 15:00, hourly averages remain between approximately 4.6 and 4.9 entries. The main pattern is therefore a sustained period of daytime activity, rather than a narrow peak requiring attention at only one hour.
+
+There is no pronounced lunchtime reduction. The averages for 12:00–13:00 and 13:00–14:00 are 4.6 entries each. This supports reviewing whether breaks and other duties leave sufficient telephone coverage around lunchtime. Average demand then falls to 3.9 entries during 15:00–16:00 and 3.7 during 16:00–17:00, although these hours still contain regular activity.
+
+These timestamps record entry into the telephone system. They do not measure when an employee answered, how long callers waited or how many calls were being handled simultaneously.
+
+## Combining weekday and hour
+
+The separate weekday and hourly profiles can conceal differences between particular parts of the week. @fig-inbound-day-hour combines them by calculating average entries for every weekday-hour combination. For example, Tuesday's 10:00–11:00 value divides all entries in that slot by the 21 eligible Tuesdays.
+
+```{r}
+#| label: fig-inbound-day-hour
+#| echo: false
+#| fig-width: 8
+#| fig-height: 3.7
+#| fig-cap: "Average Main IVR entries by weekday and hour in Melbourne time. Each cell uses all 21 occurrences of that named day, including dates with no entries in the relevant hour. Darker cells indicate higher historical average demand."
+
+ggplot(
+  inbound_day_hour,
+  aes(
+    x = entry_hour,
+    y = weekday,
+    fill = average_entries
+  )
+) +
+  geom_tile(
+    colour = "white",
+    linewidth = 0.3,
+    width = 0.97,
+    height = 0.94
+  ) +
+  scale_x_continuous(
+    breaks = seq(0, 21, by = 3),
+    labels = function(x) sprintf("%02d", x),
+    expand = expansion(add = 0.5)
+  ) +
+  scale_fill_gradient(
+    low = "#F1F5F5",
+    high = "#00636B",
+    name = "Mean entries\nper hour"
+  ) +
+  labs(
+    x = "Hour starting, Melbourne time",
+    y = NULL
+  ) +
+  ahri_plot_theme +
+  theme(
+    panel.grid = element_blank()
+  )
+```
+
+The highest average cell is Tuesday from 10:00 to 11:00, at approximately 6.0 entries. Monday from 09:00 to 10:00 also stands out, averaging 5.7. Tuesday's relatively high activity extends across several morning and midday hours, which helps explain its larger daily average.
+
+This view supports more specific coverage discussions than a daily total alone. AHRI could compare meeting schedules, breaks and staff availability with these periods. Nevertheless, an average of six entries in an hour does not imply six simultaneous calls or a requirement for six staff. Staffing decisions also require handling times, concurrent demand, available staff and service targets.
 
 ## Recorded queue destinations
 
-Of the 3,986 Main IVR groups, 1,262 contain a queue record and 2,724 do not. Every queue-associated group in this export also contains a Main IVR record. Among the 1,262 queue-associated groups, 337 contain an overflow-named destination, equivalent to 26.7%. The other 925 contain primary queue records without an observed overflow destination.
+Across the full observed period, 1,262 of the 3,986 Main IVR groups contain a queue record, while 2,724 do not. Every queue-associated group in this export also contains Main IVR. These classifications describe recorded activity; the absence of a queue record does not establish that a caller abandoned the call or failed to receive assistance.
 
-These categories describe what appears in the export. A group without a queue record cannot automatically be classified as abandoned or unanswered. Similarly, an overflow-named record identifies an associated destination without establishing why the call reached it or whether a staff member answered.
+Among queue-associated groups, 337 contain an overflow-named destination, equivalent to 26.7%. The other 925 contain primary queue records without an observed overflow destination.
 
 ```{r}
 #| label: fig-queues
 #| echo: false
 #| fig-width: 8
-#| fig-height: 4
-#| fig-cap: "Distinct queue-associated groups by service. Darker bars show groups with overflow-named records within each service's total; the bars are not additive. Source: calculations from the inbound workbook."
+#| fig-height: 3.8
+#| fig-cap: "Distinct queue-associated groups by service across the full observed period. Darker bars show the overflow-associated subset of each service total. The bars are not additive."
 
-ggplot(queue_summary, aes(y = reorder(service, groups))) +
+ggplot(
+  queue_summary,
+  aes(y = reorder(service, groups))
+) +
   geom_col(
     aes(x = groups, fill = "All queue-associated groups"),
     width = 0.65
@@ -412,12 +730,17 @@ ggplot(queue_summary, aes(y = reorder(service, groups))) +
   ) +
   scale_fill_manual(
     values = c(
-      "All queue associated groups" = "#C5D6DA",
+      "All queue-associated groups" = "#C5D6DA",
       "With overflow records" = "#007F86"
     ),
-    breaks = c("All queue-associated groups", "With overflow records")
+    breaks = c(
+      "All queue-associated groups",
+      "With overflow records"
+    )
   ) +
-  scale_x_continuous(expand = expansion(mult = c(0, 0.12))) +
+  scale_x_continuous(
+    expand = expansion(mult = c(0, 0.12))
+  ) +
   labs(
     x = "Distinct shared-ID groups",
     y = NULL
@@ -425,11 +748,435 @@ ggplot(queue_summary, aes(y = reorder(service, groups))) +
   ahri_plot_theme
 ```
 
-Membership has the largest number of queue-associated groups, with 432, followed by Reception with 374 and Career Support with 348. CPD Events has 68 groups, Organisation Members 35, Student Support four and Corporate Sales one. @fig-queues shows the volumes alongside their overflow-associated subsets. Presenting counts is important because a high percentage can otherwise draw attention away from how little activity underlies it.
+Membership receives the largest number of queue-associated groups, with 432, followed by Reception with 374 and Career Support with 348. CPD Events has 68, Organisation Members 35, Student Support four and Corporate Sales one. The counts in @fig-queues provide the context needed to interpret overflow percentages.
 
-Among services meeting the dashboard's minimum of 30 groups for percentage comparisons, CPD Events has the highest overflow share: 34 of 68 groups, or 50.0%. Career Support follows with 165 of 348, or 47.4%. Organisation Members records eight of 35, or 22.9%; Membership records 96 of 432, or 22.2%; and Reception records 33 of 374, or 8.8%. The minimum of 30 is a reporting choice to limit comparisons based on very small counts. It is not a telephone-system setting or a guarantee of statistical reliability.
+Among services meeting the dashboard's minimum of 30 groups, CPD Events has the highest overflow share, with 34 of 68 groups, or 50.0%. Career Support follows with 165 of 348, or 47.4%. Organisation Members records 22.9%, Membership 22.2% and Reception 8.8%. The minimum of 30 is a display rule for queue-percentage comparisons, not a telephone-system setting or a guarantee of statistical reliability.
 
-The differences identify areas for investigation rather than a ranking of service performance. For example, CPD Events' 50% share supports reviewing how its primary and alternative destinations are configured. It does not demonstrate that half its callers waited too long or failed to receive assistance. AHRI's telephone administrator would need to confirm the routing rules before the observed shares could support conclusions about operational problems. This distinction allows the dashboard to guide practical questions while keeping its conclusions within the evidence available.
+These differences justify reviewing the configuration of the named destinations. They do not establish that one service performs worse than another. In particular, CPD Events' 50% share does not prove that half its callers waited too long. The reasons for using each overflow account need confirmation from AHRI's telephone administrator.
+
+## Implications for coverage and service review
+
+The findings support three practical priorities. First, review weekday coverage across the sustained 09:00–15:00 period, including lunchtime, while checking whether Tuesday mornings and Monday opening hours coincide with reduced staff availability. Second, investigate the exceptionally busy dates in May and compare the changing monthly pattern with planned communications and events. Third, confirm the routing arrangements behind the relatively high overflow shares for CPD Events and Career Support.
+
+These are evidence-based starting points for investigation. The analysis identifies when demand is concentrated and where recorded routing deserves attention. Determining whether coverage is sufficient requires information about waiting, handling time and available staff that the current export does not provide.
+
+# Outbound findings {#sec-outbound}
+
+```{r}
+#| label: prepare-outbound-results
+#| include: false
+
+# Reuse the packages, calendar and chart theme from Section 4.
+
+# Approved accounts and teams from the Power BI DimStaff table
+# at the report's reference commit.
+staff_map <- tibble::tribble(
+  ~account, ~team,
+  "joseph.calabretta@ahri.com.au", "Membership",
+  "lina.jones@ahri.com.au", "Membership",
+  "vaishali.shukla@ahri.com.au", "Membership",
+  "misha.asghar@ahri.com.au", "Membership",
+  "louis.irving@ahri.com.au", "Membership",
+  "stephanie.barnes@ahri.com.au", "Membership",
+  "lily.mcgiffen@ahri.com.au", "Membership",
+  "stacey.watkins@ahri.com.au", "Membership",
+  "sam.teo@ahri.com.au", "Membership",
+  "marika.small@ahri.com.au", "Membership",
+  "vanessa.fiorelli@ahri.com.au", "Membership",
+  "lara.jeffery@ahri.com.au", "HRSC",
+  "grant.summerfield@ahri.com.au", "HRSC",
+  "rebecca.brown@ahri.com.au", "HRSC",
+  "georgina.brooks@ahri.com.au", "HRSC",
+  "ashley-rae.paterson@ahri.com.au", "HRSC",
+  "caitlin.wilson@ahri.com.au", "Events",
+  "shauna.fulford@ahri.com.au", "Events"
+)
+
+stopifnot(
+  nrow(staff_map) == 18,
+  !anyDuplicated(staff_map$account)
+)
+
+# Locate the workbook from either the report folder or repo root.
+outbound_candidates <- c(
+  "../data/source/Export_Outbound.xlsx",
+  "data/source/Export_Outbound.xlsx"
+)
+
+outbound_available <- outbound_candidates[
+  file.exists(outbound_candidates)
+]
+
+if (length(outbound_available) == 0) {
+  stop(
+    "Cannot find Export_Outbound.xlsx. ",
+    "Check the repository's data/source folder."
+  )
+}
+
+# Preserve account names and identifiers as text.
+all_call_records <- read_excel(
+  outbound_available[[1]],
+  sheet = 1,
+  col_types = "text"
+) |>
+  transmute(
+    correlation_id = trimws(CorrelationId),
+    account = tolower(
+      trimws(gsub("[[:cntrl:]]", "", UPN))
+    ),
+    direction = tolower(trimws(`Call Direction`)),
+    invite_utc = ymd_hms(
+      `Invite time`,
+      tz = "UTC",
+      quiet = TRUE
+    ),
+    start_text = na_if(trimws(`Start time`), ""),
+    duration_seconds = as.numeric(`Duration (seconds)`),
+    success = tolower(trimws(Success)),
+    sip_code = trimws(`Final SIP code`)
+  )
+
+# Keep outbound records belonging to approved accounts.
+outbound_records <- all_call_records |>
+  filter(direction == "outbound") |>
+  inner_join(staff_map, by = "account") |>
+  mutate(
+    invite_local = with_tz(
+      invite_utc,
+      "Australia/Melbourne"
+    ),
+    date = as.Date(
+      invite_local,
+      tz = "Australia/Melbourne"
+    )
+  )
+
+# Check that the workbook matches the analysed snapshot.
+# If these fail after a source update, review the written findings.
+stopifnot(
+  nrow(all_call_records) == 17655,
+  sum(
+    all_call_records$direction == "outbound",
+    na.rm = TRUE
+  ) == 7796,
+  nrow(outbound_records) == 6046,
+  !anyNA(outbound_records$correlation_id),
+  all(nzchar(outbound_records$correlation_id)),
+  n_distinct(outbound_records$correlation_id) == 6046,
+  n_distinct(outbound_records$account) == 18,
+  !anyNA(outbound_records$date),
+  !anyNA(outbound_records$duration_seconds),
+  all(outbound_records$duration_seconds >= 0),
+  all(outbound_records$success %in% c("yes", "no")),
+  sum(outbound_records$success == "yes") == 5504,
+  sum(outbound_records$success == "no") == 542
+)
+
+# Check that the calendar inherited from Section 4 covers
+# every selected outbound record.
+stopifnot(
+  all(outbound_records$date >= source_start),
+  all(outbound_records$date <= source_end)
+)
+
+outbound_team_summary <- outbound_records |>
+  group_by(team) |>
+  summarise(
+    staff = n_distinct(account),
+    attempts = n_distinct(correlation_id),
+    successful = sum(success == "yes"),
+    .groups = "drop"
+  ) |>
+  mutate(
+    success_rate = successful / attempts
+  ) |>
+  arrange(desc(attempts))
+
+# Keep zero-activity dates and use the same boundary-day rules
+# as the inbound analysis.
+outbound_daily <- inbound_daily |>
+  select(date, weekday_number, eligible_day) |>
+  left_join(
+    outbound_records |>
+      count(date, name = "attempts"),
+    by = "date"
+  ) |>
+  mutate(
+    attempts = coalesce(attempts, 0L)
+  )
+
+outbound_monthly_summary <- outbound_daily |>
+  filter(
+    eligible_day,
+    weekday_number <= 5,
+    date >= as.Date("2026-05-01"),
+    date <= as.Date("2026-08-31")
+  ) |>
+  mutate(
+    month = format(date, "%Y-%m")
+  ) |>
+  group_by(month) |>
+  summarise(
+    weekdays = n(),
+    attempts = sum(attempts),
+    average_attempts = mean(attempts),
+    .groups = "drop"
+  )
+
+monthly_comparison <- bind_rows(
+  inbound_monthly_summary |>
+    transmute(
+      month,
+      series = "Main IVR entries",
+      average = average_entries
+    ),
+  outbound_monthly_summary |>
+    transmute(
+      month,
+      series = "Selected outbound attempts",
+      average = average_attempts
+    )
+) |>
+  mutate(
+    month = as.Date(paste0(month, "-01")),
+    series = factor(
+      series,
+      levels = c(
+        "Main IVR entries",
+        "Selected outbound attempts"
+      )
+    )
+  )
+
+successful_outbound <- outbound_records |>
+  filter(success == "yes")
+
+# Match the dashboard's integer-second duration intervals.
+duration_labels <- c(
+  "0-30", "31-60", "61-90", "91-120", "121-150",
+  "151-180", "181-210", "211-240", "241-270",
+  "271-300", ">300"
+)
+
+outbound_duration_bands <- successful_outbound |>
+  mutate(
+    duration_band = cut(
+      duration_seconds,
+      breaks = c(seq(0, 300, by = 30), Inf),
+      labels = duration_labels,
+      include.lowest = TRUE,
+      right = TRUE
+    )
+  ) |>
+  count(
+    duration_band,
+    name = "attempts",
+    .drop = FALSE
+  )
+```
+
+## Connecting incoming demand with staff calling activity
+
+The inbound analysis established when calls arrive through AHRI's main menu and which recorded destinations receive that demand. Outbound analysis adds a complementary view: when the approved staff make calls, how that activity is distributed across teams and what technical outcomes are recorded. Together, these views provide a broader basis for discussing telephone coverage and the scheduling of outgoing calls.
+
+For example, periods with substantial incoming and outgoing activity may warrant a review of staff availability and competing responsibilities. Understanding both directions helps managers identify those periods rather than assuming that incoming calls represent all telephone activity.
+
+The two analyses cover different populations. Inbound findings concern Main IVR activity, while outbound findings concern the 18 staff accounts approved by AHRI. Their counts cannot be combined into a count of customers or treated as a complete measure of staff workload. The export also does not establish whether an outbound attempt follows an earlier inbound enquiry, belongs to a campaign or serves another purpose.
+
+The comparison therefore focuses on the timing and distribution of recorded activity. It identifies questions for operational review while leaving explanations about staffing, campaigns and customer journeys to additional information from AHRI.
+
+## Activity within the approved staff group
+
+The 18 approved staff recorded 6,046 outbound attempts between 6 April and 1 September 2026. Membership accounts for 5,275 attempts, or 87.2% of the selected total. HRSC accounts for 680, or 11.2%, and Events accounts for 91, or 1.5%. The percentages total slightly less than 100% because of rounding.
+
+The raw export contains 7,796 outbound records. Of these, 1,750 fall outside the approved account list and were excluded to maintain the agreed scope. The results therefore describe the selected staff group rather than AHRI's entire outbound activity.
+
+@tbl-outbound summarises the selected attempts and source-recorded success status. All 18 approved accounts appear in the observed records.
+
+```{r}
+#| label: tbl-outbound
+#| echo: false
+#| tbl-cap: "Outbound attempts and recorded technical success by team, 6 April to 1 September 2026. Success refers to the source status and does not establish a completed human conversation."
+
+outbound_table <- outbound_team_summary |>
+  bind_rows(
+    tibble(
+      team = "Total",
+      staff = nrow(staff_map),
+      attempts = nrow(outbound_records),
+      successful = sum(
+        outbound_records$success == "yes"
+      ),
+      success_rate = mean(
+        outbound_records$success == "yes"
+      )
+    )
+  ) |>
+  transmute(
+    Team = team,
+    Staff = staff,
+    Attempts = attempts,
+    `Success = Yes` = successful,
+    `Success (%)` = sprintf(
+      "%.1f",
+      100 * success_rate
+    )
+  ) |>
+  mutate(
+    across(
+      c(Staff, Attempts, `Success = Yes`),
+      ~ format(
+        .x,
+        big.mark = ",",
+        scientific = FALSE,
+        trim = TRUE
+      )
+    )
+  )
+
+knitr::kable(
+  outbound_table,
+  align = c("l", "r", "r", "r", "r"),
+  booktabs = TRUE
+)
+```
+
+Membership has both the largest approved staff group and the largest number of attempts. However, headcount alone cannot explain the difference between teams. The export does not contain working hours, leave, campaign assignments or the proportion of each person's role devoted to telephone work. Dividing attempts by staff numbers would produce an arithmetic average, but it would not provide a fair comparison of employee productivity.
+
+The team breakdown is most useful for locating recorded activity and identifying questions for managers. AHRI could investigate whether Membership's larger volume reflects scheduled renewal activity or a greater responsibility for outbound contact. These explanations require operational information beyond the call logs. A smaller team total should not automatically be interpreted as poor performance.
+
+## Timing and monthly changes
+
+The selected staff average 57.4 outbound attempts per eligible weekday. This uses 6,027 attempts across 105 weekdays, with the remaining 19 attempts occurring on the excluded final boundary date. No outbound attempts are recorded on weekends for the selected accounts.
+
+Two eligible weekdays contain no attempts. Keeping these dates in the calculation measures activity across the complete eligible calendar. Calculating the average only on days with at least one attempt would increase it to 58.5. This demonstrates why the denominator matters: an average over active days answers a different question from an average over all eligible weekdays.
+
+Outbound activity varies considerably across fully covered months. May records 1,634 attempts, averaging 77.8 per weekday. June records 857, averaging 39.0; July records 1,325, averaging 57.6; and August records 1,089, averaging 51.9. The July increase means the pattern is not a continuous month-by-month decline.
+
+```{r}
+#| label: fig-monthly
+#| echo: false
+#| fig-width: 8
+#| fig-height: 3.5
+#| fig-cap: "Average activity per weekday for fully covered months. Both panels use the same weekday denominator and vertical scale. Inbound entries and outbound attempts describe different populations and should not be added into a count of customers."
+
+ggplot(
+  monthly_comparison,
+  aes(
+    x = month,
+    y = average,
+    fill = series
+  )
+) +
+  geom_col(
+    width = 20,
+    show.legend = FALSE
+  ) +
+  geom_text(
+    aes(
+      label = sprintf("%.1f", average)
+    ),
+    vjust = -0.4,
+    size = 3.2,
+    colour = "#173741"
+  ) +
+  facet_wrap(
+    ~ series,
+    nrow = 1
+  ) +
+  scale_fill_manual(
+    values = c(
+      "Main IVR entries" = "#007F86",
+      "Selected outbound attempts" = "#173741"
+    )
+  ) +
+  scale_x_date(
+    date_breaks = "1 month",
+    date_labels = "%b"
+  ) +
+  scale_y_continuous(
+    expand = expansion(mult = c(0, 0.12))
+  ) +
+  labs(
+    x = "2026",
+    y = "Average per weekday"
+  ) +
+  ahri_plot_theme
+```
+
+@fig-monthly compares the timing of incoming demand and outgoing activity using the same weekday denominator. This makes their patterns easier to compare, although the different populations mean that bar heights should not be interpreted as equivalent amounts of work.
+
+Both measures are highest in May among the four fully covered months. Their subsequent movements differ: inbound weekday averages decrease from May through August, while outbound activity falls in June, recovers in July and declines again in August. The July recovery shows why the two directions need separate analysis. A reduction in incoming calls does not necessarily coincide with a reduction in calls made by staff.
+
+For AHRI, these differences provide a starting point for reviewing how telephone activity is organised. Managers could compare the observed periods with campaign schedules, staff availability and other responsibilities. Where outgoing activity is planned, this information may help identify periods worth considering for that work. However, quieter inbound periods do not establish spare capacity because available staff, handling time and other duties are not measured here.
+
+The comparison connects the two views without assuming that one causes the other. Confirming whether staff shifted effort between incoming and outgoing calls would require additional operational evidence.
+
+## Technical outcomes and recorded duration
+
+The export marks 5,504 selected attempts as successful and 542 as unsuccessful, giving a technical success rate of 91.0%. Microsoft's documentation distinguishes fully established calls from failed calls [@directrouting]. The export does not establish whether the intended person answered or whether the conversation achieved its purpose. The report therefore treats success as technical status rather than a customer answer rate.
+
+All 542 unsuccessful attempts have zero recorded duration and missing start timestamps. This consistent pattern supports retaining them as attempts while calculating successful-call duration separately. Including unsuccessful attempts in that duration average would change the population being described and reduce the result.
+
+Among technically successful attempts, mean recorded duration is 95.8 seconds and median duration is 41 seconds. The 90th percentile is 218 seconds, meaning approximately 90% of these durations are at or below that value. The mean being substantially higher than the median indicates that longer observations pull the average upward.
+
+```{r}
+#| label: fig-outbound-duration
+#| echo: false
+#| fig-width: 8
+#| fig-height: 3.6
+#| fig-cap: "Recorded duration of the 5,504 technically successful outbound attempts. Bars show counts within duration categories. The final category includes every duration above 300 seconds and is not an equal-width numerical interval."
+
+ggplot(
+  outbound_duration_bands,
+  aes(
+    x = duration_band,
+    y = attempts
+  )
+) +
+  geom_col(
+    fill = "#007F86",
+    width = 0.75
+  ) +
+  scale_y_continuous(
+    labels = function(x) {
+      format(
+        x,
+        big.mark = ",",
+        scientific = FALSE,
+        trim = TRUE
+      )
+    },
+    expand = expansion(mult = c(0, 0.08))
+  ) +
+  labs(
+    x = "Recorded duration in seconds",
+    y = "Technically successful attempts"
+  ) +
+  ahri_plot_theme +
+  theme(
+    axis.text.x = element_text(
+      angle = 45,
+      hjust = 1
+    )
+  )
+```
+
+The most frequent duration category is 31–60 seconds, as shown in @fig-outbound-duration. Approximately 69.4% of technically successful attempts last no more than 60 seconds. There are also 26 successful records with zero duration. These remain included because their short duration alone does not establish that they are invalid. Their meaning should be checked with AHRI's IT team.
+
+Recorded duration describes one aspect of telephone activity. It does not capture preparation, follow-up work or time spent updating other systems. Consequently, neither a higher call count nor a longer average duration is sufficient evidence of greater productivity.
+
+The dashboard's readable outcome labels also require care. It currently places SIP code 487 in the category "Not answered", but the protocol defines this code as "Request Terminated" [@sip]. There are 365 unsuccessful attempts with this code in the selected data, so its interpretation affects a substantial part of the outcome analysis.
+
+## What the combined analysis provides
+
+Taken together, the inbound and outbound findings give AHRI two complementary views of its telephone operations. The inbound results identify the timing of demand arriving through the main menu. The outbound results show when the approved staff initiate calls, where those attempts are concentrated and how their recorded outcomes vary.
+
+Their combined value is to support more focused management questions: does telephone coverage match incoming demand, how does planned outgoing activity fit alongside that demand, and which technical outcomes require investigation? Answering these questions fully requires staff availability, campaign information and confirmed outcome definitions.
+
+The dashboard provides the evidence needed to begin those discussions. Its contribution is a clearer account of recorded activity and the questions that activity raises, rather than an assumption that call counts alone explain operational performance.
+
 
 # References {.unnumbered}
 
