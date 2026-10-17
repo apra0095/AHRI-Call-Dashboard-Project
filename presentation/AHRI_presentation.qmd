@@ -12,6 +12,16 @@ format:
     footer: "AHRI Call Dashboard · Inbound and outbound"
     transition: fade
     preview-links: auto
+    title-slide-attributes:
+      data-background-image: "_extensions/presentation/_images/background/bg-02.png"
+      data-background-size: contain
+      data-background-position: center
+      data-notes: |
+        Good morning everyone. I’m Aji, and today Sammi and I will present our AHRI Call Dashboard project.
+
+        We worked with the Australian HR Institute to turn their phone records into a Power BI dashboard. The aim was to help th e team understand when people call, where those calls go, and how staff use outbound calling.
+
+        I’ll start with the business context and explain how we prepared the data. Sammi will then take you through the findings.
 editor: visual
 ---
 
@@ -54,26 +64,30 @@ Illustrative routes: not every Main IVR call reaches a queue or a staff member. 
 :::
 
 ::: notes
-AHRI supports HR professionals through membership, certification, training and events.
+AHRI is a professional association that supports people working in human resources through membership, certification, training and events. Phone calls are one of the ways people contact AHRI about these services.
 
-A caller to the main number hears an automated menu. Depending on their selection and the system settings, their call may enter a team queue, where it can be offered to staff. Other calls go directly to a staff number.
+So the diagran in the middle help to show you how every calls coming to AHRI.
 
-The diagram illustrates the distinction between those routes. It does not establish that every call followed the entire sequence or that a person answered.
+Imagine someone calls AHRI’s main number with a membership question. They first hear an automated menu, which we call the Main IVR. Depending on their selection, the call may enter a team queue, where the system offers it to staff.
 
-AHRI already had reporting for emails and online forms. Phone activity was mainly available in Excel exports, which motivated this dashboard.
+Someone who already knows a staff member’s direct number can take a different route and call that person directly, without using the main menu.
+
+This distinction became important when we examined the data.
+
+AHRI already had reporting platforms for emails and online forms through CRM software. Phone activity, however, was mainly available through raw Excel exports. This created an opportunity to make that information easier to understand and use.
 :::
 
 ## Business problem
 
-::::::: columns
+:::::::: columns
 :::: {.column width="55%"}
 AHRI has no visibility and needs a clearer way to understand of
 
-::: incremental
--   **When** do members call?
--   **Where** do their calls go?
--   **How** do calls end, and how long do they take?
--   **Who** is calling members back, and when?
+::: {.nonincremental}
+- **When** do members call?
+- **Where** do their calls go?
+- **How** do calls end, and how long do they take?
+- **Who** is calling members back, and when?
 :::
 ::::
 
@@ -86,7 +100,19 @@ Turn the Teams phone exports into a Power BI dashboard that shows AHRI what's ha
 
 **In scope:** inbound and outbound activity across the period of the export.<br> **Out of scope:** live reporting and individual staff performance.
 ::::
-:::::::
+
+::: notes
+The main challenge was turning those raw records into a clear picture of phone activity.
+
+For example, when should phone coverage be strongest? Which services receive the most calls? And how much outbound calling happens across the teams?
+
+Answering these questions from individual spreadsheet records takes time, especially when one call can produce several rows.
+
+Our goal was to bring that information together in a dashboard that staff could explore by date, service or team.
+
+The dashboard helps AHRI see when the phones are busiest and how call activity is spread across teams, so they can plan phone coverage.
+:::
+::::::::
 
 ## Business questions
 
@@ -140,17 +166,20 @@ Vanessa confirmed that calls without Main IVR are mostly direct to staff. We ret
 **Outbound scope:** 6,046 attempts by 18 approved staff across Membership, HRSC and Events.
 :::
 
-
 ::: notes
-The inbound file contains 9,859 system records. One call can generate multiple records as it moves through the system, so we group related records by their shared identifier.
+Before calculating anything, we needed to establish what the records actually represented.
 
-This gives 6,361 linked groups. We identify the 3,986 groups with a Main IVR account record and retain their related records for the inbound analysis.
+Both exports cover 6 April to 1 September 2026. The inbound file contains 9,859 system records, but one call can generate several records as it moves between phone accounts.
 
-The other 2,375 groups have no Main IVR record. Vanessa confirmed that these calls are mostly direct calls to staff. They sit outside our chosen inbound scope.
+For example, activity at the main menu and a team queue may appear in separate rows. We grouped related rows using their shared identifier, which gave us 6,361 linked groups.
 
-These counts describe groups of records rather than unique people. Someone can call more than once.
+We then checked the account field, called UPN, to identify groups containing the Main IVR account. This gave us 3,986 groups.
 
-Separately, we filter the other export to outbound calls and the 18 staff approved by AHRI. This gives 6,046 outbound attempts.
+The remaining 2,375 groups had no Main IVR record. Vanessa confirmed that these were mostly calls directly to staff. We therefore focused our inbound analysis on the Main IVR groups and their related records.
+
+These are counts of recorded call activity. They do not represent unique people, because the same person can call more than once.
+
+For outbound activity, we filtered the other export to outbound calls and the 18 staff approved by AHRI. That gave us 6,046 call attempts across Membership, HRSC and Events.
 :::
 
 ## IDA and EDA: checking and exploring the data {#ida-eda}
@@ -163,9 +192,9 @@ Separately, we filter the other export to outbound calls and the 18 staff approv
 Initial data analysis · Power Query
 :::
 
--   **Inbound quality:** 334 missing account names and 785 missing start/end timestamps. Retained the rows with unknown values.
--   **Scope:** grouped inbound rows by shared ID, selected Main IVR groups and filtered outbound to 18 approved staff.
--   **Consistency:** cleaned account labels, set data types and converted UTC timestamps to Melbourne time.
+- **Inbound quality:** 334 missing account names and 785 missing start/end timestamps. Retained the rows with unknown values.
+- **Scope:** grouped inbound rows by shared ID, selected Main IVR groups and filtered outbound to 18 approved staff.
+- **Consistency:** cleaned account labels, set data types and converted UTC timestamps to Melbourne time.
 ::::
 
 :::: {.column width="49%"}
@@ -175,9 +204,9 @@ Initial data analysis · Power Query
 Exploratory data analysis · Power BI and DAX
 :::
 
--   **Timing:** compared daily, weekday, hourly and monthly activity, including a 7-day trailing average.
--   **Routing and teams:** compared queue/overflow destinations and outbound volumes across teams.
--   **Outcomes and duration:** examined technical statuses and duration bands. Compared mean and median to assess the effect of long calls.
+- **Timing:** compared daily, weekday, hourly and monthly activity, including a 7-day trailing average.
+- **Routing and teams:** compared queue/overflow destinations and outbound volumes across teams.
+- **Outcomes and duration:** examined technical statuses and duration bands. Compared mean and median to assess the effect of long calls.
 ::::
 :::::::
 
@@ -186,20 +215,36 @@ Weekday averages include zero-activity days and exclude boundary dates. Full-mon
 :::
 
 ::: notes
-IDA means initial data analysis. We checked what each record represents, missing values, duplicates and timestamp coverage before calculating the dashboard measures.
+Once we understood the scope, we checked the data quality and explored the patterns.
 
-We retained records with missing account names or timestamps because their other fields could still be useful. We did not invent replacement values. No exact duplicate inbound rows were found. Grouping related records by shared ID is therefore different from removing duplicates.
+The first part was initial data analysis, or IDA. This meant checking the structure, missing values, duplicates and dates before relying on the numbers.
 
-The 9,859 inbound records form 6,361 shared-ID groups, of which 3,986 contain Main IVR. Vanessa confirmed that groups without Main IVR are mostly direct calls to staff. This supported our decision to focus the inbound analysis on Main IVR. These groups are not counts of unique people.
+We found 334 inbound records with missing account names and 785 with missing start and end times. We kept these records because other fields could still be useful, such as their shared identifier or recorded outcome. Missing information remained unknown.
 
-EDA means exploratory data analysis. We used Power BI charts and DAX measures to investigate when activity occurs, which destinations and teams account for it, and how technical outcomes and recorded durations vary.
+We also found no exact duplicate inbound rows. So, grouping related records on the previous slide was different from removing duplicates.
 
-For fairer comparisons, weekday averages include zero-activity days and exclude the first and last observed dates. Public holidays remain included, and continuous coverage between the boundary dates is assumed. The trailing average covers the current day and the previous six calendar days.
+In Power Query, we cleaned account labels, set the correct data types and converted timestamps to Melbourne time. That ensured the hourly patterns reflected local calling times.
 
-These are descriptive findings. Technical success does not prove that a member spoke to staff, and recorded duration does not establish queue waiting time.
+We then moved to exploratory data analysis, or EDA, using Power BI charts and measures.
+
+We compared activity across dates, weekdays, hours and months, then explored destinations, teams, recorded outcomes and duration.
+
+The seven-day trailing average combines each day with the previous six days. This smooths daily fluctuations across a full week and helps us see broader changes.
+
+For weekday averages, we included zero-activity days and excluded the first and last observed dates because they may be incomplete. Full-month comparisons covered May to August.
+
+These checks made the comparisons more consistent. We also kept the interpretation within what the data supports: a technically successful call does not establish that someone spoke to staff or that their enquiry was resolved.
 :::
 
 # Inbound Results {background-color="#006DAE"}
+
+::: notes
+We now have a clear reporting scope, consistent preparation steps and a better understanding of what the numbers mean.
+
+The next question is what this tells AHRI about its phone activity.
+
+I’ll hand over to Sammi, who will start with the inbound findings—when demand is highest, where calls are routed, and what we can learn from the recorded outcomes and duration—before moving to outbound activity.
+:::
 
 ## Inbound calls peak during business hours, with Tuesday the busiest day {.result}
 
@@ -210,10 +255,10 @@ These are descriptive findings. Technical success does not prove that a member s
 
 ::::: {.column width="28%"}
 ::: takeaways
--   **Call volume:** 3,986 entries, averaging 37.4 per weekday.
--   **Peak hours:** Most calls occur between 9 AM and 4 PM, declining after 5 PM.
--   **Busiest day:** Tuesday (\~44 entries), compared with Friday (\~33).
--   **Monthly trend:** Average weekday demand declined from \~53 in May to \~30 in August.
+- **Call volume:** 3,986 entries, averaging 37.4 per weekday.
+- **Peak hours:** Most calls occur between 9 AM and 4 PM, declining after 5 PM.
+- **Busiest day:** Tuesday (\~44 entries), compared with Friday (\~33).
+- **Monthly trend:** Average weekday demand declined from \~53 in May to \~30 in August.
 :::
 
 ::: callout-box
@@ -231,9 +276,9 @@ These are descriptive findings. Technical success does not prove that a member s
 
 ::::: {.column width="28%"}
 ::: takeaways
--   **Top demand:** Membership, Reception, Career Support get the most calls
--   **Overflow:** about 1 in 4 queued calls
--   **High overflow share:** Career Support (\~47%), CPD Events (\~50%)
+- **Top demand:** Membership, Reception, Career Support get the most calls
+- **Overflow:** about 1 in 4 queued calls
+- **High overflow share:** Career Support (\~47%), CPD Events (\~50%)
 :::
 
 ::: callout-box
@@ -251,9 +296,9 @@ These are descriptive findings. Technical success does not prove that a member s
 
 ::::: {.column width="28%"}
 ::: takeaways
--   **Call outcome:** 97.1% success rate
--   **Dropped calls:** disconnected or timed-out calls lasted longest (\~5 min)
--   **Longest in queue:** Career Support (\~6.5 min on average)
+- **Call outcome:** 97.1% success rate
+- **Dropped calls:** disconnected or timed-out calls lasted longest (\~5 min)
+- **Longest in queue:** Career Support (\~6.5 min on average)
 :::
 
 ::: callout-box
@@ -273,9 +318,9 @@ These are descriptive findings. Technical success does not prove that a member s
 
 ::::: {.column width="28%"}
 ::: takeaways
--   **By team:** Membership 5,275 (\~87%), HRSC 680, Events 91
--   **By month:** peaked in May (77.8/weekday), dipped in June (39.0)
--   **Busiest time:** Tuesday, 11am–2pm
+- **By team:** Membership 5,275 (\~87%), HRSC 680, Events 91
+- **By month:** peaked in May (77.8/weekday), dipped in June (39.0)
+- **Busiest time:** Tuesday, 11am–2pm
 :::
 
 ::: callout-box
@@ -293,9 +338,9 @@ These are descriptive findings. Technical success does not prove that a member s
 
 ::::: {.column width="28%"}
 ::: takeaways
--   **Connected:** 5,504 of 6,046 attempts (91%)
--   **Main failure:** not answered (375 of 542)
--   **Short calls:** 69% of connected calls last under 1 min (average 1:36)
+- **Connected:** 5,504 of 6,046 attempts (91%)
+- **Main failure:** not answered (375 of 542)
+- **Short calls:** 69% of connected calls last under 1 min (average 1:36)
 :::
 
 ::: callout-box
@@ -305,8 +350,7 @@ These are descriptive findings. Technical success does not prove that a member s
 :::::::
 
 ::: notes
-~1.5 min. Wrap-up: "Outbound calls achieved a 91% technical success rate, with unanswered calls the main reason for failure. Most connected calls were short. Many may be voicemail, but the data can't distinguish a person from voicemail."
-Also on the chart: 145 rejected or busy, 22 system or network issues.
+\~1.5 min. Wrap-up: "Outbound calls achieved a 91% technical success rate, with unanswered calls the main reason for failure. Most connected calls were short. Many may be voicemail, but the data can't distinguish a person from voicemail." Also on the chart: 145 rejected or busy, 22 system or network issues.
 :::
 
 ## Project achievements & limitations
@@ -316,10 +360,10 @@ Also on the chart: 145 rejected or busy, 22 system or network issues.
 ### Key achievements
 
 ::: small-list
--   **Call Visibility:** 3,986 inbound calls + 6,046 outbound attempts in the dashboard
--   **Business insights:** 5 business questions, one dashboard page each
--   **Repeatable process:** Power Query steps re-apply to future exports
--   **Interactive analysis:** filter by date, team and staff
+- **Call Visibility:** 3,986 inbound calls + 6,046 outbound attempts in the dashboard
+- **Business insights:** 5 business questions, one dashboard page each
+- **Repeatable process:** Power Query steps re-apply to future exports
+- **Interactive analysis:** filter by date, team and staff
 :::
 ::::
 
@@ -327,9 +371,9 @@ Also on the chart: 145 rejected or busy, 22 system or network issues.
 ### Current limitations
 
 ::: small-list
--   **Inbound:** no data on whether calls were resolved
--   **Outbound:** no data on whether a person or voicemail answered, or why the call was made
--   **Data constraints:** limited to what Microsoft Teams exports
+- **Inbound:** no data on whether calls were resolved
+- **Outbound:** no data on whether a person or voicemail answered, or why the call was made
+- **Data constraints:** limited to what Microsoft Teams exports
 :::
 ::::
 :::::::
