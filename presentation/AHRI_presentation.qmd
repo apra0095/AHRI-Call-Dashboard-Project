@@ -83,7 +83,7 @@ AHRI already had reporting platforms for emails and online forms through CRM sof
 :::: {.column width="55%"}
 AHRI has no visibility and needs a clearer way to understand of
 
-::: {.nonincremental}
+::: nonincremental
 - **When** do members call?
 - **Where** do their calls go?
 - **How** do calls end, and how long do they take?
@@ -123,6 +123,20 @@ The dashboard helps AHRI see when the phones are busiest and how call activity i
 | Inbound | How do calls end, and how long do they take? | Outcome and Duration |
 | Outbound | Who is making outbound calls, and when? | Outbound activity |
 | Outbound | How do outbound calls end, and how long do they last? | Outbound outcome and duration |
+
+::: notes
+We organised the dashboard around five questions.
+
+For inbound activity, we wanted to understand how many calls arrive and when, where callers are routed, and what the system records about their outcomes and duration.
+
+For outbound activity, we wanted to understand which teams make calls and when, followed by their recorded outcomes and duration.
+
+Looking at both directions gives AHRI a broader picture of phone workload: demand arriving at the organisation and calling activity initiated by staff.
+
+We analyse these separately because the data does not tell us whether an outbound call was a response to a particular inbound enquiry.
+
+Each question became a dashboard page, giving the report a clear purpose and making it easier to navigate.
+:::
 
 ## Data and analysis scope
 

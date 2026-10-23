@@ -1,24 +1,23 @@
 ---
 title: "Understanding AHRI's Telephone Activity"
-subtitle: "A Power BI dashboard for inbound demand and outbound activity"
+
 author:
-  - Aji Pratama
-  - Sumintra Boonmat
-date: 2026-10-06
+  - name: Aji Pratama
+  - name: Sumintra Boonmat
+
+organization: "Australian HR Institute (AHRI)"
+
+date: today
 date-format: "D MMMM YYYY"
 lang: en-AU
+
 format:
-  pdf:
-    documentclass: scrartcl
-    pdf-engine: xelatex
-    papersize: a4
-    fontsize: 11pt
-    geometry:
-      - margin=25mm
+  report-pdf:
     toc: true
     toc-depth: 2
     number-sections: true
-    colorlinks: true
+    cite-method: citeproc
+
 bibliography: reference.bib
 csl: apa.csl
 link-citations: true
