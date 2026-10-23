@@ -1176,6 +1176,229 @@ Their combined value is to support more focused management questions: does telep
 
 The dashboard provides the evidence needed to begin those discussions. Its contribution is a clearer account of recorded activity and the questions that activity raises, rather than an assumption that call counts alone explain operational performance.
 
+# Statistical summaries and variability {#sec-statistics}
+
+## Why averages need context
+
+An average describes the level of activity but can hide differences between quiet and busy days. This section adds standard deviation (SD), medians, quartiles and boxplots. SD describes spread around the mean in the original units. Quartiles are less influenced by extreme observations and provide a useful comparison when distributions have long tails [@nist-spread].
+
+Daily summaries use the 105 eligible Monday-to-Friday dates from 7 April to 31 August 2026. The first and last observed dates are excluded because coverage may be partial. Public holidays and zero-activity weekdays remain included, assuming the export is complete between these boundaries. Duration summaries use all 5,504 technically successful outbound attempts in the selected staff population.
+
+The sample SD is calculated as:
+
+$$
+s = \sqrt{\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1}},
+$$
+
+where $x_i$ is a daily count or recorded duration, $\bar{x}$ is its mean, and $n$ is the number of observations. This follows R's `sd()` convention [@r-sd]; it does not imply that the export is a random sample.
+
+```{r}
+#| label: prepare-descriptive-statistics
+#| include: false
+
+# Reuse the prepared data from the inbound and outbound sections.
+weekday_activity <- inbound_daily |>
+  filter(eligible_day, weekday_number <= 5) |>
+  select(date, weekday_number, entries) |>
+  left_join(
+    outbound_daily |> select(date, attempts),
+    by = "date"
+  )
+
+# These checks refer to the current export. Review the narrative
+# as well as the calculations when replacing the source data.
+stopifnot(
+  nrow(weekday_activity) == 105,
+  !anyDuplicated(weekday_activity$date),
+  !anyNA(weekday_activity$entries),
+  !anyNA(weekday_activity$attempts),
+  sum(weekday_activity$entries) == 3925,
+  sum(weekday_activity$attempts) == 6027,
+  nrow(successful_outbound) == 5504,
+  all(table(weekday_activity$weekday_number) == 21)
+)
+
+describe_values <- function(x) {
+  stopifnot(
+    is.numeric(x), length(x) > 1,
+    !anyNA(x), all(is.finite(x)), all(x >= 0)
+  )
+
+  tibble(
+    n = length(x),
+    mean = mean(x),
+    sd = stats::sd(x),
+    median = stats::median(x),
+    q1 = as.numeric(stats::quantile(x, 0.25, type = 7)),
+    q3 = as.numeric(stats::quantile(x, 0.75, type = 7))
+  )
+}
+
+metric_statistics <- bind_rows(
+  lapply(
+    list(
+      "Daily Main IVR entries" = weekday_activity$entries,
+      "Daily outbound attempts" = weekday_activity$attempts,
+      "Successful duration (s)" =
+        successful_outbound$duration_seconds
+    ),
+    describe_values
+  ),
+  .id = "metric"
+)
+
+mean_sd_text <- function(mean_value, sd_value) {
+  sprintf("%.1f (%.1f)", mean_value, sd_value)
+}
+```
+
+## Overall activity and duration
+
+```{r}
+#| label: tbl-descriptive-statistics
+#| echo: false
+#| tbl-cap: "Observed variation in daily activity and successful outbound duration. For activity, n counts weekdays; for duration, n counts attempts. Q1 and Q3 are the 25th and 75th percentiles."
+
+metric_statistics |>
+  transmute(
+    Metric = metric,
+    n = format(n, big.mark = ",", trim = TRUE),
+    `Mean (SD)` = mean_sd_text(mean, sd),
+    `Median [Q1, Q3]` = sprintf(
+      "%.1f [%.1f, %.1f]", median, q1, q3
+    )
+  ) |>
+  knitr::kable(
+    align = c("l", "r", "r", "r"),
+    booktabs = TRUE
+  )
+```
+
+Main IVR activity averages 37.4 entries per weekday, with an SD of 21.7 (@tbl-descriptive-statistics). The median is 33, and the middle half of daily counts lies between 24 and 42. Outbound activity averages 57.4 attempts, with an SD of 38.8 and a median of 48. Both measures show that the average alone is an incomplete guide to daily activity.
+
+Successful outbound duration averages 95.8 seconds, with an SD of 184.3 seconds. Its median is 41 seconds, and its quartiles are 28 and 73 seconds. The long upper tail pulls the mean upwards. Reporting both summaries preserves the contribution of longer records while showing what is typical. Recorded duration does not establish staff handling time.
+
+## How activity varies within each weekday
+
+```{r}
+#| label: fig-weekday-variability
+#| echo: false
+#| fig-width: 7
+#| fig-height: 4.2
+#| fig-cap: "Daily activity by weekday, with 21 dates in each boxplot. Dots represent individual dates, horizontal lines show medians, and white diamonds show means. Both panels use the same count scale."
+
+activity_long <- bind_rows(
+  weekday_activity |>
+    transmute(
+      weekday_number,
+      series = "Main IVR entries",
+      count = entries
+    ),
+  weekday_activity |>
+    transmute(
+      weekday_number,
+      series = "Outbound attempts",
+      count = attempts
+    )
+) |>
+  mutate(
+    weekday = factor(
+      weekday_number,
+      levels = 1:5,
+      labels = c("Mon", "Tue", "Wed", "Thu", "Fri")
+    ),
+    series = factor(
+      series,
+      levels = c("Main IVR entries", "Outbound attempts")
+    )
+  )
+
+ggplot(
+  activity_long,
+  aes(x = weekday, y = count, fill = series)
+) +
+  geom_boxplot(
+    width = 0.58,
+    outlier.shape = NA,
+    alpha = 0.45
+  ) +
+  geom_point(
+    position = position_jitter(
+      width = 0.11,
+      height = 0,
+      seed = 2026
+    ),
+    size = 1.4,
+    alpha = 0.65,
+    colour = "#173741"
+  ) +
+  stat_summary(
+    fun = mean,
+    geom = "point",
+    shape = 23,
+    size = 2.7,
+    fill = "white",
+    colour = "#173741"
+  ) +
+  facet_wrap(~series, nrow = 1) +
+  scale_fill_manual(
+    values = c(
+      "Main IVR entries" = "#007F86",
+      "Outbound attempts" = "#173741"
+    )
+  ) +
+  expand_limits(y = 0) +
+  labs(
+    x = NULL,
+    y = "Daily count"
+  ) +
+  ahri_plot_theme +
+  theme(legend.position = "none")
+```
+
+Each box in @fig-weekday-variability covers the middle 50% of observations. Whiskers extend to the most extreme observations within 1.5 interquartile ranges of the box; observations beyond them are retained [@ggplot-boxplot]. They identify unusual days for investigation, rather than proving that records are incorrect. All dates are plotted, with a small horizontal offset to reduce overlap.
+
+Tuesday has the highest inbound mean, at 43.6 entries, with an SD of 19.2. Wednesday and Thursday have lower means but larger SDs of 24.9 and 26.0, influenced by the May peaks. Lower average demand therefore does not guarantee consistency. The outbound panel also shows substantial variation within weekdays, so an average should not be treated as a fixed daily target.
+
+## Variation across fully covered months
+
+```{r}
+#| label: tbl-monthly-variability
+#| echo: false
+#| tbl-cap: "Daily activity within fully covered months, shown as mean (SD). Each SD is calculated across individual weekdays in that month."
+
+weekday_activity |>
+  filter(
+    date >= as.Date("2026-05-01"),
+    date <= as.Date("2026-08-31")
+  ) |>
+  mutate(month = format(date, "%Y-%m")) |>
+  group_by(month) |>
+  summarise(
+    Weekdays = n(),
+    `Main IVR: mean (SD)` = mean_sd_text(
+      mean(entries), stats::sd(entries)
+    ),
+    `Outbound: mean (SD)` = mean_sd_text(
+      mean(attempts), stats::sd(attempts)
+    ),
+    .groups = "drop"
+  ) |>
+  mutate(
+    month = month.abb[as.integer(substr(month, 6, 7))]
+  ) |>
+  rename(Month = month) |>
+  knitr::kable(
+    align = c("l", "r", "r", "r"),
+    booktabs = TRUE
+  )
+```
+
+May's inbound mean and SD are 53.0 and 31.3; by August they are 29.5 and 14.6 (@tbl-monthly-variability). The whole-period average therefore combines periods with different activity levels and variability. Outbound activity differs: July has the largest monthly SD, although May has the highest mean.
+
+## What these summaries can establish
+
+SD and boxplots describe observed variation. A confidence interval instead describes uncertainty in an estimated mean [@nist-mean-ci]. Neither SD nor a confidence interval for the mean is a forecast range. This report focuses on the observed export period. A conventional confidence interval assuming independent observations is not added because daily counts may be dependent and activity changes over time. Forecasting would require a time-series model and prediction intervals. These descriptive comparisons support reviewing coverage and calling plans, but do not establish statistically significant differences or optimal staffing levels.
 
 # References {.unnumbered}
 
