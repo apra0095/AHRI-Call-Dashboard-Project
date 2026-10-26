@@ -23,13 +23,6 @@ csl: apa.csl
 link-citations: true
 ---
 
-        
-**ETC5543 Business analytics creative activity — Group project report**
-
-**Git repository:** [AHRI Call Dashboard Project](https://github.com/apra0095/AHRI-Call-Dashboard-Project)
-
-**Project version reviewed:** Commit `872cfdf`, inspected on 6 October 2026.
-
 # Background and objectives {#sec-background}
 
 ## The organisation and the reporting problem
@@ -69,7 +62,7 @@ The observed overall coverage runs from 6 April to 1 September 2026 in Melbourne
 The main reporting populations are summarised in @tbl-populations. These counts describe different levels and subsets of the data, so they should not be added together.
 
 | Reporting population | Count | Meaning |
-|:--|--:|:--|
+|:-----------------------|-----------------------:|:-----------------------|
 | Original inbound records | 9,859 | Individual system records |
 | Distinct inbound shared-ID groups | 6,361 | Groups of related records |
 | Groups containing Main IVR | 3,986 | Main-menu population used for inbound analysis |
@@ -77,7 +70,7 @@ The main reporting populations are summarised in @tbl-populations. These counts 
 | All outbound records | 7,796 | Outbound records before staff selection |
 | Selected outbound attempts | 6,046 | Attempts associated with the approved staff |
 
-: Source populations and counting units, recalculated from the workbooks stored in the project repository. {#tbl-populations}
+: Source populations and counting units, recalculated from the workbooks stored in the project repository.
 
 The outbound analysis follows the stakeholder's list of staff in Membership, HRSC and Events. It includes eleven Membership staff, five HRSC staff and two Events staff. Their account-to-team mapping is stored in `DimStaff`, using the user principal name, or UPN, as the matching key. Name variations involving Lara and Georgina were clarified during the project before finalising the mapping. Matching against the approved accounts excludes 1,750 outbound records outside the agreed staff list. These records are outside the scope of this analysis; their exclusion does not mean they are incorrect.
 
@@ -1180,7 +1173,7 @@ The dashboard provides the evidence needed to begin those discussions. Its contr
 
 ## Why averages need context
 
-An average describes the level of activity but can hide differences between quiet and busy days. This section adds standard deviation (SD), medians, quartiles and boxplots. SD describes spread around the mean in the original units. Quartiles are less influenced by extreme observations and provide a useful comparison when distributions have long tails [@nist-spread].
+An average describes the level of activity but can hide differences between quiet and busy days. This section adds standard deviation (SD), medians, quartiles and boxplots. SD describes spread around the mean in the original units. Quartiles are less influenced by extreme observations and provide a useful comparison when distributions have long tails [@openintro2019].
 
 Daily summaries use the 105 eligible Monday-to-Friday dates from 7 April to 31 August 2026. The first and last observed dates are excluded because coverage may be partial. Public holidays and zero-activity weekdays remain included, assuming the export is complete between these boundaries. Duration summaries use all 5,504 technically successful outbound attempts in the selected staff population.
 
@@ -1356,7 +1349,7 @@ ggplot(
   theme(legend.position = "none")
 ```
 
-Each box in @fig-weekday-variability covers the middle 50% of observations. Whiskers extend to the most extreme observations within 1.5 interquartile ranges of the box; observations beyond them are retained [@ggplot-boxplot]. They identify unusual days for investigation, rather than proving that records are incorrect. All dates are plotted, with a small horizontal offset to reduce overlap.
+Each box in @fig-weekday-variability covers the middle 50% of observations. Whiskers extend to the most extreme observations within 1.5 interquartile ranges of the box; observations beyond them are retained [@openintro2019]. They identify unusual days for investigation, rather than proving that records are incorrect. All dates are plotted, with a small horizontal offset to reduce overlap. The boxplots were produced in R using ggplot2 [@wickham2016]..
 
 Tuesday has the highest inbound mean, at 43.6 entries, with an SD of 19.2. Wednesday and Thursday have lower means but larger SDs of 24.9 and 26.0, influenced by the May peaks. Lower average demand therefore does not guarantee consistency. The outbound panel also shows substantial variation within weekdays, so an average should not be treated as a fixed daily target.
 
@@ -1398,10 +1391,21 @@ May's inbound mean and SD are 53.0 and 31.3; by August they are 29.5 and 14.6 (@
 
 ## What these summaries can establish
 
-SD and boxplots describe observed variation. A confidence interval instead describes uncertainty in an estimated mean [@nist-mean-ci]. Neither SD nor a confidence interval for the mean is a forecast range. This report focuses on the observed export period. A conventional confidence interval assuming independent observations is not added because daily counts may be dependent and activity changes over time. Forecasting would require a time-series model and prediction intervals. These descriptive comparisons support reviewing coverage and calling plans, but do not establish statistically significant differences or optimal staffing levels.
+SD and boxplots describe observed variation. A confidence interval instead describes uncertainty in an estimated mean [@openintro2019]. Neither SD nor a confidence interval for the mean is a forecast range. This report focuses on the observed export period. A conventional confidence interval assuming independent observations is not added because daily counts may be dependent and activity changes over time. Forecasting would require a time-series model and prediction intervals. These descriptive comparisons support reviewing coverage and calling plans, but do not establish statistically significant differences or optimal staffing levels.
+
+# Conclusion {#sec-conclusion}
+
+This project developed a Power BI dashboard to help AHRI understand its telephone activity using the call records available. The main analytical challenge was establishing what those records represented. Grouping related records and agreeing on the reporting scope made it possible to distinguish Main IVR demand from calls made directly to staff. The resulting analysis covers 3,986 Main IVR entries and 6,046 outbound attempts by the 18 approved staff accounts between 6 April and 1 September 2026.
+
+The inbound findings identify periods worth considering when reviewing telephone coverage. Activity is concentrated on weekdays, with sustained demand throughout the morning and early afternoon, including lunchtime. Tuesday has the highest overall weekday average, although the busiest weekday changes between months. Average weekday demand also decreases between May and August. These patterns provide a starting point for reviewing rosters, breaks and meetings, while the unusually busy dates in May warrant comparison with AHRI's communications and event calendar.
+
+Outbound activity adds a complementary view of calls initiated by staff. Most selected attempts belong to Membership, and monthly activity follows a different pattern from inbound demand. Examining both directions helps AHRI consider incoming demand alongside planned calling activity. However, the records cannot establish whether an outbound attempt responds to a particular inbound enquiry or how much staff capacity remains available.
+
+The additional statistical summaries strengthen the interpretation of these findings. Standard deviations and boxplots show substantial variation between dates, while medians and quartiles provide context where unusually large observations influence the mean. Average activity should therefore be considered alongside its distribution and changes over time when discussing operational plans.
+
+The dashboard supports these discussions within the limits of the available data. Technical success does not confirm a conversation or a resolved enquiry, and recorded destinations do not establish waiting times or abandonment. Further work should prioritise confirming routing and outcome definitions, maintaining consistent checks during refreshes, and comparing the findings with staff availability and campaign information. The project's contribution is a reproducible view of recorded telephone activity that gives AHRI a clearer basis for investigation and planning.
 
 # References {.unnumbered}
 
 ::: {#refs}
 :::
-

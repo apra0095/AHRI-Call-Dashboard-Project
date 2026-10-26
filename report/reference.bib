@@ -7,16 +7,18 @@
 
 @misc{kickoff,
   author = {{AHRI and Monash University project team}},
-  title = {AHRI x Monash: Call Data Dashboard Project — Kickoff Meeting Notes},
+  title = {{AHRI} x {Monash}: Call data dashboard project — kickoff meeting notes},
   date = {2026-08-21},
   note = {Internal project meeting notes supplied to the report authors}
 }
 
 @online{queue,
   author = {{Microsoft}},
-  title = {Create a call queue in Microsoft Teams},
+  title = {Setup - call queue},
+  date = {2026-10-20},
+  organization = {Microsoft Learn},
   url = {https://learn.microsoft.com/en-us/microsoftteams/aa-cq-setup-call-queue},
-  urldate = {2026-10-06}
+  urldate = {2026-10-26}
 }
 
 @online{directrouting,
@@ -29,7 +31,7 @@
 
 @online{pstn,
   author = {{Microsoft}},
-  title = {Microsoft Teams PSTN usage report},
+  title = {{Microsoft Teams} {PSTN} usage report},
   date = {2026-04-26},
   organization = {Microsoft Learn},
   url = {https://learn.microsoft.com/en-us/microsoftteams/teams-analytics-and-reports/pstn-usage-report}
@@ -52,25 +54,23 @@
 }
 
 @techreport{sip,
-  author = {Rosenberg, Jonathan and Schulzrinne, Henning and
-            Camarillo, Gonzalo and Johnston, Alan and
-            Peterson, Jon and Sparks, Robert and
-            Handley, Mark and Schooler, Eve},
-  title = {{SIP}: Session Initiation Protocol},
+  author = {Rosenberg, Jonathan and Schulzrinne, Henning and Camarillo, Gonzalo and Johnston, Alan and Peterson, Jon and Sparks, Robert and Handley, Mark and Schooler, Eve},
+  title = {{SIP}: Session initiation protocol},
   institution = {Internet Engineering Task Force},
   type = {Request for Comments},
   number = {3261},
   year = {2002},
   doi = {10.17487/RFC3261},
-  url = {https://www.rfc-editor.org/rfc/rfc3261}
+  url = {https://www.rfc-editor.org/rfc/rfc3261.html}
 }
 
-@online{nist-spread,
-  author = {{National Institute of Standards and Technology}},
-  title = {Measures of scale},
-  organization = {NIST/SEMATECH e-Handbook of Statistical Methods},
-  url = {https://www.itl.nist.gov/div898/handbook/eda/section3/eda356.htm},
-  urldate = {2026-10-23}
+@book{openintro2019,
+  author = {Diez, David and Çetinkaya-Rundel, Mine and Barr, Christopher D.},
+  title = {{OpenIntro} statistics},
+  year = {2019},
+  edition = {4},
+  publisher = {OpenIntro},
+  url = {https://www.openintro.org/book/os/}
 }
 
 @online{r-sd,
@@ -81,17 +81,11 @@
   urldate = {2026-10-23}
 }
 
-@online{ggplot-boxplot,
-  author = {{ggplot2 development team}},
-  title = {A box and whiskers plot (in the style of Tukey)},
-  url = {https://ggplot2.tidyverse.org/reference/geom_boxplot.html},
-  urldate = {2026-10-23}
+@book{wickham2016,
+  author = {Wickham, Hadley},
+  title = {{ggplot2}: Elegant graphics for data analysis},
+  year = {2016},
+  edition = {2},
+  publisher = {Springer},
+  doi = {10.1007/978-3-319-24277-4}
 }
-
-@online{nist-mean-ci,
-  author = {{National Institute of Standards and Technology}},
-  title = {Confidence limits for the mean},
-  organization = {NIST/SEMATECH e-Handbook of Statistical Methods},
-  url = {https://www.itl.nist.gov/div898/handbook/eda/section3/eda352.htm},
-  urldate = {2026-10-23}
-}quarto render report/report_ahri.qmd --to report-pdf
