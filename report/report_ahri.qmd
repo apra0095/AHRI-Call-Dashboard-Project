@@ -1,5 +1,5 @@
 ---
-title: "Understanding AHRI's Telephone Activity"
+title: "Developing a Power BI Dashboard for AHRI’s Call Activityy"
 
 author:
   - name: Aji Pratama
@@ -37,7 +37,7 @@ The intended audience is AHRI's Member Engagement Team and colleagues responsibl
 
 ## How calls move through the system
 
-An inbound caller may contact AHRI's main telephone number and hear an automated menu, commonly called an interactive voice response system, or IVR. The caller's choice can direct the call towards a service such as Membership or Events. A call queue is a system component that distributes calls to staff according to its configuration. An overflow destination is an alternative destination configured for particular queue conditions. Microsoft distinguishes queue overflow, timeout and other exception settings; the export alone does not reveal which configured condition actually operated for a particular record [@queue].
+An inbound caller may contact AHRI's main telephone number and hear an automated menu, commonly called an interactive voice response system, or IVR. The caller's choice can direct the call towards a service such as Membership or Events. A call queue is a system component that distributes calls to staff according to its configuration. An overflow destination is an alternative destination configured for particular queue conditions. Microsoft distinguishes queue overflow, timeout and other exception settings. The export alone does not reveal which configured condition actually operated for a particular record [@queue].
 
 One telephone interaction can produce several records as it moves between system accounts. For example, a person may enter the main menu and then reach a queue. The export can contain a record associated with the menu and another associated with the queue. Counting both as separate incoming customer enquiries would inflate demand. Conversely, counting only rows labelled Main IVR when examining routing would discard related records that help describe the destinations observed. The project uses separate record-level and group-level views to address these different questions.
 
@@ -72,7 +72,7 @@ The main reporting populations are summarised in @tbl-populations. These counts 
 
 : Source populations and counting units, recalculated from the workbooks stored in the project repository.
 
-The outbound analysis follows the stakeholder's list of staff in Membership, HRSC and Events. It includes eleven Membership staff, five HRSC staff and two Events staff. Their account-to-team mapping is stored in `DimStaff`, using the user principal name, or UPN, as the matching key. Name variations involving Lara and Georgina were clarified during the project before finalising the mapping. Matching against the approved accounts excludes 1,750 outbound records outside the agreed staff list. These records are outside the scope of this analysis; their exclusion does not mean they are incorrect.
+The outbound analysis follows the stakeholder's list of staff in Membership, HRSC and Events. It includes eleven Membership staff, five HRSC staff and two Events staff. Their account-to-team mapping is stored in `DimStaff`, using the user principal name, or UPN, as the matching key. Name variations involving Lara and Georgina were clarified during the project before finalising the mapping. Matching against the approved accounts excludes 1,750 outbound records outside the agreed staff list. These records are outside the scope of this analysis, their exclusion does not mean they are incorrect.
 
 ## Understanding the main fields
 
@@ -469,7 +469,7 @@ AHRI's main telephone menu received 3,986 recorded Main IVR entries between 6 Ap
 
 The timing analysis excludes the first and last observed dates because their coverage may be incomplete. This leaves 147 calendar days, including 105 Monday-to-Friday dates. Those weekdays contain 3,925 entries, giving an average of 37.4 per weekday. The median is 33, meaning that a typical weekday has fewer entries than the arithmetic average suggests. Higher-volume days pull the average upward.
 
-Dates with no entries remain included. Public holidays also remain classified by their calendar weekday. The analysis assumes that the export provides continuous coverage between its boundary dates; the records alone cannot prove that every day was captured completely.
+Dates with no entries remain included. Public holidays also remain classified by their calendar weekday. The analysis assumes that the export provides continuous coverage between its boundary dates. The records alone cannot prove that every day was captured completely.
 
 ## Daily variation and unusually busy periods
 
@@ -1044,7 +1044,7 @@ The selected staff average 57.4 outbound attempts per eligible weekday. This use
 
 Two eligible weekdays contain no attempts. Keeping these dates in the calculation measures activity across the complete eligible calendar. Calculating the average only on days with at least one attempt would increase it to 58.5. This demonstrates why the denominator matters: an average over active days answers a different question from an average over all eligible weekdays.
 
-Outbound activity varies considerably across fully covered months. May records 1,634 attempts, averaging 77.8 per weekday. June records 857, averaging 39.0; July records 1,325, averaging 57.6; and August records 1,089, averaging 51.9. The July increase means the pattern is not a continuous month-by-month decline.
+Outbound activity varies considerably across fully covered months. May records 1,634 attempts, averaging 77.8 per weekday. June records 857, averaging 39.0. July records 1,325, averaging 57.6, and August records 1,089, averaging 51.9. The July increase means the pattern is not a continuous month-by-month decline.
 
 ```{r}
 #| label: fig-monthly
@@ -1183,7 +1183,7 @@ $$
 s = \sqrt{\frac{\sum_{i=1}^{n}(x_i-\bar{x})^2}{n-1}},
 $$
 
-where $x_i$ is a daily count or recorded duration, $\bar{x}$ is its mean, and $n$ is the number of observations. This follows R's `sd()` convention [@r-sd]; it does not imply that the export is a random sample.
+where $x_i$ is a daily count or recorded duration, $\bar{x}$ is its mean, and $n$ is the number of observations. This follows R's `sd()` convention [@r-sd], it does not imply that the export is a random sample.
 
 ```{r}
 #| label: prepare-descriptive-statistics
@@ -1387,7 +1387,7 @@ weekday_activity |>
   )
 ```
 
-May's inbound mean and SD are 53.0 and 31.3; by August they are 29.5 and 14.6 (@tbl-monthly-variability). The whole-period average therefore combines periods with different activity levels and variability. Outbound activity differs: July has the largest monthly SD, although May has the highest mean.
+May's inbound mean and SD are 53.0 and 31.3, by August they are 29.5 and 14.6 (@tbl-monthly-variability). The whole-period average therefore combines periods with different activity levels and variability. Outbound activity differs: July has the largest monthly SD, although May has the highest mean.
 
 ## What these summaries can establish
 
@@ -1404,6 +1404,7 @@ Outbound activity adds a complementary view of calls initiated by staff. Most se
 The additional statistical summaries strengthen the interpretation of these findings. Standard deviations and boxplots show substantial variation between dates, while medians and quartiles provide context where unusually large observations influence the mean. Average activity should therefore be considered alongside its distribution and changes over time when discussing operational plans.
 
 The dashboard supports these discussions within the limits of the available data. Technical success does not confirm a conversation or a resolved enquiry, and recorded destinations do not establish waiting times or abandonment. Further work should prioritise confirming routing and outcome definitions, maintaining consistent checks during refreshes, and comparing the findings with staff availability and campaign information. The project's contribution is a reproducible view of recorded telephone activity that gives AHRI a clearer basis for investigation and planning.
+{{< pagebreak >}}
 
 # References {.unnumbered}
 
