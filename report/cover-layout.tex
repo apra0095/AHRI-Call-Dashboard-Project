@@ -1,0 +1,107 @@
+% AHRI report cover layout
+
+\newcommand{\AHRIcontactdetails}{%
+  \faicon{envelope} &
+  \href{mailto:apra0095@student.monash.edu}{apra0095@student.monash.edu}\\[0.12cm]
+  \faicon{envelope} &
+  \href{mailto:sboo0019@student.monash.edu}{sboo0019@student.monash.edu}%
+}
+
+\long\def\AHRIfront#1#2#3{%
+  \newpage
+
+  % Accreditation logos
+  \begin{textblock}{7}(12.7,28.2)\hfill
+    \includegraphics[height=0.6cm]{AACSB}~~~
+    \includegraphics[height=0.6cm]{EQUIS}~~~
+    \includegraphics[height=0.6cm]{AMBA}
+  \end{textblock}
+
+  \begin{singlespacing}
+  \thispagestyle{empty}
+  \vspace*{-1.4cm}
+  \hspace*{-1.4cm}
+
+  \hbox to 16cm{%
+
+    % Left column
+    \hbox to 6.5cm{\vbox to 14cm{\vbox to 25cm{%
+      \includegraphics[width=6cm]{monash2}
+      \vfill
+
+      \includegraphics[width=2cm]{MBSportrait}
+      \vspace{0.4cm}\par
+
+      \parbox{6.3cm}{%
+        \raggedright\sffamily
+        \color[rgb]{0.00,0.00,0.70}
+
+        {\large\textbf{\name}}\par
+        \vspace{0.7cm}
+
+        \tabcolsep=0.12cm\small
+        \begin{tabular}{@{}ll@{}}
+          \contactdetails
+        \end{tabular}
+
+        \vspace{0.4cm}\par
+        ABN: \abn\par
+      }
+    }\vss}\hss}
+
+    % Vertical divider
+    \hspace*{0.2cm}
+    \hbox to 1cm{%
+      \vbox to 14cm{\rule{1pt}{26.8cm}\vss}\hss\hfill
+    }
+
+    % Right column
+    \hbox to 10cm{\vbox to 14cm{\vbox to 25cm{%
+      \vspace*{3cm}
+      \sffamily\raggedright
+
+      % Report title
+      \parbox{10cm}{%
+        \raggedright
+        \fontsize{24.88}{30}\selectfont
+        \color[rgb]{0.70,0.00,0.00}
+        \textbf{#1}
+      }\par
+
+      \vfill
+
+      % Authors
+      \large
+      \vbox{\parskip=0.8cm #2}\par
+
+      % Report recipient
+      \vspace{1.5cm}
+      \reporttype\\[0.3cm]
+      \parbox{10cm}{\raggedright #3}\par
+
+      % Date
+      \vspace{1cm}
+      {\large\textbf{\Date~\Month~\Year}}\par
+
+      % Repository below the date
+      \vspace{0.8cm}
+      \parbox{10cm}{%
+        \normalsize
+        \textbf{GitHub repository:}\\[0.15cm]
+        \small\urlstyle{same}
+        \href{https://github.com/apra0095/AHRI-Call-Dashboard-Project}{%
+          \nolinkurl{github.com/apra0095/AHRI-Call-Dashboard-Project}%
+        }
+      }\par
+    }\vss}}
+  }
+
+  \end{singlespacing}
+  \newpage
+}
+
+% Apply after the template has loaded
+\AtBeginDocument{%
+  \global\let\contactdetails\AHRIcontactdetails
+  \global\let\front\AHRIfront
+}

@@ -10,15 +10,17 @@
 $if(title)$
 \title{$title$}
 $endif$
+
 $if(subtitle)$
 \usepackage{etoolbox}
 \makeatletter
-\providecommand{\subtitle}[1]{% add subtitle to \maketitle
+\providecommand{\subtitle}[1]{%
   \apptocmd{\@title}{\par {\large #1 \par}}{}{}
 }
 \makeatother
 \subtitle{$subtitle$}
 $endif$
+
 \date{$date$}
 
 \def\Date{\number\day}
@@ -31,9 +33,8 @@ $endif$
 
 \makeatletter
 \def\organization#1{\gdef\@organization{#1}}
-\def\telephone#1{\gdef\@telephone{#1}}
-\def\email#1{\gdef\@email{#1}}
 \makeatother
+
 $if(organization)$
   \organization{$organization$}
 $else$
@@ -46,25 +47,28 @@ $else$
   \def\name{Department of\newline Econometrics \&\newline Business Statistics}
 $endif$
 
-$if(phone)$
-  \telephone{$phone$}
-$else$
-  \telephone{(03) 9903 4416}
-$endif$
-
-$if(email)$
-  \email{$email$}
-$else$
-  \email{BusEco-Econometrics@monash.edu}
-$endif$
-
 \def\webaddress{\url{https://www.monash.edu/business/ebs}}
 \def\abn{12 377 614 012}
 \def\extraspace{\vspace*{1.6cm}}
-\makeatletter
-\def\contactdetails{\faicon{phone} & \@telephone \\
-                    \faicon{envelope} & \@email}
-\makeatother
+
+% Author contact details
+
+\def\contactdetails{%
+  & \textbf{Aji Pratama}\\
+  \faicon{envelope} &
+  \parbox[t]{5.5cm}{%
+    \href{mailto:apra0095@student.monash.edu}{%
+      \nolinkurl{apra0095@student.monash.edu}%
+    }%
+  }\\[0.25cm]
+  & \textbf{Sumintra Boonmat}\\
+  \faicon{envelope} &
+  \parbox[t]{5.5cm}{%
+    \href{mailto:sboo0019@student.monash.edu}{%
+      \nolinkurl{sboo0019@student.monash.edu}%
+    }%
+  }%
+}
 
 \usepackage[absolute,overlay]{textpos}
 \setlength{\TPHorizModule}{1cm}
@@ -81,10 +85,12 @@ $endif$
 \includegraphics[height=0.6cm]{EQUIS}~~~
 \includegraphics[height=0.6cm]{AMBA}
 \end{textblock}
+
 \begin{singlespacing}
 \thispagestyle{empty}
 \vspace*{-1.4cm}
 \hspace*{-1.4cm}
+
 \hbox to 16cm{
   \hbox to 6.5cm{\vbox to 14cm{\vbox to 25cm{
     \includegraphics[width=6cm]{monash2}
@@ -97,36 +103,51 @@ $endif$
       {\large\textbf{\name}}\par
       \vspace{.7cm}
       \tabcolsep=0.12cm\sf\small
-      \begin{tabular}{@{}ll@{}}\contactdetails
+      \begin{tabular}{@{}ll@{}}
+        \contactdetails
       \end{tabular}
       \vspace*{0.3cm}\par
       ABN: \abn\par
     }
   }\vss}\hss}
+
   \hspace*{0.2cm}
-  \hbox to 1cm{\vbox to 14cm{\rule{1pt}{26.8cm}\vss}\hss\hfill}
+
+  \hbox to 1cm{\vbox to 14cm{
+    \rule{1pt}{26.8cm}\vss
+  }\hss\hfill}
+
   \hbox to 10cm{\vbox to 14cm{\vbox to 25cm{
       \vspace*{3cm}\sf\raggedright
+
       \parbox{10cm}{\sf\raggedright\baselineskip=1.2cm
-         \fontsize{24.88}{30}\color[rgb]{0.70,0.00,0.00}\sf\textbf{#1}}
+        \fontsize{24.88}{30}
+        \color[rgb]{0.70,0.00,0.00}
+        \sf\textbf{#1}
+      }
       \par
       \vfill
       \large
+
       \vbox{\parskip=0.8cm #2}\par
 
-\vspace{0.4cm}
-\parbox{10cm}{%
-  \small
-  \textbf{GitHub repository}\\[0.15cm]
-  \url{https://github.com/apra0095/AHRI-Call-Dashboard-Project}
-}\par
+      \vspace{0.4cm}
+      \parbox{10cm}{%
+        \small
+        \textbf{GitHub repository}\\[0.15cm]
+        \url{https://github.com/apra0095/AHRI-Call-Dashboard-Project}
+      }\par
+
       \vspace*{2cm}\par
       \reporttype\\[0.3cm]
-      \hbox{#3}%\\[2cm]\
+      \hbox{#3}%
       \vspace*{1cm}
+
       {\large\sf\textbf{\Date~\Month~\Year}}
    }\vss}
-  }}
+  }
+}
+
 \end{singlespacing}
 \newpage
 }
@@ -138,4 +159,5 @@ $endif$
 % Authors
 
 \author{\sf$for(by-author)${\Large\textbf{$by-author.name.literal$} $if(by-author.degrees)$\\\large $by-author.degrees$$endif$\\[0.5cm]}$endfor$}
+
 \lfoot{\sf $for(by-author)$$by-author.name.family$$sep$, $endfor$: $date$}

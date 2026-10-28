@@ -18,9 +18,10 @@ format:
     number-sections: true
     cite-method: citeproc
     include-in-header:
-      text: |
-        \usepackage{pdflscape}
-        \usepackage{float}
+      - text: |
+          \usepackage{pdflscape}
+          \usepackage{float}
+      - file: cover-layout.tex
 
 bibliography: reference.bib
 csl: apa.csl
@@ -88,7 +89,7 @@ The main reporting populations are summarised in @tbl-populations. These counts 
 | All outbound records | 7,796 | Outbound records before staff selection |
 | Selected outbound attempts | 6,046 | Attempts associated with the approved staff |
 
-: Source populations and counting units, recalculated from the workbooks stored in the project repository.
+: Source populations and counting units, recalculated from the workbooks stored in the project repository. {#tbl-populations}
 
 The outbound analysis follows the stakeholder's list of staff in Membership, HRSC and Events. It includes eleven Membership staff, five HRSC staff and two Events staff. Their account-to-team mapping is stored in `DimStaff`, using the user principal name, or UPN, as the matching key. Name variations involving Lara and Georgina were clarified during the project before finalising the mapping. Matching against the approved accounts excludes 1,750 outbound records outside the agreed staff list. These records are outside the scope of this analysis, their exclusion does not mean they are incorrect.
 
@@ -1432,6 +1433,11 @@ Outbound activity adds a complementary view of calls initiated by staff. Most se
 The additional statistical summaries strengthen the interpretation of these findings. Standard deviations and boxplots show substantial variation between dates, while medians and quartiles provide context where unusually large observations influence the mean. Average activity should therefore be considered alongside its distribution and changes over time when discussing operational plans.
 
 The dashboard supports these discussions within the limits of the available data. Technical success does not confirm a conversation or a resolved enquiry, and recorded destinations do not establish waiting times or abandonment. Further work should prioritise confirming routing and outcome definitions, maintaining consistent checks during refreshes, and comparing the findings with staff availability and campaign information. The project's contribution is a reproducible view of recorded telephone activity that gives AHRI a clearer basis for investigation and planning.
+
+# Acknowledgement of AI assistance {.unnumbered}
+
+The authors led the project’s direction and made the final decisions about its scope, analytical approach and dashboard design in consultation with AHRI. Generative AI was used to explain technical concepts, summarise relevant material, assist with code development and troubleshooting, support the interpretation of results, and help draft and edit the report. The authors take responsibility for the final content, calculations and conclusions.
+
 {{< pagebreak >}}
 
 # References {.unnumbered}
