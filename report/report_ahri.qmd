@@ -17,6 +17,10 @@ format:
     toc-depth: 2
     number-sections: true
     cite-method: citeproc
+    include-in-header:
+      text: |
+        \usepackage{pdflscape}
+        \usepackage{float}
 
 bibliography: reference.bib
 csl: apa.csl
@@ -162,6 +166,12 @@ The date table, `DimRoutingDate`, has active relationships with the date fields 
 
 Both workbook queries use the `ProjectRoot` parameter to construct their source paths. Collaborators can therefore update their local project location without rewriting each query. The Power BI project format stores report and model definitions in text files, supporting version control and inspection of changes [@pbip]. Separate checks against the Excel workbooks provide an additional comparison for the main counts. These checks support the intended calculation rules, but do not replace testing the rendered report and its interactive filters in Power BI Desktop.
 
+## Dashboard navigation and use
+
+The five implemented Power BI pages are reproduced in [Appendix A](#app-powerbi). Date slicers allow users to examine a selected reporting period. The outbound pages also provide team and staff filters, and the activity page supports drilling from team totals to staff accounts. These controls allow AHRI to investigate patterns within the agreed reporting scope.
+
+The inbound and outbound outcome pages (@fig-pbi-inbound-outcomes and @fig-pbi-outbound-outcomes) provide additional technical context. Their status labels and duration measures require the interpretation described in this report: they do not establish customer resolution, waiting time or individual productivity.
+
 # Inbound findings {#sec-inbound}
 
 ```{r}
@@ -298,7 +308,7 @@ inbound_monthly_summary <- inbound_daily |>
   group_by(month) |>
   summarise(
     weekdays = n(),
-    entries = sum(entries),
+    total_entries = sum(entries),
     average_entries = mean(entries),
     .groups = "drop"
   )
@@ -366,7 +376,7 @@ inbound_weekday_profile <- eligible_calendar |>
   group_by(weekday_number) |>
   summarise(
     days = n(),
-    entries = sum(entries),
+    total_entries = sum(entries),
     average_entries = mean(entries),
     median_entries = median(entries),
     .groups = "drop"
@@ -484,6 +494,8 @@ AHRI's main telephone menu received 3,986 recorded Main IVR entries between 6 Ap
 The timing analysis excludes the first and last observed dates because their coverage may be incomplete. This leaves 147 calendar days, including 105 Monday-to-Friday dates. Those weekdays contain 3,925 entries, giving an average of 37.4 per weekday. The median is 33, meaning that a typical weekday has fewer entries than the arithmetic average suggests. Higher-volume days pull the average upward.
 
 Dates with no entries remain included. Public holidays also remain classified by their calendar weekday. The analysis assumes that the export provides continuous coverage between its boundary dates. The records alone cannot prove that every day was captured completely.
+
+The corresponding Power BI overview is shown in @fig-pbi-inbound-overview in [Appendix A](#app-powerbi). It brings the entry totals, daily trend, trailing seven-day average and timing comparisons together in one interactive page.
 
 ## Daily variation and unusually busy periods
 
@@ -760,6 +772,8 @@ Among services meeting the dashboard's minimum of 30 groups, CPD Events has the 
 
 These differences justify reviewing the configuration of the named destinations. They do not establish that one service performs worse than another. In particular, CPD Events' 50% share does not prove that half its callers waited too long. The reasons for using each overflow account need confirmation from AHRI's telephone administrator.
 
+The implemented routing page is reproduced in @fig-pbi-inbound-routing. It presents service counts alongside overflow destination shares, with the minimum of 30 observed groups applied to the percentage comparison.
+
 ## Implications for coverage and service review
 
 The findings support three practical priorities. First, review weekday coverage across the sustained 09:00–15:00 period, including lunchtime, while checking whether Tuesday mornings and Monday opening hours coincide with reduced staff availability. Second, investigate the exceptionally busy dates in May and compare the changing monthly pattern with planned communications and events. Third, confirm the routing arrangements behind the relatively high overflow shares for CPD Events and Career Support.
@@ -925,7 +939,7 @@ outbound_monthly_summary <- outbound_daily |>
   group_by(month) |>
   summarise(
     weekdays = n(),
-    attempts = sum(attempts),
+    total_attempts = sum(attempts),
     average_attempts = mean(attempts),
     .groups = "drop"
   )
@@ -996,9 +1010,7 @@ The comparison therefore focuses on the timing and distribution of recorded acti
 
 The 18 approved staff recorded 6,046 outbound attempts between 6 April and 1 September 2026. Membership accounts for 5,275 attempts, or 87.2% of the selected total. HRSC accounts for 680, or 11.2%, and Events accounts for 91, or 1.5%. The percentages total slightly less than 100% because of rounding.
 
-The raw export contains 7,796 outbound records. Of these, 1,750 fall outside the approved account list and were excluded to maintain the agreed scope. The results therefore describe the selected staff group rather than AHRI's entire outbound activity.
-
-@tbl-outbound summarises the selected attempts and source-recorded success status. All 18 approved accounts appear in the observed records.
+The raw export contains 7,796 outbound records. Of these, 1,750 fall outside the approved account list and were excluded to maintain the agreed scope. The results therefore describe the selected staff group rather than AHRI's entire outbound activity. @tbl-outbound summarises the selected attempts and source-recorded success status. All 18 approved accounts appear in the observed records.
 
 ```{r}
 #| label: tbl-outbound
@@ -1051,6 +1063,8 @@ knitr::kable(
 Membership has both the largest approved staff group and the largest number of attempts. However, headcount alone cannot explain the difference between teams. The export does not contain working hours, leave, campaign assignments or the proportion of each person's role devoted to telephone work. Dividing attempts by staff numbers would produce an arithmetic average, but it would not provide a fair comparison of employee productivity.
 
 The team breakdown is most useful for locating recorded activity and identifying questions for managers. AHRI could investigate whether Membership's larger volume reflects scheduled renewal activity or a greater responsibility for outbound contact. These explanations require operational information beyond the call logs. A smaller team total should not automatically be interpreted as poor performance.
+
+@fig-pbi-outbound-activity shows how these totals are presented in Power BI alongside date, team and staff filters, daily activity, monthly averages and a weekday-by-hour view.
 
 ## Timing and monthly changes
 
@@ -1424,3 +1438,37 @@ The dashboard supports these discussions within the limits of the available data
 
 ::: {#refs}
 :::
+{{< pagebreak >}}
+
+```{=latex}
+\begin{landscape}
+\begingroup
+\singlespacing
+```
+
+# Appendix A: Power BI dashboard {#app-powerbi .unnumbered}
+
+Source: Authors' Power BI dashboard. Selected dates: 6 April to 1 September 2026.
+
+![Inbound Calls Overview. The date slicer connects Main IVR entry totals with daily, weekday, hourly and monthly views. The trailing seven-day line smooths daily variation. Linked groups include records outside the Main IVR scope.](images/powerbi/inbound-overview.png){#fig-pbi-inbound-overview width=84% fig-pos="H"}
+
+{{< pagebreak >}}
+
+![Routing and queue destinations. The page compares service volumes and observed destinations. The $n \geq 30$ rule restricts percentage displays; it is not queue capacity. Overflow labels and missing queue records do not establish escalation or abandonment.](images/powerbi/inbound-routing.png){#fig-pbi-inbound-routing width=94% fig-pos="H"}
+
+{{< pagebreak >}}
+
+![Inbound outcome and duration. The success card uses final-record technical status; the outcome bars use a separate classification of system codes and phrases. The duration card averages summed record durations within linked groups. These measures do not establish enquiry resolution, caller waiting time or agent talk time.](images/powerbi/inbound-outcomes.png){#fig-pbi-inbound-outcomes width=94% fig-pos="H"}
+
+{{< pagebreak >}}
+
+![Outbound activity. Date, team and staff filters support exploration of attempts, while the team chart provides a staff drill-down. Counts describe attempts by the approved accounts; they are not measures of individual productivity.](images/powerbi/outbound-activity.png){#fig-pbi-outbound-activity width=94% fig-pos="H"}
+
+{{< pagebreak >}}
+
+![Outbound outcome and duration. The page combines technical success status with durations of technically successful attempts. The displayed "Not answered" category includes SIP 487, meaning "Request Terminated" [@sip]; it should not be interpreted as a confirmed count of unanswered customer calls.](images/powerbi/outbound-outcomes.png){#fig-pbi-outbound-outcomes width=94% fig-pos="H"}
+
+```{=latex}
+\endgroup
+\end{landscape}
+```
