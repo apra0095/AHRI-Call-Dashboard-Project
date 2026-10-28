@@ -1,5 +1,5 @@
 ---
-title: "Developing a Power BI Dashboard for AHRI’s Call Activityy"
+title: "Developing a Power BI Dashboard for AHRI’s Call Activity"
 
 author:
   - name: Aji Pratama
@@ -22,6 +22,20 @@ bibliography: reference.bib
 csl: apa.csl
 link-citations: true
 ---
+{{< pagebreak >}}
+
+# Abstract {.unnumbered}
+
+This project developed a Power BI dashboard to help the Australian HR Institute (AHRI) understand incoming telephone demand and outbound calling activity. Microsoft Teams call exports covering 6 April to 1 September 2026 were examined to establish their structure, quality and reporting scope. The inbound analysis focused on 3,986 linked groups containing a record for AHRI's automated main telephone menu (Main IVR). The outbound analysis covered 6,046 attempts by 18 staff approved by AHRI.
+
+Data preparation included checking missing values and duplicates, standardising account information, converting timestamps to Melbourne time and linking related records. The dashboard presents activity by date, weekday, hour, service and team. Additional analysis in R used means, medians, standard deviations and boxplots to examine variation beyond the averages.
+
+Inbound activity averaged 37.4 entries per weekday, with a standard deviation of 21.7, indicating substantial variation between dates. Tuesday had the highest overall weekday average, and demand remained substantial through lunchtime. Average weekday entries decreased from 53.0 in May to 29.5 in August. Membership accounted for 87.2% of selected outbound attempts, while outbound activity followed a different monthly pattern from inbound demand.
+
+These findings provide a basis for reviewing telephone coverage and calling schedules. However, the exports do not establish waiting times, abandonment or enquiry resolution, and technical success does not confirm a conversation. The project delivers a reproducible dashboard and supporting analysis that help AHRI interpret recorded telephone activity within these limitations.
+
+{{< pagebreak >}}
+
 
 # Background and objectives {#sec-background}
 
